@@ -1,0 +1,32 @@
+{
+  "name": "karma-sauce-launcher",
+  "version": "0.0.1",
+  "description": "A Karma plugin. Launch any browser on SauceLabs!",
+  "main": "index.js",
+  "scripts": {
+    "install": "node install.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/karma-runner/karma-sauce-launcher.git"
+  },
+  "keywords": [
+    "karma-plugin",
+    "launcher",
+    "sauce",
+    "labs",
+    "saucelabs",
+    "browser"
+  ],
+  "author": "Vojta Jina <vojta.jina@gmail.com>",
+  "dependencies": {
+    "wd": "0.0.32",
+    "sauce-connect-launcher": "~0.1.4",
+    "q": "~0.9.6"
+  },
+  "peerDependencies": {
+    "karma": "~0.9"
+  },
+  "license": "MIT"
+}
