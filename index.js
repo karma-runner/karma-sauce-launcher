@@ -12,15 +12,18 @@ var SauceConnect = function(emitter) {
   var alreadyRunningDefered;
   var alreadyRunningProces;
   var onKilled;
+  var tunnelIdentifier;
 
   this.start = function(username, apiKey, done) {
+    tunnelIdentifier = 'KarmaManual' + Math.round(new Date().getTime() / 1000);
     var options = {
       username: username,
       accessKey: apiKey,
       verbose: false,
       logfile: null,
       logger: console.log,
-      no_progress: false
+      no_progress: false,
+      tunnelIdentifier: tunnelIdentifier
     };
 
     // TODO(vojta): if different username/apiKey, start a new process
@@ -79,6 +82,7 @@ var SauceLabBrowser = function(id, args, sauceConnect) {
 
     sauceConnect.start(username, apiKey).then(function() {
       driver = wd.remote('ondemand.saucelabs.com', 80, username, apiKey);
+      options['tunnel-identifier'] = sauceConnect.tunnelIdentifier;
       driver.init(options, function() {
         console.log('SL initiated, getting', url + '?id=' + id);
         driver.get(url + '?id=' + id, heartbeat);
