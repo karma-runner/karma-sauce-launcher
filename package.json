@@ -20,12 +20,17 @@
   ],
   "author": "Vojta Jina <vojta.jina@gmail.com>",
   "dependencies": {
-    "wd": "0.0.32",
+    "wd": "~0.0.32",
     "sauce-connect-launcher": "~0.1.4",
     "q": "~0.9.6"
   },
   "peerDependencies": {
     "karma": "~0.9"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "grunt": "~0.4.1",
+    "grunt-bump": "~0.0.6",
+    "grunt-npm": "~0.0.2"
+  }
 }
