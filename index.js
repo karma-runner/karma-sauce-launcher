@@ -79,8 +79,8 @@ var SauceLabBrowser = function(id, args, sauceConnect, /* config.sauceLabs */ co
   var start = function(url) {
     var options = {
       browserName: args.browserName,
-      tags: args.tags || [],
-      name: args.testName || 'Karma test'
+      tags: args.tags || config.tags || [],
+      name: args.testName || config.testName || 'Karma test'
     };
 
     driver = wd.remote('ondemand.saucelabs.com', 80, username, accessKey);
