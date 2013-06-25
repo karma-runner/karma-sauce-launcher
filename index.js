@@ -79,6 +79,8 @@ var SauceLabBrowser = function(id, args, sauceConnect, /* config.sauceLabs */ co
   var start = function(url) {
     var options = {
       browserName: args.browserName,
+      version: args.version || '',
+      platform: args.platform || 'ANY',
       tags: args.tags || config.tags || [],
       name: args.testName || config.testName || 'Karma test'
     };
