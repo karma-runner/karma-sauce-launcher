@@ -45,16 +45,22 @@ var SauceConnect = function(emitter) {
   };
 
   emitter.on('exit', function(done) {
-    console.log('Killing SauceConnect...');
-    onKilled = done;
-    alreadyRunningProces.close();
+    if (alreadyRunningProces) {
+      console.log('Killing SauceConnect...');
+      onKilled = done;
+      alreadyRunningProces.close();
+    } else {
+      done();
+    }
   });
 };
 
 
-var SauceLabBrowser = function(id, args, sauceConnect) {
-  var username = args.username || process.env.SAUCE_USERNAME;
-  var apiKey = args.key || process.env.SAUCE_API_KEY;
+var SauceLabBrowser = function(id, args, sauceConnect, /* config.sauceLabs */ config) {
+  config = config || {};
+
+  var username = process.env.SAUCE_USERNAME || args.username || config.username;
+  var apiKey = process.env.SAUCE_API_KEY || args.apiKey || config.apiKey;
 
   var driver;
   var captured = false;
@@ -70,20 +76,28 @@ var SauceLabBrowser = function(id, args, sauceConnect) {
     }, 60000);
   };
 
-  this.start = function(url) {
+  var start = function(url) {
     var options = {
       browserName: args.browserName,
       tags: args.tags || [],
       name: args.testName || 'Karma test'
     };
 
-    sauceConnect.start(username, apiKey).then(function() {
-      driver = wd.remote('ondemand.saucelabs.com', 80, username, apiKey);
-      driver.init(options, function() {
-        console.log('SL initiated, getting', url + '?id=' + id);
-        driver.get(url + '?id=' + id, heartbeat);
-      });
+    driver = wd.remote('ondemand.saucelabs.com', 80, username, apiKey);
+    driver.init(options, function() {
+      console.log('SL initiated, getting', url + '?id=' + id);
+      driver.get(url + '?id=' + id, heartbeat);
     });
+  };
+
+  this.start = function(url) {
+    if (config.startConnect !== false) {
+      sauceConnect.start(username, apiKey).then(function() {
+        start(url);
+      });
+    } else {
+      start(url);
+    }
   };
 
   this.kill = function(done) {
