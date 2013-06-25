@@ -13,17 +13,17 @@ var SauceConnect = function(emitter) {
   var alreadyRunningProces;
   var onKilled;
 
-  this.start = function(username, apiKey, done) {
+  this.start = function(username, accessKey, done) {
     var options = {
       username: username,
-      accessKey: apiKey,
+      accessKey: accessKey,
       verbose: false,
       logfile: null,
       logger: console.log,
       no_progress: false
     };
 
-    // TODO(vojta): if different username/apiKey, start a new process
+    // TODO(vojta): if different username/accessKey, start a new process
     if (alreadyRunningDefered) {
       console.log('SauceConnect already running or starting...');
       return alreadyRunningDefered.promise;
@@ -60,7 +60,7 @@ var SauceLabBrowser = function(id, args, sauceConnect, /* config.sauceLabs */ co
   config = config || {};
 
   var username = process.env.SAUCE_USERNAME || args.username || config.username;
-  var apiKey = process.env.SAUCE_API_KEY || args.apiKey || config.apiKey;
+  var accessKey = process.env.SAUCE_ACCESS_KEY || args.accessKey || config.accessKey;
 
   var driver;
   var captured = false;
@@ -83,7 +83,7 @@ var SauceLabBrowser = function(id, args, sauceConnect, /* config.sauceLabs */ co
       name: args.testName || 'Karma test'
     };
 
-    driver = wd.remote('ondemand.saucelabs.com', 80, username, apiKey);
+    driver = wd.remote('ondemand.saucelabs.com', 80, username, accessKey);
     driver.init(options, function() {
       console.log('SL initiated, getting', url + '?id=' + id);
       driver.get(url + '?id=' + id, heartbeat);
@@ -92,7 +92,7 @@ var SauceLabBrowser = function(id, args, sauceConnect, /* config.sauceLabs */ co
 
   this.start = function(url) {
     if (config.startConnect !== false) {
-      sauceConnect.start(username, apiKey).then(function() {
+      sauceConnect.start(username, accessKey).then(function() {
         start(url);
       });
     } else {
