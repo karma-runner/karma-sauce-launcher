@@ -13,14 +13,15 @@ var SauceConnect = function(emitter, logger) {
   var alreadyRunningProces;
   var onKilled;
 
-  this.start = function(username, accessKey, done) {
+  this.start = function(username, accessKey, tunnelIdentifier, done) {
     var options = {
       username: username,
       accessKey: accessKey,
       verbose: false,
       logfile: null,
       logger: log.debug.bind(log),
-      no_progress: false
+      no_progress: false,
+      tunnelIdentifier: tunnelIdentifier
     };
 
     // TODO(vojta): if different username/accessKey, start a new process
@@ -59,6 +60,7 @@ var SauceLabBrowser = function(id, args, sauceConnect, /* config.sauceLabs */ co
 
   var username = process.env.SAUCE_USERNAME || args.username || config.username;
   var accessKey = process.env.SAUCE_ACCESS_KEY || args.accessKey || config.accessKey;
+  var tunnelIdentifier = args.tunnelIdentifier || config.tunnelIdentifier || 'karma' + Math.round(new Date().getTime() / 1000);
   var log = logger.create('launcher.sauce');
 
   var driver;
@@ -83,6 +85,7 @@ var SauceLabBrowser = function(id, args, sauceConnect, /* config.sauceLabs */ co
       platform: args.platform || 'ANY',
       tags: args.tags || config.tags || [],
       name: args.testName || config.testName || 'Karma test'
+      'tunnel-identifier': tunnelIdentifier
     };
 
     url + '?id=' + id;
@@ -96,7 +99,7 @@ var SauceLabBrowser = function(id, args, sauceConnect, /* config.sauceLabs */ co
 
   this.start = function(url) {
     if (config.startConnect !== false) {
-      sauceConnect.start(username, accessKey).then(function() {
+      sauceConnect.start(username, accessKey, tunnelIdentifier).then(function() {
         start(url);
       });
     } else {
