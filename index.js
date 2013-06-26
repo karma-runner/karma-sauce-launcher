@@ -110,7 +110,10 @@ var SauceLabBrowser = function(id, args, sauceConnect, /* config.sauceLabs */ co
   this.kill = function(done) {
     clearTimeout(pendingHeartBeat);
     log.debug('Shutting down Sauce Labs driver');
-    driver.quit(done);
+    // workaround - navigate to other page to avoid re-connection
+    driver.get('http://www.google.com', function() {
+      driver.quit(done);
+    });
   };
 
   this.markCaptured = function() {
