@@ -84,11 +84,11 @@ var SauceLabBrowser = function(id, args, sauceConnect, /* config.sauceLabs */ co
       version: args.version || '',
       platform: args.platform || 'ANY',
       tags: args.tags || config.tags || [],
-      name: args.testName || config.testName || 'Karma test'
+      name: args.testName || config.testName || 'Karma test',
       'tunnel-identifier': tunnelIdentifier
     };
 
-    url + '?id=' + id;
+    url = url + '?id=' + id;
 
     driver = wd.remote('ondemand.saucelabs.com', 80, username, accessKey);
     driver.init(options, function() {
