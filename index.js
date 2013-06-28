@@ -55,7 +55,7 @@ var SauceConnect = function(emitter, logger) {
 };
 
 
-var SauceLabBrowser = function(id, args, sauceConnect, /* config.sauceLabs */ config, logger) {
+var SauceLabsBrowser = function(id, args, sauceConnect, /* config.sauceLabs */ config, logger) {
   config = config || {};
 
   var username = process.env.SAUCE_USERNAME || args.username || config.username;
@@ -135,5 +135,5 @@ var SauceLabBrowser = function(id, args, sauceConnect, /* config.sauceLabs */ co
 // PUBLISH DI MODULE
 module.exports = {
   'sauceConnect': ['type', SauceConnect],
-  'launcher:SauceLabs': ['type', SauceLabBrowser]
+  'launcher:SauceLabs': ['type', SauceLabsBrowser]
 };
