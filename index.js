@@ -85,7 +85,13 @@ var SauceLabBrowser = function(id, args, sauceConnect, /* config.sauceLabs */ co
       platform: args.platform || 'ANY',
       tags: args.tags || config.tags || [],
       name: args.testName || config.testName || 'Karma test',
-      'tunnel-identifier': tunnelIdentifier
+      'tunnel-identifier': tunnelIdentifier,
+      'record-video': args.recordVideo || config.recordVideo || false,
+      'record-screenshots': args.recordScreenshots || config.recordScreenshots || true,
+      'build': args.build || config.build || process.env.TRAVIS_BUILD_NUMBER ||
+              process.env.BUILD_NUMBER || process.env.BUILD_TAG ||
+              process.env.CIRCLE_BUILD_NUM || null
+               
     };
 
     url = url + '?id=' + id;
