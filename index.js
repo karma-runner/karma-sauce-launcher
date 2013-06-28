@@ -55,7 +55,7 @@ var SauceConnect = function(emitter, logger) {
 };
 
 
-var SauceLabBrowser = function(id, args, sauceConnect, /* config.sauceLabs */ config, logger) {
+var SauceLabsBrowser = function(id, args, sauceConnect, /* config.sauceLabs */ config, logger) {
   config = config || {};
 
   var username = process.env.SAUCE_USERNAME || args.username || config.username;
@@ -85,7 +85,13 @@ var SauceLabBrowser = function(id, args, sauceConnect, /* config.sauceLabs */ co
       platform: args.platform || 'ANY',
       tags: args.tags || config.tags || [],
       name: args.testName || config.testName || 'Karma test',
-      'tunnel-identifier': tunnelIdentifier
+      'tunnel-identifier': tunnelIdentifier,
+      'record-video': args.recordVideo || config.recordVideo || false,
+      'record-screenshots': args.recordScreenshots || config.recordScreenshots || true,
+      'build': args.build || config.build || process.env.TRAVIS_BUILD_NUMBER ||
+              process.env.BUILD_NUMBER || process.env.BUILD_TAG ||
+              process.env.CIRCLE_BUILD_NUM || null
+               
     };
 
     url = url + '?id=' + id;
@@ -133,5 +139,5 @@ var SauceLabBrowser = function(id, args, sauceConnect, /* config.sauceLabs */ co
 // PUBLISH DI MODULE
 module.exports = {
   'sauceConnect': ['type', SauceConnect],
-  'launcher:SauceLabs': ['type', SauceLabBrowser]
+  'launcher:SauceLabs': ['type', SauceLabsBrowser]
 };
