@@ -108,6 +108,10 @@ var SauceLabBrowser = function(id, args, sauceConnect, /* config.sauceLabs */ co
   };
 
   this.kill = function(done) {
+    if (!driver) {
+      return;
+    }
+
     clearTimeout(pendingHeartBeat);
     log.debug('Shutting down Sauce Labs driver');
     // workaround - navigate to other page to avoid re-connection
