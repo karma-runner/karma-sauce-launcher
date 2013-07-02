@@ -61,13 +61,15 @@ var SauceLabsBrowser = function(id, args, sauceConnect, /* config.sauceLabs */ c
   var username = process.env.SAUCE_USERNAME || args.username || config.username;
   var accessKey = process.env.SAUCE_ACCESS_KEY || args.accessKey || config.accessKey;
   var tunnelIdentifier = args.tunnelIdentifier || config.tunnelIdentifier || 'karma' + Math.round(new Date().getTime() / 1000);
+  var browserName = args.browserName + (args.version ? ' ' + args.version : '') +
+                    (args.platform ? ' (' + args.platform + ')' : '') + ' on SauceLabs';
   var log = logger.create('launcher.sauce');
 
   var driver;
   var captured = false;
 
   this.id = id;
-  this.name = args.browserName + ' on SauceLabs';
+  this.name = browserName;
 
   var pendingHeartBeat;
   var heartbeat = function() {
