@@ -55,7 +55,7 @@ var SauceConnect = function(emitter, logger) {
 };
 
 
-var SauceLabsBrowser = function(id, args, sauceConnect, /* config.sauceLabs */ config, logger) {
+var SauceLabsBrowser = function(id, args, sauceConnect, /* config.sauceLabs */ config, logger, emitter) {
   config = config || {};
 
   var username = process.env.SAUCE_USERNAME || args.username || config.username;
@@ -65,6 +65,7 @@ var SauceLabsBrowser = function(id, args, sauceConnect, /* config.sauceLabs */ c
                     (args.platform ? ' (' + args.platform + ')' : '') + ' on SauceLabs';
   var log = logger.create('launcher.sauce');
 
+  var self = this;
   var driver;
   var captured = false;
 
@@ -78,6 +79,10 @@ var SauceLabsBrowser = function(id, args, sauceConnect, /* config.sauceLabs */ c
       driver.title();
       heartbeat();
     }, 60000);
+  };
+
+  var formatSauceError = function(err) {
+    return err.message + '\n  ' + err.data.split('\n').shift();
   };
 
   var start = function(url) {
@@ -99,7 +104,12 @@ var SauceLabsBrowser = function(id, args, sauceConnect, /* config.sauceLabs */ c
     url = url + '?id=' + id;
 
     driver = wd.remote('ondemand.saucelabs.com', 80, username, accessKey);
-    driver.init(options, function() {
+    driver.init(options, function(err) {
+      if (err) {
+        log.error('Can not start %s\n  %s', browserName, formatSauceError(err));
+        return emitter.emit('browser_process_failure', self);
+      }
+
       log.debug('WebDriver channel instantiated, opening ' + url);
       driver.get(url, heartbeat);
     });
@@ -134,6 +144,10 @@ var SauceLabsBrowser = function(id, args, sauceConnect, /* config.sauceLabs */ c
 
   this.isCaptured = function() {
     return captured;
+  };
+
+  this.toString = function() {
+    return this.name;
   };
 };
 
