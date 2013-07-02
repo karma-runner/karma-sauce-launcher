@@ -60,14 +60,19 @@ var SauceLabsBrowser = function(id, args, sauceConnect, /* config.sauceLabs */ c
 
   var username = process.env.SAUCE_USERNAME || args.username || config.username;
   var accessKey = process.env.SAUCE_ACCESS_KEY || args.accessKey || config.accessKey;
-  var tunnelIdentifier = args.tunnelIdentifier || config.tunnelIdentifier || 'karma' + Math.round(new Date().getTime() / 1000);
+  var tunnelIdentifier = args.tunnelIdentifier || config.tunnelIdentifier;
   var browserName = args.browserName + (args.version ? ' ' + args.version : '') +
                     (args.platform ? ' (' + args.platform + ')' : '') + ' on SauceLabs';
+  var startConnect = config.startConnect !== false;
   var log = logger.create('launcher.sauce');
 
   var self = this;
   var driver;
   var captured = false;
+
+  if (startConnect && !tunnelIdentifier) {
+    tunnelIdentifier = 'karma' + Math.round(new Date().getTime() / 1000);
+  }
 
   this.id = id;
   this.name = browserName;
@@ -116,7 +121,7 @@ var SauceLabsBrowser = function(id, args, sauceConnect, /* config.sauceLabs */ c
   };
 
   this.start = function(url) {
-    if (config.startConnect !== false) {
+    if (startConnect) {
       sauceConnect.start(username, accessKey, tunnelIdentifier).then(function() {
         start(url);
       });
