@@ -32,10 +32,6 @@ var SauceConnect = function(emitter, logger) {
 
     alreadyRunningDefered = q.defer();
     launchSauceConnect(options, function(err, p) {
-      if (onKilled) {
-        return onKilled();
-      }
-
       alreadyRunningProces = p;
       alreadyRunningDefered.resolve();
     });
@@ -46,8 +42,7 @@ var SauceConnect = function(emitter, logger) {
   emitter.on('exit', function(done) {
     if (alreadyRunningProces) {
       log.info('Shutting down Sauce Connect');
-      onKilled = done;
-      alreadyRunningProces.close();
+      alreadyRunningProces.close(done);
     } else {
       done();
     }
@@ -103,7 +98,7 @@ var SauceLabsBrowser = function(id, args, sauceConnect, /* config.sauceLabs */ c
       'build': args.build || config.build || process.env.TRAVIS_BUILD_NUMBER ||
               process.env.BUILD_NUMBER || process.env.BUILD_TAG ||
               process.env.CIRCLE_BUILD_NUM || null
-               
+
     };
 
     url = url + '?id=' + id;

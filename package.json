@@ -20,7 +20,7 @@
   "author": "Vojta Jina <vojta.jina@gmail.com>",
   "dependencies": {
     "wd": "~0.0.32",
-    "sauce-connect-launcher": "~0.1.5",
+    "sauce-connect-launcher": "~0.1.10",
     "q": "~0.9.6"
   },
   "peerDependencies": {
