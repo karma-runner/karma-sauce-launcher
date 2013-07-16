@@ -12,11 +12,10 @@
   },
   "keywords": [
     "karma-plugin",
-    "launcher",
+    "karma-launcher",
     "sauce",
     "labs",
-    "saucelabs",
-    "browser"
+    "saucelabs"
   ],
   "author": "Vojta Jina <vojta.jina@gmail.com>",
   "dependencies": {
