@@ -11,7 +11,6 @@ var SauceConnect = function(emitter, logger) {
   var log = logger.create('launcher.sauce');
   var alreadyRunningDefered;
   var alreadyRunningProces;
-  var onKilled;
 
   this.start = function(username, accessKey, tunnelIdentifier, done) {
     var options = {
