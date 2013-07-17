@@ -33,7 +33,7 @@ var SauceConnect = function(emitter, logger) {
     alreadyRunningDefered = q.defer();
     launchSauceConnect(options, function(err, p) {
       if (onKilled) {
-        return onKilled();
+        return;
       }
 
       alreadyRunningProces = p;
@@ -48,6 +48,7 @@ var SauceConnect = function(emitter, logger) {
       log.info('Shutting down Sauce Connect');
       onKilled = done;
       alreadyRunningProces.close();
+      done();
     } else {
       done();
     }
