@@ -9,8 +9,8 @@ The easiest way is to keep `karma-sauce-launcher` as a devDependency in your `pa
 ```json
 {
   "devDependencies": {
-    "karma": "~0.9",
-    "karma-sauce-launcher": "~0.0.1"
+    "karma": "~0.10",
+    "karma-sauce-launcher": "~0.1"
   }
 }
 ```
@@ -34,7 +34,7 @@ module.exports = function(config) {
       startConnect: false,
       testName: 'my unit tests'
     },
-    
+
     // define SL browsers
     customLaunchers: {
       sl_chrome_linux: {
@@ -43,7 +43,7 @@ module.exports = function(config) {
         platform: 'linux'
       }
     },
-    
+
     browsers: ['sl_chrome_linux']
   });
 };
