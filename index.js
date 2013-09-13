@@ -6,6 +6,13 @@ var q = require('q');
 var wd = require('wd');
 var launchSauceConnect = require('sauce-connect-launcher');
 
+// SauceLabs is a wrapper around the Sauce Labs REST API
+var SauceLabs = require('saucelabs');
+
+// We keep a mapping from Karma launch IDs to Sauce job IDs here, to report the pass/fail results.
+// We also keep the Sauce credentials here - theoretically different credentials can be used for
+// different browsers in the same session.
+var jobMapping = {};
 
 var SauceConnect = function(emitter, logger) {
   var log = logger.create('launcher.sauce');
@@ -111,11 +118,20 @@ var SauceLabsBrowser = function(id, args, sauceConnect, /* config.sauceLabs */ c
     url = url + '?id=' + id;
 
     driver = wd.remote('ondemand.saucelabs.com', 80, username, accessKey);
-    driver.init(options, function(err) {
+    driver.init(options, function(err, jobId) {
       if (err) {
         log.error('Can not start %s\n  %s', browserName, formatSauceError(err));
         return emitter.emit('browser_process_failure', self);
       }
+
+      // Record the job details, so we can access it later with the reporter
+      jobMapping[id] = {
+        jobId: jobId,
+        credentials: {
+          username: username,
+          password: accessKey
+        }
+      };
 
       log.info('%s session at https://saucelabs.com/tests/%s', browserName, driver.sessionID);
       log.debug('WebDriver channel instantiated, opening ' + url);
@@ -159,9 +175,65 @@ var SauceLabsBrowser = function(id, args, sauceConnect, /* config.sauceLabs */ c
   };
 };
 
+var SauceLabsReporter = function(baseReporterDecorator, emitter, logger) {
+  var log = logger.create('reporter.sauce');
+
+  baseReporterDecorator(this);
+
+  var pendingUpdates = 0;
+  var updatesFinished = function() {};
+
+  // We're only interested in the final results per browser
+  this.onBrowserComplete = function(browser) {
+    var result = browser.lastResult;
+
+    // browser.launchId was used until v0.10.2, but changed to just browser.id in v0.11.0
+    var browserId = browser.launchId || browser.id;
+
+    if(browserId in jobMapping) {
+      var jobDetails = jobMapping[browserId];
+
+      var sauceApi = new SauceLabs(jobDetails.credentials);
+
+      // We record pass/fail status, as well as the full results in "custom-data".
+      var payload = {
+        passed: !(result.failed || result.error),
+        'custom-data': result
+      };
+
+      pendingUpdates += 1;
+
+      sauceApi.updateJob(jobDetails.jobId, payload, function(err) {
+        pendingUpdates -= 1;
+        if(err) {
+          log.error('Failed record pass/fail status: %s', err.error);
+        } else {
+
+        }
+
+        if(pendingUpdates == 0) {
+          updatesFinished();
+        }
+      });
+
+    }
+  };
+
+  // Wait until all updates have been pushed to SauceLabs
+  emitter.on('exit', function(done) {
+    if(pendingUpdates) {
+      updatesFinished = done;
+    } else {
+      done();
+    }
+  });
+};
+
+SauceLabsReporter.$inject = ['baseReporterDecorator', 'emitter', 'logger'];
 
 // PUBLISH DI MODULE
 module.exports = {
   'sauceConnect': ['type', SauceConnect],
-  'launcher:SauceLabs': ['type', SauceLabsBrowser]
+  'launcher:SauceLabs': ['type', SauceLabsBrowser],
+  'reporter:saucelabs': ['type', SauceLabsReporter]
 };

@@ -21,7 +21,8 @@
   "dependencies": {
     "wd": "~0.1.5",
     "sauce-connect-launcher": "~0.1.10",
-    "q": "~0.9.6"
+    "q": "~0.9.6",
+    "saucelabs": "~0.1.0"
   },
   "peerDependencies": {
     "karma": ">=0.9"
