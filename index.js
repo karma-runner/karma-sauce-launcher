@@ -100,6 +100,10 @@ var SauceLabsBrowser = function(id, args, sauceConnect, /* config.sauceLabs */ c
 
     };
 
+    if (args.deviceOrientation) {
+        options['device-orientation'] = args.deviceOrientation;
+    }
+    
     url = url + '?id=' + id;
 
     driver = wd.remote('ondemand.saucelabs.com', 80, username, accessKey);

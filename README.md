@@ -65,6 +65,7 @@ module.exports = function(config) {
 - `browserName` name of the browser
 - `version` version of the browser (defaults to the latest available)
 - `platform` which platform ? (defaults to any)
+- `deviceOrientation` portrait or landscape (mobile testing option only)
 
 For an example project of, check out [AngularJS](https://github.com/angular/angular.js/blob/master/.travis.yml).
 
