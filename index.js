@@ -49,7 +49,7 @@ var SauceConnect = function(emitter, logger) {
 };
 
 
-var SauceLabsBrowser = function(id, args, sauceConnect, /* config.sauceLabs */ config, logger, emitter) {
+var SauceLabsBrowser = function(id, args, sauceConnect, /* config.sauceLabs */ config, logger, emitter, helper) {
   config = config || {};
 
   var username = process.env.SAUCE_USERNAME || args.username || config.username;
@@ -85,7 +85,7 @@ var SauceLabsBrowser = function(id, args, sauceConnect, /* config.sauceLabs */ c
   };
 
   var start = function(url) {
-    var options = {
+    var options = helper.merge(config.options, args, {
       browserName: args.browserName,
       version: args.version || '',
       platform: args.platform || 'ANY',
@@ -98,13 +98,7 @@ var SauceLabsBrowser = function(id, args, sauceConnect, /* config.sauceLabs */ c
               process.env.BUILD_NUMBER || process.env.BUILD_TAG ||
               process.env.CIRCLE_BUILD_NUM || null,
       'device-orientation': args.deviceOrientation || null
-    };
-
-    for (var key in args) {
-      if (!options.hasOwnProperty(key)) {
-        options[key] = args[key];
-      }
-    }
+    });
 
     url = url + '?id=' + id;
 
