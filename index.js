@@ -113,6 +113,7 @@ var SauceLabsBrowser = function(id, args, sauceConnect, /* config.sauceLabs */ c
         return emitter.emit('browser_process_failure', self);
       }
 
+      log.info('%s session at https://saucelabs.com/tests/%s', browserName, driver.sessionID);
       log.debug('WebDriver channel instantiated, opening ' + url);
       driver.get(url, heartbeat);
     });
