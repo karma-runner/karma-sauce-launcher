@@ -100,6 +100,14 @@ var SauceLabsBrowser = function(id, args, sauceConnect, /* config.sauceLabs */ c
 
     };
 
+    // Adding any other option that was specified in args, but not consumed from above
+    // Useful for supplying chromeOptions, firefoxProfile, etc.
+    for (var key in args){
+      if (typeof options[key] === 'undefined') {
+        options[key] = args[key];
+      }
+    }
+
     url = url + '?id=' + id;
 
     driver = wd.remote('ondemand.saucelabs.com', 80, username, accessKey);
