@@ -96,13 +96,9 @@ var SauceLabsBrowser = function(id, args, sauceConnect, /* config.sauceLabs */ c
       'record-screenshots': args.recordScreenshots || config.recordScreenshots || true,
       'build': args.build || config.build || process.env.TRAVIS_BUILD_NUMBER ||
               process.env.BUILD_NUMBER || process.env.BUILD_TAG ||
-              process.env.CIRCLE_BUILD_NUM || null
-
+              process.env.CIRCLE_BUILD_NUM || null,
+      'device-orientation': args.deviceOrientation || null
     };
-
-    if (args.deviceOrientation) {
-        options['device-orientation'] = args.deviceOrientation;
-    }
 
     url = url + '?id=' + id;
 
