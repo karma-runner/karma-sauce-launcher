@@ -38,6 +38,10 @@ var SauceConnect = function(emitter, logger) {
 
     alreadyRunningDefered = q.defer();
     launchSauceConnect(options, function(err, p) {
+      if (err) {
+        return alreadyRunningDefered.reject(err);
+      }
+
       alreadyRunningProces = p;
       alreadyRunningDefered.resolve();
     });
@@ -49,6 +53,7 @@ var SauceConnect = function(emitter, logger) {
     if (alreadyRunningProces) {
       log.info('Shutting down Sauce Connect');
       alreadyRunningProces.close(done);
+      alreadyRunningProces = null;
     } else {
       done();
     }
@@ -143,6 +148,9 @@ var SauceLabsBrowser = function(id, args, sauceConnect, /* config.sauceLabs */ c
     if (startConnect) {
       sauceConnect.start(username, accessKey, tunnelIdentifier).then(function() {
         start(url);
+      }, function(err) {
+        log.error('Can not start %s\n  Failed to start Sauce Connect:\n  %s', browserName, err.message);
+        emitter.emit('browser_process_failure', self);
       });
     } else {
       start(url);
@@ -151,7 +159,7 @@ var SauceLabsBrowser = function(id, args, sauceConnect, /* config.sauceLabs */ c
 
   this.kill = function(done) {
     if (!driver) {
-      return;
+      return process.nextTick(done);
     }
 
     clearTimeout(pendingHeartBeat);
