@@ -68,7 +68,7 @@ var SauceLabsBrowser = function(id, args, sauceConnect, /* config.sauceLabs */ c
   var accessKey = process.env.SAUCE_ACCESS_KEY || args.accessKey || config.accessKey;
   var tunnelIdentifier = args.tunnelIdentifier || config.tunnelIdentifier;
   var browserName = args.browserName + (args.version ? ' ' + args.version : '') +
-                    (args.platform ? ' (' + args.platform + ')' : '') + ' on SauceLabs';
+                    (args.platform ? ' (' + args.platform + ')' : '');
   var startConnect = config.startConnect !== false;
   var log = logger.create('launcher.sauce');
 
@@ -81,12 +81,12 @@ var SauceLabsBrowser = function(id, args, sauceConnect, /* config.sauceLabs */ c
   }
 
   this.id = id;
-  this.name = browserName;
+  this.name = browserName + ' on SauceLabs';
 
   var pendingHeartBeat;
   var heartbeat = function() {
     pendingHeartBeat = setTimeout(function() {
-      log.debug('Heartbeat to Sauce Labs - fetching title');
+      log.debug('Heartbeat to Sauce Labs (%s) - fetching title', browserName);
       driver.title();
       heartbeat();
     }, 60000);
@@ -139,7 +139,7 @@ var SauceLabsBrowser = function(id, args, sauceConnect, /* config.sauceLabs */ c
       };
 
       log.info('%s session at https://saucelabs.com/tests/%s', browserName, driver.sessionID);
-      log.debug('WebDriver channel instantiated, opening ' + url);
+      log.debug('WebDriver channel for %s instantiated, opening %s', browserName, url);
       driver.get(url, heartbeat);
     });
   };
@@ -163,7 +163,7 @@ var SauceLabsBrowser = function(id, args, sauceConnect, /* config.sauceLabs */ c
     }
 
     clearTimeout(pendingHeartBeat);
-    log.debug('Shutting down Sauce Labs driver');
+    log.debug('Shutting down the %s driver', browserName);
     // workaround - navigate to other page to avoid re-connection
     driver.get('about:blank', function() {
       driver.quit(done);
