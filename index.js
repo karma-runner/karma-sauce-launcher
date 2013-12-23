@@ -61,7 +61,13 @@ var SauceConnect = function(emitter, logger) {
 };
 
 
-var SauceLabsBrowser = function(id, args, sauceConnect, /* config.sauceLabs */ config, logger, emitter, helper) {
+var SauceLabsBrowser = function(args, sauceConnect, /* config.sauceLabs */ config, logger, helper,
+    baseLauncherDecorator, captureTimeoutLauncherDecorator, retryLauncherDecorator) {
+
+  baseLauncherDecorator(this);
+  captureTimeoutLauncherDecorator(this);
+  retryLauncherDecorator(this);
+
   config = config || {};
 
   var username = process.env.SAUCE_USERNAME || args.username || config.username;
@@ -73,14 +79,15 @@ var SauceLabsBrowser = function(id, args, sauceConnect, /* config.sauceLabs */ c
   var log = logger.create('launcher.sauce');
 
   var self = this;
-  var driver;
-  var captured = false;
+  var driver = wd.remote('ondemand.saucelabs.com', 80, username, accessKey);
+
+  var pendingCancellations = 0;
+  var sessionIsReady = false;
 
   if (startConnect && !tunnelIdentifier) {
     tunnelIdentifier = 'karma' + Math.round(new Date().getTime() / 1000);
   }
 
-  this.id = id;
   this.name = browserName + ' on SauceLabs';
 
   var pendingHeartBeat;
@@ -120,17 +127,19 @@ var SauceLabsBrowser = function(id, args, sauceConnect, /* config.sauceLabs */ c
       }
     }
 
-    url = url + '?id=' + id;
-
-    driver = wd.remote('ondemand.saucelabs.com', 80, username, accessKey);
     driver.init(options, function(err, jobId) {
+      if (pendingCancellations > 0) {
+        pendingCancellations--;
+        return;
+      }
+
       if (err) {
         log.error('Can not start %s\n  %s', browserName, formatSauceError(err));
-        return emitter.emit('browser_process_failure', self);
+        return self._done('failure');
       }
 
       // Record the job details, so we can access it later with the reporter
-      jobMapping[id] = {
+      jobMapping[self.id] = {
         jobId: jobId,
         credentials: {
           username: username,
@@ -138,49 +147,62 @@ var SauceLabsBrowser = function(id, args, sauceConnect, /* config.sauceLabs */ c
         }
       };
 
+      sessionIsReady = true;
+
       log.info('%s session at https://saucelabs.com/tests/%s', browserName, driver.sessionID);
       log.debug('WebDriver channel for %s instantiated, opening %s', browserName, url);
       driver.get(url, heartbeat);
     });
   };
 
-  this.start = function(url) {
+  this.on('start', function(url) {
+    if (pendingCancellations > 0) {
+      pendingCancellations--;
+      return;
+    }
+
     if (startConnect) {
       sauceConnect.start(username, accessKey, tunnelIdentifier).then(function() {
+        if (pendingCancellations > 0) {
+          pendingCancellations--;
+          return;
+        }
+
         start(url);
       }, function(err) {
+        pendingCancellations--;
         log.error('Can not start %s\n  Failed to start Sauce Connect:\n  %s', browserName, err.message);
-        emitter.emit('browser_process_failure', self);
+        self._retryLimit = -1; // don't retry
+        self._done('failure');
       });
     } else {
       start(url);
     }
-  };
+  });
 
-  this.kill = function(done) {
-    if (!driver) {
-      return process.nextTick(done);
+  this.on('kill', function(done) {
+    var allDone = function() {
+      self._done();
+      done();
+    };
+
+    if (sessionIsReady) {
+      if (pendingHeartBeat) {
+        clearTimeout(pendingHeartBeat);
+      }
+
+      log.debug('Shutting down the %s driver', browserName);
+      // workaround - navigate to other page to avoid re-connection
+      driver.get('about:blank', function() {
+        driver.quit(allDone);
+      });
+
+      sessionIsReady = false;
+    } else {
+      pendingCancellations++;
+      process.nextTick(allDone);
     }
-
-    clearTimeout(pendingHeartBeat);
-    log.debug('Shutting down the %s driver', browserName);
-    // workaround - navigate to other page to avoid re-connection
-    driver.get('about:blank', function() {
-      driver.quit(done);
-    });
-  };
-
-  this.markCaptured = function() {
-    captured = true;
-  };
-
-  this.isCaptured = function() {
-    return captured;
-  };
-
-  this.toString = function() {
-    return this.name;
-  };
+  });
 };
 
 var SauceLabsReporter = function(baseReporterDecorator, emitter, logger) {
