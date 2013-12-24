@@ -109,7 +109,8 @@ var SauceLabsBrowser = function(id, args, sauceConnect, /* config.sauceLabs */ c
       'build': args.build || config.build || process.env.TRAVIS_BUILD_NUMBER ||
               process.env.BUILD_NUMBER || process.env.BUILD_TAG ||
               process.env.CIRCLE_BUILD_NUM || null,
-      'device-orientation': args.deviceOrientation || null
+      'device-orientation': args.deviceOrientation || null,
+      'disable-popup-handler': true
     });
 
     // Adding any other option that was specified in args, but not consumed from above
