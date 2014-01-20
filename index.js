@@ -19,17 +19,8 @@ var SauceConnect = function(emitter, logger) {
   var alreadyRunningDefered;
   var alreadyRunningProces;
 
-  this.start = function(username, accessKey, tunnelIdentifier, done) {
-    var options = {
-      username: username,
-      accessKey: accessKey,
-      verbose: false,
-      logfile: null,
-      logger: log.debug.bind(log),
-      no_progress: false,
-      tunnelIdentifier: tunnelIdentifier
-    };
-
+  this.start = function(connectOptions, done) {
+    connectOptions.logger = log.debug.bind(log);
     // TODO(vojta): if different username/accessKey, start a new process
     if (alreadyRunningDefered) {
       log.debug('Sauce Connect is already running or starting');
@@ -37,7 +28,7 @@ var SauceConnect = function(emitter, logger) {
     }
 
     alreadyRunningDefered = q.defer();
-    launchSauceConnect(options, function(err, p) {
+    launchSauceConnect(connectOptions, function(err, p) {
       if (err) {
         return alreadyRunningDefered.reject(err);
       }
@@ -79,6 +70,13 @@ var SauceLabsBrowser = function(id, args, sauceConnect, /* config.sauceLabs */ c
   if (startConnect && !tunnelIdentifier) {
     tunnelIdentifier = 'karma' + Math.round(new Date().getTime() / 1000);
   }
+
+  var connectOptions = config.connectOptions || {};
+  connectOptions = helper.merge(connectOptions, {
+    username: username,
+    accessKey: accessKey,
+    tunnelIdentifier: tunnelIdentifier
+  });
 
   this.id = id;
   this.name = browserName + ' on SauceLabs';
@@ -147,7 +145,7 @@ var SauceLabsBrowser = function(id, args, sauceConnect, /* config.sauceLabs */ c
 
   this.start = function(url) {
     if (startConnect) {
-      sauceConnect.start(username, accessKey, tunnelIdentifier).then(function() {
+      sauceConnect.start(connectOptions).then(function() {
         start(url);
       }, function(err) {
         log.error('Can not start %s\n  Failed to start Sauce Connect:\n  %s', browserName, err.message);
