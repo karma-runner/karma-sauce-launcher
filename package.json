@@ -35,6 +35,7 @@
     "grunt-auto-release": "~0.0.2"
   },
   "contributors": [
+    "Johannes Würbach <johannes.wuerbach@googlemail.com>",
     "Santiago Suarez Ordoñez <santiycr@gmail.com>",
     "Johannes Würbach <johannes.wuerbach@googlemail.com>",
     "Parashuram <code@nparashuram.com>",
