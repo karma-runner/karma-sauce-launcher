@@ -2,6 +2,9 @@
 
 > Run your unit tests on [Sauce Labs](https://saucelabs.com/)' browser cloud!
 
+[![Build Status](https://travis-ci.org/karma-runner/karma-sauce-launcher.svg?branch=doc)](https://travis-ci.org/karma-runner/karma-sauce-launcher) [![david-dm-status-badge](https://david-dm.org/karma-runner/karma-sauce-launcher.png)](https://david-dm.org/karma-runner/karma-sauce-launcher#info=dependencies&view=table)
+ [![david-dm-status-badge](https://david-dm.org/karma-runner/karma-sauce-launcher/dev-status.png)](https://david-dm.org/karma-runner/karma-sauce-launcher#info=devDependencies&view=table)
+
 ## Installation
 
 Install `karma-sauce-launcher` as a `devDependency` in your package.json:
