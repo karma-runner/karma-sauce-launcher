@@ -37,13 +37,15 @@
     "karma-jasmine": "^0.1.5"
   },
   "contributors": [
-    "Santiago Suarez Ordoñez <santiycr@gmail.com>",
+    "Chris Wren <chris@saucelabs.com>",
     "Chris Wren <cthewren@gmail.com>",
+    "Santiago Suarez Ordoñez <santiycr@gmail.com>",
     "Johannes Würbach <johannes.wuerbach@googlemail.com>",
     "Johannes Würbach <johannes.wuerbach@googlemail.com>",
     "Parashuram <code@nparashuram.com>",
     "Parashuram N <code@r.nparashuram.com>",
     "Ralf Kistner <ralf@embarkmobile.com>",
+    "sebv <seb.vincent@gmail.com>",
     "yhwh <ferrero.nicolas@gmail.com>"
   ]
 }
