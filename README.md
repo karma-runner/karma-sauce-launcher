@@ -56,9 +56,6 @@ module.exports = function(config) {
 
     // The rest of your karma config is here
     // ...
-
-    // This assumes process.env.SAUCE_USERNAME and
-    // process.env.SAUCE_ACCESS_KEY are set
     sauceLabs: {
         testName: 'Web App Unit Tests'
     },
@@ -74,7 +71,7 @@ module.exports = function(config) {
 
 ### Example karma-sauce-launcher configs
 
-For example configs using this launcher, check out the [examples directory](https://github.com/karma-runner/karma-sauce-launcher/tree/master/examples) in this project(which uses Travis CI), the [karma-sauce-example repo](https://github.com/saucelabs/sauce-karma-example), or [AngularJS' Karma config](https://github.com/angular/angular.js/blob/master/karma-shared.conf.js).
+For example configs using this launcher (which use Travis CI), check out the [examples directory](https://github.com/karma-runner/karma-sauce-launcher/tree/master/examples) in this project, the [karma-sauce-example repo](https://github.com/saucelabs/sauce-karma-example), or [AngularJS' Karma config](https://github.com/angular/angular.js/blob/master/karma-shared.conf.js).
 
 ### Reporter
 
@@ -93,13 +90,29 @@ Your Sauce Labs username (if you don't have an account, you can sign up [here](h
 Type: `String`
 Default: `process.env.SAUCE_ACCESS_KEY`
 
-Your Sauce Labs access key which you will see on your [account page](https://saucelabs.com/account  ).
+Your Sauce Labs access key which you will see on your [account page](https://saucelabs.com/account).
 
 ### startConnect
 Type: `Boolean`
 Default: `true`
 
 If `true`, Sauce Connect will be started automatically. Set this to `false` if you are launching tests locally and want to start Sauce Connect via [a binary](https://saucelabs.com/docs/connect) or the [Mac](https://saucelabs.com/mac) app in the background to improve test speed.
+
+### build
+Type: `String`
+Default: *One of the following environment variables*:
+`process.env.TRAVIS_BUILD_NUMBER`
+`process.env.BUILD_NUMBER`
+`process.env.BUILD_TAG`
+`process.env.CIRCLE_BUILD_NUM`
+
+ID of the build currently running. This should come from your CI.
+
+### testName
+Type: `String`
+Default: `'Karma test'`
+
+Name of the unit test group you are running.
 
 ### tunnelIdentifier
 Type: `String`
@@ -110,16 +123,6 @@ Sauce Connect can proxy multiple sessions, this is an id of a session.
 Type: `Array of Strings`
 
 Tags to use for filtering jobs in your Sauce Labs account.
-
-### build
-Type: `String`
-
-Id of the build currently running. This should come from your CI.
-
-### testName
-Type: `String`
-
-Name of the unit test group you are running.
 
 ### recordVideo
 Type: `Boolean`
