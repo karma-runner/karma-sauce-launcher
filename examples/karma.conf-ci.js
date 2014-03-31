@@ -26,7 +26,7 @@ module.exports = function(config) {
       'src/*.js',
       'test/*.js'
     ],
-    reporters: ['dots'],
+    reporters: ['dots', 'saucelabs'],
     port: 9876,
     colors: true,
     logLevel: config.LOG_INFO,
