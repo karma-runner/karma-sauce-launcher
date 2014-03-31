@@ -44,7 +44,9 @@ module.exports = function(config) {
       }
     },
 
-    browsers: ['sl_chrome_linux']
+    browsers: ['sl_chrome_linux'],
+
+    reporters: ['dots', 'saucelabs']
   });
 };
 ```
@@ -68,6 +70,11 @@ module.exports = function(config) {
 - `deviceOrientation` portrait or landscape (mobile testing option only)
 
 For an example project of, check out [AngularJS](https://github.com/angular/angular.js/blob/master/.travis.yml).
+
+### Reporter
+
+Add the `saucelabs` reporter to report the pass/fail status of the build back to SauceLabs. The full results
+are reported in the *Metadata -> custom data* section on SauceLabs.
 
 
 ----
