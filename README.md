@@ -19,9 +19,9 @@ This launcher is typically used in CI to run your unit tests across many browser
 
 ### Adding karma-sauce-launcher to an existing Karma config
 
-To configure this launcher, you need to add two properties to your top-level Karma config, `sauceLabs` and `customLaunchers`, and set the `browsers` array to use Sauce Labs browsers.
+To configure this launcher, you need to add two properties to your top-level Karma config, `sauceLabs` and `customLaunchers`, set the `browsers` array to use Sauce Labs browsers, and add the `sauceLabs` reporter.
 
-The `sauceLabs` object defines global properties for each browser/OS while the `customLaunchers` object configures individual browsers. Here is a minimal Karma config to get the launcher running:
+The `sauceLabs` object defines global properties for each browser/OS while the `customLaunchers` object configures individual browsers. The `sauceLabs` reporter allows your tests results to be properly displayed on saucelabs.com. Here is a minimal Karma config to get the launcher running:
 
 ```js
 module.exports = function(config) {
@@ -73,11 +73,6 @@ module.exports = function(config) {
 
 For example configs using this launcher (which use Travis CI), check out the [examples directory](https://github.com/karma-runner/karma-sauce-launcher/tree/master/examples) in this project, the [karma-sauce-example repo](https://github.com/saucelabs/sauce-karma-example), or [AngularJS' Karma config](https://github.com/angular/angular.js/blob/master/karma-shared.conf.js).
 
-### Reporter
-
-Add the `saucelabs` reporter to report the pass/fail status of the build back to SauceLabs. The full results
-are reported in the *Metadata -> custom data* section on SauceLabs.
-
 ## `sauceLabs` config properties shared across all browsers
 
 ### username
@@ -106,7 +101,7 @@ Default: *One of the following environment variables*:
 `process.env.BUILD_TAG`
 `process.env.CIRCLE_BUILD_NUM`
 
-ID of the build currently running. This should come from your CI.
+ID of the build currently running. This should be set by your CI.
 
 ### testName
 Type: `String`
@@ -128,24 +123,24 @@ Tags to use for filtering jobs in your Sauce Labs account.
 Type: `Boolean`
 Default: `false`
 
-Set to true if you want to record a video of your Karma session.
+Set to `true` if you want to record a video of your Karma session.
 
 ### recordScreenshots
 Type: `Boolean`
 Default: `true`
 
-Set to false if you don't want to record screenshots.
+Set to `false` if you don't want to record screenshots.
 
 ## `customLaunchers` config properties
 
-The `customLaunchers` object has browser names as keys and configs as values. Documented below are the dif
+The `customLaunchers` object has browser names as keys and configs as values. Documented below are the different properties which you can configure for each browser/platform combo.
 
 *Note: You can learn about the available browser/platform combos on the [Sauce Labs platforms page](https://saucelabs.com/platforms).*
 
 ### base
 Type: `String`
 Required: `true`
-This defines the base configuration for the launcher, in this case it should always be `SauceLabs` so that browsers can use the base Sauce Labs config.
+This defines the base configuration for the launcher, in this case it should always be `SauceLabs` so that browsers can use the base Sauce Labs config defined at the root `sauceLabs` property.
 
 ### browserName
 Type: `String`
@@ -155,18 +150,20 @@ Name of the browser.
 
 ### version
 Type: `String`
+Default: latest browser version for all browsers except Chrome which defaults to 27 ??
+
 Version of the browser to use.
 
 ### platform
 Type: `String`
+Default: ??
 
 Name of platform to run browser on.
 
 ### deviceOrientation
 Type: `String`
+Default: ??
+
 Accepted values: `'portrait' || 'landscape'`
->>>>>>> docs: common use cases
 
-Set this string if you want your unit tests need to run on a particular mobile device orientation .
-
-For more information on Karma see the [homepage](http://karma-runner.github.com).
+Set this string if your unit tests need to run on a particular mobile device orientation.
