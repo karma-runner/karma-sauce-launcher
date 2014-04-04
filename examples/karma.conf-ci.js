@@ -35,7 +35,8 @@ module.exports = function(config) {
       accessKey: process.env.SAUCE_ACCESS_KEY,
       testName: 'Karma and Sauce Labs demo',
       // Change this value if you are using a different CI than Travis
-      build: process.env.TRAVIS_JOB_ID
+      build: process.env.TRAVIS_JOB_ID,
+      recordScreenshots: false
     },
     // Increase timeout in case connection in CI is slow
     captureTimeout: 120000,
