@@ -21,7 +21,7 @@ This launcher is typically used in CI to run your unit tests across many browser
 
 To configure this launcher, you need to add two properties to your top-level Karma config, `sauceLabs` and `customLaunchers`, set the `browsers` array to use Sauce Labs browsers, and add the `sauceLabs` reporter.
 
-The `sauceLabs` object defines global properties for each browser/platform while the `customLaunchers` object configures individual browsers. The `sauceLabs` reporter allows your tests results to be properly displayed on https://saucelabs.com. Here is a minimal Karma config to get the launcher running:
+The `sauceLabs` object defines global properties for each browser/platform while the `customLaunchers` object configures individual browsers. The `sauceLabs` reporter allows your tests results to be properly displayed on https://saucelabs.com. Here is a sample Karma config to get the launcher running:
 
 ```js
 module.exports = function(config) {
@@ -71,7 +71,7 @@ module.exports = function(config) {
 
 ### Example karma-sauce-launcher configs
 
-For example configs using this launcher (which use Travis CI), check out the [examples directory](https://github.com/karma-runner/karma-sauce-launcher/tree/master/examples) in this project, the [karma-sauce-example repo](https://github.com/saucelabs/sauce-karma-example), or [AngularJS' Karma config](https://github.com/angular/angular.js/blob/master/karma-shared.conf.js).
+For example configs using this launcher (using Travis CI), check out this repo's [karma file](https://github.com/karma-runner/karma-sauce-launcher/tree/master/examples/karma.conf-ci.js), the [karma-sauce-example repo](https://github.com/saucelabs/sauce-karma-example) (which demonstrates how to use Sauce locally), or [AngularJS' Karma config](https://github.com/angular/angular.js/blob/master/karma-shared.conf.js).
 
 ## `sauceLabs` config properties shared across all browsers
 
@@ -96,13 +96,9 @@ If `true`, Sauce Connect will be started automatically. Set this to `false` if y
 ### build
 Type: `String`
 Default: *One of the following environment variables*:
-
-`process.env.TRAVIS_BUILD_NUMBER`,
-
-`process.env.BUILD_NUMBER`,
-
-`process.env.BUILD_TAG`,
-
+`process.env.TRAVIS_BUILD_NUMBER`
+`process.env.BUILD_NUMBER`
+`process.env.BUILD_TAG`
 `process.env.CIRCLE_BUILD_NUM`
 
 ID of the build currently running. This should be set by your CI.
@@ -145,7 +141,7 @@ The `customLaunchers` object has browser names as keys and configs as values. Do
 Type: `String`
 Required: `true`
 
-This defines the base configuration for the launcher, in this case it should always be `SauceLabs` so that browsers can use the base Sauce Labs config defined at the root `sauceLabs` property.
+This defines the base configuration for the launcher. In this case it should always be `SauceLabs` so that browsers can use the base Sauce Labs config defined at the root `sauceLabs` property.
 
 ### browserName
 Type: `String`
