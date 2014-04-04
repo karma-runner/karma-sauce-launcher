@@ -2,9 +2,9 @@
 
 > Run your unit tests on [Sauce Labs](https://saucelabs.com/)' browser cloud!
 
-[![Build Status](https://travis-ci.org/karma-runner/karma-sauce-launcher.svg?branch=doc)](https://travis-ci.org/karma-runner/karma-sauce-launcher) [![david-dm-status-badge](https://david-dm.org/karma-runner/karma-sauce-launcher.png)](https://david-dm.org/karma-runner/karma-sauce-launcher#info=dependencies&view=table)
+[![Build Status](https://travis-ci.org/karma-runner/karma-sauce-launcher.svg?branch=doc)](https://travis-ci.org/karma-runner/karma-sauce-launcher) [![Sauce Status](https://saucelabs.com/buildstatus/karma-sauce-launcher)](https://saucelabs.com/u/karma-sauce-launcher)
+ [![david-dm-status-badge](https://david-dm.org/karma-runner/karma-sauce-launcher.png)](https://david-dm.org/karma-runner/karma-sauce-launcher#info=dependencies&view=table)
  [![david-dm-status-badge](https://david-dm.org/karma-runner/karma-sauce-launcher/dev-status.png)](https://david-dm.org/karma-runner/karma-sauce-launcher#info=devDependencies&view=table)
-
 ## Installation
 
 Install `karma-sauce-launcher` as a `devDependency` in your package.json:
@@ -15,18 +15,18 @@ npm install karma-sauce-launcher --save-dev
 
 ## Usage
 
-This launcher is typically used in CI to run your unit tests across many browsers on Sauce Labs. However, you can also use it locally to debug tests in browsers not available on your machine.
+This launcher is typically used in CI to run your unit tests across many browsers and platforms on Sauce Labs. However, you can also use it locally to debug tests in browsers not available on your machine.
 
 ### Adding karma-sauce-launcher to an existing Karma config
 
 To configure this launcher, you need to add two properties to your top-level Karma config, `sauceLabs` and `customLaunchers`, set the `browsers` array to use Sauce Labs browsers, and add the `sauceLabs` reporter.
 
-The `sauceLabs` object defines global properties for each browser/OS while the `customLaunchers` object configures individual browsers. The `sauceLabs` reporter allows your tests results to be properly displayed on saucelabs.com. Here is a minimal Karma config to get the launcher running:
+The `sauceLabs` object defines global properties for each browser/platform while the `customLaunchers` object configures individual browsers. The `sauceLabs` reporter allows your tests results to be properly displayed on https://saucelabs.com. Here is a minimal Karma config to get the launcher running:
 
 ```js
 module.exports = function(config) {
   // Example set of browsers to run on Sauce Labs
-  // Check out https://saucelabs.com/platforms for all browser/OS combos
+  // Check out https://saucelabs.com/platforms for all browser/platform combos
   var customLaunchers = {
     sl_chrome: {
       base: 'SauceLabs',
@@ -38,11 +38,11 @@ module.exports = function(config) {
       browserName: 'firefox',
       version: '27'
     },
-    sl_safari: {
+    sl_ios_safari: {
       base: 'SauceLabs',
-      browserName: 'safari',
+      browserName: 'iphone',
       platform: 'OS X 10.9',
-      version: '7'
+      version: '7.1'
     },
     sl_ie_11: {
       base: 'SauceLabs',
@@ -96,9 +96,13 @@ If `true`, Sauce Connect will be started automatically. Set this to `false` if y
 ### build
 Type: `String`
 Default: *One of the following environment variables*:
-`process.env.TRAVIS_BUILD_NUMBER`
-`process.env.BUILD_NUMBER`
-`process.env.BUILD_TAG`
+
+`process.env.TRAVIS_BUILD_NUMBER`,
+
+`process.env.BUILD_NUMBER`,
+
+`process.env.BUILD_TAG`,
+
 `process.env.CIRCLE_BUILD_NUM`
 
 ID of the build currently running. This should be set by your CI.
@@ -140,6 +144,7 @@ The `customLaunchers` object has browser names as keys and configs as values. Do
 ### base
 Type: `String`
 Required: `true`
+
 This defines the base configuration for the launcher, in this case it should always be `SauceLabs` so that browsers can use the base Sauce Labs config defined at the root `sauceLabs` property.
 
 ### browserName
@@ -150,20 +155,20 @@ Name of the browser.
 
 ### version
 Type: `String`
-Default: latest browser version for all browsers except Chrome which defaults to 27 ??
+Default: Latest browser version for all browsers except Chrome which defaults to `'27'`
 
 Version of the browser to use.
 
 ### platform
 Type: `String`
-Default: ??
+Default: `'Linux'` for Firefox/Chrome, `'Windows 7'` for IE/Safari
 
 Name of platform to run browser on.
 
 ### deviceOrientation
 Type: `String`
-Default: ??
+Default: `'portrait'`
 
 Accepted values: `'portrait' || 'landscape'`
 
-Set this string if your unit tests need to run on a particular mobile device orientation.
+Set this string if your unit tests need to run on a particular mobile device orientation for Android Browser or iOS Safari.
