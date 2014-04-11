@@ -1,6 +1,6 @@
 {
   "name": "karma-sauce-launcher",
-  "version": "0.2.6",
+  "version": "0.2.7",
   "description": "A Karma plugin. Launch any browser on SauceLabs!",
   "main": "index.js",
   "scripts": {
