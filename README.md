@@ -1,5 +1,7 @@
 # karma-sauce-launcher
 
+![Karma Plus Sauce](/images/karma-plus-sauce.png)
+
 > Run your unit tests on [Sauce Labs](https://saucelabs.com/)' browser cloud!
 
 [![NPM version](https://badge.fury.io/js/karma-sauce-launcher.png)](http://badge.fury.io/js/karma-sauce-launcher) [![Build Status](https://travis-ci.org/karma-runner/karma-sauce-launcher.svg?branch=doc)](https://travis-ci.org/karma-runner/karma-sauce-launcher) [![Sauce Status](https://saucelabs.com/buildstatus/karma-sauce-launcher)](https://saucelabs.com/u/karma-sauce-launcher)
