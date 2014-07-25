@@ -26,14 +26,19 @@ module.exports = function(config) {
       'src/*.js',
       'test/*.js'
     ],
-    reporters: ['dots', 'saucelabs'],
+    reporters: ['progress', 'saucelabs'],
     port: 9876,
     colors: true,
     logLevel: config.LOG_INFO,
     sauceLabs: {
       testName: 'Karma and Sauce Labs demo',
-      recordScreenshots: false
+      recordScreenshots: false,
+      connectOptions: {
+        port: 5757,
+        logfile: 'sauce_connect.log'
+      }
     },
+    logLevel: 'debug',
     // Increase timeout in case connection in CI is slow
     captureTimeout: 120000,
     customLaunchers: customLaunchers,
