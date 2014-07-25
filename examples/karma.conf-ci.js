@@ -32,7 +32,11 @@ module.exports = function(config) {
     logLevel: config.LOG_INFO,
     sauceLabs: {
       testName: 'Karma and Sauce Labs demo',
-      recordScreenshots: false
+      recordScreenshots: false,
+      connectOptions: {
+        port: 5757,
+        logFile: 'sauce_connect.log'
+      }
     },
     // Increase timeout in case connection in CI is slow
     captureTimeout: 120000,
