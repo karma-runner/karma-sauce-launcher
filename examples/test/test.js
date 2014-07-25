@@ -11,6 +11,7 @@ describe('subtract', function () {
 });
 
 describe('updateAppState', function () {
+    console.log('debugging my test');
     it('should push a new state into the browser history', function () {
         window.updateAppState({
             message: 'hi'
