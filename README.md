@@ -107,7 +107,7 @@ Default:
 }
 ```
 
-Options to send to Sauce Connect. Check [here]() for all available options.
+Options to send to Sauce Connect. Check [here](https://github.com/bermi/sauce-connect-launcher#advanced-usage) for all available options.
 
 ### build
 Type: `String`
