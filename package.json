@@ -22,7 +22,8 @@
     "wd": "~0.3.4",
     "sauce-connect-launcher": "~0.6.0",
     "q": "~0.9.6",
-    "saucelabs": "~0.1.0"
+    "saucelabs": "~0.1.0",
+    "firefox-profile": "~0.3.6"
   },
   "peerDependencies": {
     "karma": ">=0.11.11"
