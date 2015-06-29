@@ -35,9 +35,9 @@
     "karma-jasmine": "^0.1.5"
   },
   "contributors": [
+    "Mark Ethan Trostler <mark@zzo.com>",
     "Chris Wren <chris@saucelabs.com>",
     "Chris Wren <cthewren@gmail.com>",
-    "Mark Ethan Trostler <mark@zzo.com>",
     "Chris Wren <chriswrendev@gmail.com>",
     "Ralf Kistner <ralf@embarkmobile.com>",
     "Pawel Kozlowski <pkozlowski.opensource@gmail.com>",
