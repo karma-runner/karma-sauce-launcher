@@ -1,6 +1,6 @@
 {
   "name": "karma-sauce-launcher",
-  "version": "0.2.12",
+  "version": "0.2.14",
   "description": "A Karma plugin. Launch any browser on SauceLabs!",
   "main": "index.js",
   "scripts": {
@@ -19,7 +19,6 @@
   ],
   "author": "Vojta Jina <vojta.jina@gmail.com>",
   "dependencies": {
-    "karma": ">=0.11.11",
     "wd": "~0.3.4",
     "sauce-connect-launcher": "~0.11.1",
     "q": "~0.9.6",
@@ -38,8 +37,8 @@
   "contributors": [
     "Chris Wren <chris@saucelabs.com>",
     "Chris Wren <cthewren@gmail.com>",
-    "Chris Wren <chriswrendev@gmail.com>",
     "Mark Ethan Trostler <mark@zzo.com>",
+    "Chris Wren <chriswrendev@gmail.com>",
     "Ralf Kistner <ralf@embarkmobile.com>",
     "Pawel Kozlowski <pkozlowski.opensource@gmail.com>",
     "Santiago Suarez Ordoñez <santiycr@gmail.com>",
