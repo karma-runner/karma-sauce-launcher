@@ -31,6 +31,7 @@
     "grunt-bump": "~0.0.7",
     "grunt-npm": "~0.0.2",
     "grunt-auto-release": "~0.0.2",
+    "karma": ">0.13.0-rc",
     "karma-sauce-launcher": "0.2.3",
     "karma-jasmine": "^0.1.5"
   },
