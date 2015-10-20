@@ -10,28 +10,20 @@ module.exports = function (config) {
     'SL_Chrome': {
       base: 'SauceLabs',
       platform: 'OS X 10.11',
-      browserName: 'chrome'
+      browserName: 'chrome',
+      customData: {
+        awesome: true
+      }
     },
     'SL_Firefox': {
       base: 'SauceLabs',
       platform: 'OS X 10.11',
       browserName: 'firefox'
     },
-    'SL_Safari': {
-      base: 'SauceLabs',
-      platform: 'OS X 10.11',
-      browserName: 'safari'
-    },
     'SL_Edge': {
       base: 'SauceLabs',
       platform: 'Windows 10',
       browserName: 'microsoftedge'
-    },
-    'SL_IE11': {
-      base: 'SauceLabs',
-      platform: 'Windows 10',
-      browserName: 'internet explorer',
-      version: '11.0'
     }
   }
 
@@ -52,7 +44,8 @@ module.exports = function (config) {
       connectOptions: {
         port: 5757,
         logfile: 'sauce_connect.log'
-      }
+      },
+      public: 'public'
     },
     // Increase timeout in case connection in CI is slow
     captureTimeout: 120000,
