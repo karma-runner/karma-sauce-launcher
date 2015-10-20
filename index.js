@@ -1,7 +1,6 @@
-var SauceConnect = require('./lib/sauce_connect');
-var SauceLauncher = require('./lib/sauce_launcher');
-var SauceReporter = require('./lib/sauce_reporter');
-
+var SauceConnect = require('./lib/sauce_connect')
+var SauceLauncher = require('./lib/sauce_launcher')
+var SauceReporter = require('./lib/sauce_reporter')
 
 // PUBLISH DI MODULE
 module.exports = {
@@ -13,4 +12,4 @@ module.exports = {
   // We also keep the Sauce credentials here - theoretically different credentials can be used for
   // different browsers in the same session.
   'sauce:jobMapping': ['value', {}]
-};
+}

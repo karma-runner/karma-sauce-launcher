@@ -1,8 +1,7 @@
-module.exports = function(config) {
-
+module.exports = function (config) {
   if (!process.env.SAUCE_USERNAME || !process.env.SAUCE_ACCESS_KEY) {
-    console.log('Make sure the SAUCE_USERNAME and SAUCE_ACCESS_KEY environment variables are set.');
-    process.exit(1);
+    console.log('Make sure the SAUCE_USERNAME and SAUCE_ACCESS_KEY environment variables are set.')
+    process.exit(1)
   }
 
   // Browsers to run on Sauce Labs
@@ -10,14 +9,23 @@ module.exports = function(config) {
   var customLaunchers = {
     'SL_Chrome': {
       base: 'SauceLabs',
-      browserName: 'chrome'
+      platform: 'OS X 10.11',
+      browserName: 'chrome',
+      customData: {
+        awesome: true
+      }
     },
     'SL_Firefox': {
       base: 'SauceLabs',
-      browserName: 'firefox',
-      version: '26'
+      platform: 'OS X 10.11',
+      browserName: 'firefox'
+    },
+    'SL_Edge': {
+      base: 'SauceLabs',
+      platform: 'Windows 10',
+      browserName: 'microsoftedge'
     }
-  };
+  }
 
   config.set({
     basePath: '',
@@ -29,20 +37,20 @@ module.exports = function(config) {
     reporters: ['progress', 'saucelabs'],
     port: 9876,
     colors: true,
-    logLevel: config.LOG_INFO,
+    logLevel: config.LOG_DEBUG,
     sauceLabs: {
       testName: 'Karma and Sauce Labs demo',
       recordScreenshots: false,
       connectOptions: {
         port: 5757,
         logfile: 'sauce_connect.log'
-      }
+      },
+      public: 'public'
     },
-    logLevel: 'debug',
     // Increase timeout in case connection in CI is slow
     captureTimeout: 120000,
     customLaunchers: customLaunchers,
     browsers: Object.keys(customLaunchers),
     singleRun: true
-  });
-};
+  })
+}
