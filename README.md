@@ -152,8 +152,8 @@ Default: `true`
 Set to `false` if you don't want to record screenshots.
 
 ### public
-Type: 'String'
-Default: 'null'
+Type: `String`
+Default: `null`
 
 Control who can view job details. Available visibility levels are documented on
 the [SauceLabs website](https://docs.saucelabs.com/reference/test-configuration/#job-visibility).
