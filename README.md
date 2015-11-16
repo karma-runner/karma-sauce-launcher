@@ -171,7 +171,7 @@ for more details.
 
 The `customLaunchers` object has browser names as keys and configs as values. Documented below are the different properties which you can configure for each browser/platform combo.
 
-*Note: You can learn about the available browser/platform combos on the [Sauce Labs platforms page](https://saucelabs.com/platforms).*
+*Note: You can learn about the available browser/platform combos on the [Sauce Labs platforms page](https://saucelabs.com/platforms) and [Sauce Labs REST API page](https://docs.saucelabs.com/reference/rest-api/#get-supported-platforms).*
 
 ### base
 Type: `String`
