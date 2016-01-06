@@ -1,26 +1,21 @@
 sudo: false
 language: node_js
 node_js:
-  - "4.0"
-  - "0.12"
-  - "0.10"
-
+- '4.0'
+- '0.12'
+- '0.10'
 before_install:
-  - npm i -g npm
-  - npm config set loglevel warn
-
+- npm i -g npm
+- npm config set loglevel warn
 before_script:
-  - npm install -g grunt-cli
-  - rm -rf node_modules/karma-sauce-launcher
-  - cd node_modules && ln -nsf ../ karma-sauce-launcher && cd ../
-
+- npm install -g grunt-cli
+- rm -rf node_modules/karma-sauce-launcher
+- cd node_modules && ln -nsf ../ karma-sauce-launcher && cd ../
 script:
-  - grunt
-
+- grunt
 notifications:
   email: false
-
 env:
   global:
-  - secure: GSd/1rnfg2I+eYeB26kMhU6G2tusIr7FtcPWrwtGd+UDc5QAAH0exRr8+KPTgSrCItw5mGVZLoR9wD4Y+KqZtAhUsPEuA1aI6UqmV9xvuulKyKkd9tTpki1+NsIDVcwbjg4+PEn0HYWST0/6r0FcQ/v23qhKBX+G57j+7NA0Ltg=
-  - secure: XqbGBwA5bKnPjVcKrg8mG1vdXpPwifOMSEKnXkwEtIdbc44fF95W+M7FDzO+fz9hA7H52JmZoa3soeSk/996IbJHK1wJXKyHHvEE+U6hXjHG16hQaauugJegmhy+XuafmRqFNKOk4TBKAaUCnBIwkR1tFG3vZD5+/D6H9XBFvSY=
+  - secure: TFSCNKxxG4gWmLwX7Wlz61sdev46If0tmg9y3GZZXI/WSvcbSsVOj1k5nAhvlfOK7MMgTBC+bLCKuHlhhY7H3ZDbxKW/NaSNk4vNfWjrT7k7OQmmMi93PBXSdwLlQOBWPzyd7ZEZmUV8fBI3IWEORaUcDEPjKE5gSPtiaxynPLQ=
+  - secure: MEp4mCVOcmfu355m2ZywYKzOY+CPvZe0Yd4K/LCfOt7vUe8sgsSjQ5s3HmocsrXkBX2lYfSRoV9taFEziaDT5dZapJ6qKyoCkvLCkmJJH0G0Ht4vYlTMfzpH0aOkScPLp0wl/Jd8Q1WM8HQSh7sGNNh6bJgp62L3+35ZUFzZK5k=
