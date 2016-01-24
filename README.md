@@ -116,10 +116,13 @@ Options to send to Sauce Connect. Check [here](https://github.com/bermi/sauce-co
 ### build
 Type: `String`
 Default: *One of the following environment variables*:
-`process.env.TRAVIS_BUILD_NUMBER`
 `process.env.BUILD_NUMBER`
 `process.env.BUILD_TAG`
+`process.env.CI_BUILD_NUMBER`
+`process.env.CI_BUILD_TAG`
+`process.env.TRAVIS_BUILD_NUMBER`
 `process.env.CIRCLE_BUILD_NUM`
+`process.env.DRONE_BUILD_NUMBER`
 
 ID of the build currently running. This should be set by your CI.
 
