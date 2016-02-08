@@ -137,6 +137,12 @@ Type: `String`
 
 Sauce Connect can proxy multiple sessions, this is an id of a session.
 
+### parentTunnel
+Type: `String`
+
+If parentTunnel is set, startConnect is implicitly set to false, tunnelIdentifier won't be set.
+How to create a parentTunnel on the [SauceLabs website](https://support.saucelabs.com/customer/portal/articles/2005364-sharing-the-parent-account-tunnel)
+
 ### tags
 Type: `Array of Strings`
 
