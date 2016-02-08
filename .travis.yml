@@ -19,7 +19,3 @@ env:
   global:
   - secure: TFSCNKxxG4gWmLwX7Wlz61sdev46If0tmg9y3GZZXI/WSvcbSsVOj1k5nAhvlfOK7MMgTBC+bLCKuHlhhY7H3ZDbxKW/NaSNk4vNfWjrT7k7OQmmMi93PBXSdwLlQOBWPzyd7ZEZmUV8fBI3IWEORaUcDEPjKE5gSPtiaxynPLQ=
   - secure: MEp4mCVOcmfu355m2ZywYKzOY+CPvZe0Yd4K/LCfOt7vUe8sgsSjQ5s3HmocsrXkBX2lYfSRoV9taFEziaDT5dZapJ6qKyoCkvLCkmJJH0G0Ht4vYlTMfzpH0aOkScPLp0wl/Jd8Q1WM8HQSh7sGNNh6bJgp62L3+35ZUFzZK5k=
-addons:
-  sauce_connect:
-    username: jbaudin
-    access_key: 98fea025-6c99-4392-af9a-cd272436f747
