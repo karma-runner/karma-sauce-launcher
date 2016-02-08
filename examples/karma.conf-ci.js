@@ -1,8 +1,8 @@
 module.exports = function (config) {
-  if (!process.env.SAUCE_USERNAME || !process.env.SAUCE_ACCESS_KEY) {
+  /*if (!process.env.SAUCE_USERNAME || !process.env.SAUCE_ACCESS_KEY) {
     console.log('Make sure the SAUCE_USERNAME and SAUCE_ACCESS_KEY environment variables are set.')
     process.exit(1)
-  }
+  }*/
 
   // Browsers to run on Sauce Labs
   // Check out https://saucelabs.com/platforms for all browser/OS combos
@@ -38,19 +38,24 @@ module.exports = function (config) {
     port: 9876,
     colors: true,
     logLevel: config.LOG_DEBUG,
+    concurrency: 2,
     sauceLabs: {
       testName: 'Karma and Sauce Labs demo',
-      recordScreenshots: false,
+      recordScreenshots: true,
+      recordVideo: true,
       connectOptions: {
         port: 5757,
-        logfile: 'sauce_connect.log'
+        logfile: 'sauce_connect.log',
       },
       public: 'public'
     },
-    // Increase timeout in case connection in CI is slow
     captureTimeout: 120000,
     customLaunchers: customLaunchers,
     browsers: Object.keys(customLaunchers),
-    singleRun: true
+    singleRun: true,
+    plugins: [
+      'karma-jasmine',
+      'karma-sauce-launcher'
+    ]
   })
 }

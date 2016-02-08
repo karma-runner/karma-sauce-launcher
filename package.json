@@ -39,7 +39,7 @@
     "jasmine": "^2.3.2",
     "karma": "^0.13.11",
     "karma-jasmine": "^0.3.6",
-    "karma-sauce-launcher": "*",
+    "karma-sauce-launcher": "https://github.com/jackTheRipper/karma-sauce-launcher.git",
     "load-grunt-tasks": "^3.3.0"
   },
   "contributors": [
