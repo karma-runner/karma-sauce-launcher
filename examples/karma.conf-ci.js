@@ -38,11 +38,10 @@ module.exports = function (config) {
     port: 9876,
     colors: true,
     logLevel: config.LOG_DEBUG,
-    concurrency: 2,
     sauceLabs: {
       testName: 'Karma and Sauce Labs demo',
       recordScreenshots: true,
-      recordVideo: true,
+      recordVideo: false,
       connectOptions: {
         port: 5757,
         logfile: 'sauce_connect.log'
@@ -52,10 +51,6 @@ module.exports = function (config) {
     captureTimeout: 120000,
     customLaunchers: customLaunchers,
     browsers: Object.keys(customLaunchers),
-    singleRun: true,
-    plugins: [
-      'karma-jasmine',
-      'karma-sauce-launcher'
-    ]
+    singleRun: true
   })
 }
