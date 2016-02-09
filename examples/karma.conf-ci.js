@@ -42,7 +42,7 @@ module.exports = function (config) {
     sauceLabs: {
       testName: 'Karma and Sauce Labs demo',
       recordScreenshots: true,
-      recordVideo: true,
+      recordVideo: false,
       connectOptions: {
         port: 5757,
         logfile: 'sauce_connect.log'
