@@ -1,3 +1,5 @@
 .*
 Gruntfile.coffee
 CONTRIBUTING.md
+sauce_connect.log
+npm-debug.log
