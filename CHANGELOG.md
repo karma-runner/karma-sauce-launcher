@@ -1,3 +1,21 @@
+<a name="0.3.1"></a>
+## [0.3.1](https://github.com/karma-runner/karma-sauce-launcher/compare/v0.2.10...v0.3.1) (2016-03-01)
+
+
+### Bug Fixes
+
+* **launcher:** Remove empty page workaround ([b0761a2](https://github.com/karma-runner/karma-sauce-launcher/commit/b0761a2)), closes [#14](https://github.com/karma-runner/karma-sauce-launcher/issues/14)
+* Make disconnects fail the tests ([f7839fc](https://github.com/karma-runner/karma-sauce-launcher/commit/f7839fc)), closes [#54](https://github.com/karma-runner/karma-sauce-launcher/issues/54)
+* **reporter:** Add adapters property for 0.13 compat. ([9a5a147](https://github.com/karma-runner/karma-sauce-launcher/commit/9a5a147))
+* **reporter:** Remove double logging ([6ab38f8](https://github.com/karma-runner/karma-sauce-launcher/commit/6ab38f8)), closes [#36](https://github.com/karma-runner/karma-sauce-launcher/issues/36)
+
+### Features
+
+* **launcher:** Add  and  options ([6a15162](https://github.com/karma-runner/karma-sauce-launcher/commit/6a15162)), closes [#49](https://github.com/karma-runner/karma-sauce-launcher/issues/49)
+* adding build number env var for compatibility with drone and other CI systems ([44eacd1](https://github.com/karma-runner/karma-sauce-launcher/commit/44eacd1))
+
+
+
 <a name="0.3.0"></a>
 # [0.3.0](https://github.com/karma-runner/karma-sauce-launcher/compare/v0.2.14...v0.3.0) (2015-10-20)
 
