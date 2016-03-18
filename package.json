@@ -20,8 +20,8 @@
   "author": "Vojta Jina <vojta.jina@gmail.com>",
   "dependencies": {
     "q": "^1.4.1",
-    "sauce-connect-launcher": "^0.13.0",
-    "saucelabs": "^1.0.1",
+    "sauce-connect-launcher": "^0.14.0",
+    "saucelabs": "^1.2.0",
     "wd": "^0.3.4"
   },
   "license": "MIT",
