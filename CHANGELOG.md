@@ -1,3 +1,9 @@
+<a name="1.0.0"></a>
+# [1.0.0](https://github.com/karma-runner/karma-sauce-launcher/compare/v0.3.1...v1.0.0) (2016-05-03)
+
+
+
+
 <a name="0.3.1"></a>
 ## [0.3.1](https://github.com/karma-runner/karma-sauce-launcher/compare/v0.2.10...v0.3.1) (2016-03-01)
 
