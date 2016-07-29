@@ -144,9 +144,9 @@ Tags to use for filtering jobs in your Sauce Labs account.
 
 ### recordVideo
 Type: `Boolean`
-Default: `false`
+Default: `true`
 
-Set to `true` if you want to record a video of your Karma session.
+Set to `false` if you want to surpress video recording for Sauce Labs sessions.
 
 ### recordScreenshots
 Type: `Boolean`
