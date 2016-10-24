@@ -36,7 +36,6 @@ module.exports = function (config) {
     reporters: ['progress', 'saucelabs'],
     port: 9876,
     colors: true,
-    logLevel: config.LOG_DEBUG,
     sauceLabs: {
       testName: 'Karma and Sauce Labs demo',
       recordScreenshots: false,
