@@ -1,3 +1,13 @@
+<a name="1.1.0"></a>
+# [1.1.0](https://github.com/karma-runner/karma-sauce-launcher/compare/v1.0.0...v1.1.0) (2016-10-24)
+
+
+### Features
+
+* update deps and add new saucelabs config ([747a19f](https://github.com/karma-runner/karma-sauce-launcher/commit/747a19f))
+
+
+
 <a name="1.0.0"></a>
 # [1.0.0](https://github.com/karma-runner/karma-sauce-launcher/compare/v0.3.1...v1.0.0) (2016-05-03)
 
