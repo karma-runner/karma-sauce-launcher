@@ -1,18 +1,21 @@
 sudo: false
 language: node_js
 node_js:
-- '4.0'
-- '0.12'
-- '0.10'
+  - 4
+  - stable
+
 before_install:
-- npm i -g npm
-- npm config set loglevel warn
+  - npm i -g npm
+  - npm config set loglevel warn
+
 before_script:
-- npm install -g grunt-cli
-- rm -rf node_modules/karma-sauce-launcher
-- cd node_modules && ln -nsf ../ karma-sauce-launcher && cd ../
+  - npm install -g grunt-cli
+  - rm -rf node_modules/karma-sauce-launcher
+  - cd node_modules && ln -nsf ../ karma-sauce-launcher && cd ../
+
 script:
-- grunt
+  - grunt
+
 notifications:
   email: false
 env:
