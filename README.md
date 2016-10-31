@@ -113,6 +113,8 @@ Default:
 
 Options to send to Sauce Connect. Check [here](https://github.com/bermi/sauce-connect-launcher#advanced-usage) for all available options.
 
+If the option parentTunnel has been set, SauceConnect won't be started. The property will be added to the desired capabilities
+
 ### build
 Type: `String`
 Default: *One of the following environment variables*:
@@ -136,6 +138,12 @@ Name of the unit test group you are running.
 Type: `String`
 
 Sauce Connect can proxy multiple sessions, this is an id of a session.
+
+### parentTunnel
+Type: `String`
+
+If parentTunnel is set, startConnect is implicitly set to false, tunnelIdentifier won't be set.
+How to create a parentTunnel on the [SauceLabs website](https://support.saucelabs.com/customer/portal/articles/2005364-sharing-the-parent-account-tunnel)
 
 ### tags
 Type: `Array of Strings`
