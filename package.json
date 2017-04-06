@@ -28,7 +28,7 @@
   "devDependencies": {
     "eslint-config-standard": "^6.0.1",
     "eslint-plugin-promise": "3.3.0",
-    "eslint-plugin-standard": "^2.0.0",
+    "eslint-plugin-standard": "^3.0.1",
     "grunt": "^1.0.1",
     "grunt-auto-release": "^0.0.6",
     "grunt-bump": "^0.8.0",
