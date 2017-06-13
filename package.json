@@ -37,7 +37,7 @@
     "grunt-eslint": "^19.0.0",
     "grunt-karma": "2.x",
     "grunt-npm": "^0.0.2",
-    "jasmine": "^2.5.2",
+    "jasmine": "^2.6.0",
     "karma": "1.x || ^0.13.11",
     "karma-jasmine": "1.x || ^0.3.6",
     "karma-sauce-launcher": "1.x || *",
