@@ -7,23 +7,22 @@ module.exports = function (config) {
   // Browsers to run on Sauce Labs
   // Check out https://saucelabs.com/platforms for all browser/OS combos
   var customLaunchers = {
-    'SL_Chrome': {
+    sl_chrome: {
       base: 'SauceLabs',
-      platform: 'OS X 10.11',
       browserName: 'chrome',
-      customData: {
-        awesome: true
-      }
+      platform: 'Windows 7',
+      version: '35'
     },
-    'SL_Firefox': {
+    sl_firefox: {
       base: 'SauceLabs',
-      platform: 'OS X 10.11',
-      browserName: 'firefox'
+      browserName: 'firefox',
+      version: '30'
     },
-    'SL_Edge': {
+    sl_ie_11: {
       base: 'SauceLabs',
-      platform: 'Windows 10',
-      browserName: 'microsoftedge'
+      browserName: 'internet explorer',
+      platform: 'Windows 8.1',
+      version: '11'
     }
   }
 
@@ -37,7 +36,6 @@ module.exports = function (config) {
     reporters: ['progress', 'saucelabs'],
     port: 9876,
     colors: true,
-    logLevel: config.LOG_DEBUG,
     sauceLabs: {
       testName: 'Karma and Sauce Labs demo',
       recordScreenshots: false,
