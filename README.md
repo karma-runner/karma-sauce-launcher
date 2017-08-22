@@ -128,6 +128,19 @@ Default:
 
 Options to send to Sauce Connect. Check [here](https://github.com/bermi/sauce-connect-launcher#advanced-usage) for all available options.
 
+### connectLocationForSERelay
+Type: `String`
+default: `ondemand.saucelabs.com`
+
+If set, will attempt to connect to the specified host as a Selenium relay.  This is intended to send Selenium commands through a Sauce Connect tunnel.
+
+### connectPortForSERelay
+Type: `Integer`
+Default: 80
+
+If set, will change the host used to connect to the Selenium server. This is intended to send Selenium commands through a Sauce Connect tunnel.
+
+
 ### build
 Type: `String`
 Default: *One of the following environment variables*:
