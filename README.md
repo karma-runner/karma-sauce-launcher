@@ -94,6 +94,11 @@ Default: `process.env.SAUCE_ACCESS_KEY`
 
 Your Sauce Labs access key which you will see on your [account page](https://saucelabs.com/account).
 
+### proxy
+Type: `String`
+
+Proxy for connecting to Sauce REST API, which is used to communicate job updates of pass/fail.
+
 ### startConnect
 Type: `Boolean`
 Default: `true`
