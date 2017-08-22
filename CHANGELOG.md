@@ -1,3 +1,17 @@
+<a name="1.2.0"></a>
+# [1.2.0](https://github.com/karma-runner/karma-sauce-launcher/compare/v1.1.0...v1.2.0) (2017-08-22)
+
+
+### Features
+
+* **config:** add proxy option ([bae758a](https://github.com/karma-runner/karma-sauce-launcher/commit/bae758a))
+* **config:** allow SE traffic to be sent via Sauce Connect's Relay ([0ac67d4](https://github.com/karma-runner/karma-sauce-launcher/commit/0ac67d4))
+* **config:** pass parentTunnel to selenium ([bae326f](https://github.com/karma-runner/karma-sauce-launcher/commit/bae326f))
+* **deps:** upgrade sauce connect ([e792677](https://github.com/karma-runner/karma-sauce-launcher/commit/e792677))
+* **launcher:** expose commandTimeout, idleTimeout, maxDuration options ([3fe1c75](https://github.com/karma-runner/karma-sauce-launcher/commit/3fe1c75)), closes [#62](https://github.com/karma-runner/karma-sauce-launcher/issues/62)
+
+
+
 <a name="1.1.0"></a>
 # [1.1.0](https://github.com/karma-runner/karma-sauce-launcher/compare/v1.0.0...v1.1.0) (2016-10-24)
 
