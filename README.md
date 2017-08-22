@@ -23,6 +23,8 @@ npm install karma-sauce-launcher --save-dev
 
 This launcher is typically used in CI to run your unit tests across many browsers and platforms on Sauce Labs. However, you can also use it locally to debug tests in browsers not available on your machine. It is expected that you are already familiar with Karma when configuring this launcher, so if you are new to Karma, head over to the [Karma website](http://karma-runner.github.io/).
 
+The [Sauce Labs platform configurator](https://wiki.saucelabs.com/display/DOCS/Platform+Configurator/#/) can help to find the correct configuration for your desired test platform. 
+
 ### Adding karma-sauce-launcher to an existing Karma config
 
 To configure this launcher, you need to add two properties to your top-level Karma config, `sauceLabs` and `customLaunchers`, set the `browsers` array to use Sauce Labs browsers, and add the `sauceLabs` reporter.
@@ -56,6 +58,14 @@ module.exports = function(config) {
       browserName: 'internet explorer',
       platform: 'Windows 8.1',
       version: '11'
+    },
+    sl_android: {
+      base: 'SauceLabs',
+      browserName: 'Browser',
+      platform: 'Android',
+      version: '4.4',
+      deviceName: 'Samsung Galaxy S3 Emulator',
+      deviceOrientation: 'portrait'
     }
   }
 
