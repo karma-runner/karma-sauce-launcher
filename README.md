@@ -187,14 +187,14 @@ Type: `String`
 Default: `null`
 
 Control who can view job details. Available visibility levels are documented on
-the [SauceLabs website](https://docs.saucelabs.com/reference/test-configuration/#job-visibility).
+the [SauceLabs website](https://wiki.saucelabs.com/display/DOCS/Test+Configuration+Options#TestConfigurationOptions-JobVisibility).
 
 ### customData
 Type: `Object`
 Default: `{}`
 
 Send arbitrary data alongside your tests. See
-the [SauceLabs documentation](https://docs.saucelabs.com/reference/test-configuration/#recording-custom-data)
+the [SauceLabs documentation](https://wiki.saucelabs.com/display/DOCS/Test+Configuration+Options#TestConfigurationOptions-CustomData)
 for more details.
 
 
