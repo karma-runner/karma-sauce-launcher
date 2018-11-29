@@ -1,68 +1,60 @@
-// SauceLabs is a wrapper around the Sauce Labs REST API
-var SauceLabs = require('saucelabs')
+import {promisify} from 'util';
+import {BrowserMap} from "../browser-info";
 
-var SauceReporter = function (logger, /* sauce:jobMapping */ jobMapping) {
-  var log = logger.create('reporter.sauce')
+// This import lacks type definitions.
+const SaucelabsAPI = require('saucelabs');
 
-  var pendingUpdates = 0
-  var updatesFinished = function () {}
+/**
+ * Karma browser reported that updates corresponding Saucelabs jobs whenever a given
+ * browser finishes.
+ */
+export function SaucelabsReporter(logger, browserMap: BrowserMap) {
 
-  this.adapters = []
+  const log = logger.create('reporter.sauce');
+  let pendingUpdates = [];
 
-  // We're only interested in the final results per browser
+  // This fires whenever any browser completes. This is when we want to report results
+  // to the Saucelabs API, so that people can create coverage banners for their project.
   this.onBrowserComplete = function (browser) {
-    var result = browser.lastResult
-
-    // browser.launchId was used until v0.10.2, but changed to just browser.id in v0.11.0
-    var browserId = browser.launchId || browser.id
+    const result = browser.lastResult;
+    const browserId = browser.id;
 
     if (result.disconnected) {
-      log.error('✖ Test Disconnected')
+      log.error('✖ Browser disconnected');
     }
 
     if (result.error) {
-      log.error('✖ Test Errored')
+      log.error('✖ Tests errored');
     }
 
-    if (browserId in jobMapping) {
-      var jobDetails = jobMapping[browserId]
+    const browserData = browserMap.get(browserId);
 
-      var sauceApiOptions = jobDetails.credentials
-      if (jobDetails.proxy) {
-        sauceApiOptions.proxy = jobDetails.proxy
-      }
-
-      var sauceApi = new SauceLabs(sauceApiOptions)
-
-      // We record pass/fail status, as well as the full results in "custom-data".
-      var payload = {
-        passed: !(result.failed || result.error || result.disconnected),
-        'custom-data': result
-      }
-
-      pendingUpdates++
-
-      sauceApi.updateJob(jobDetails.jobId, payload, function (err) {
-        pendingUpdates--
-        if (err) {
-          log.error('Failed record pass/fail status: %s', err.error)
-        }
-
-        if (pendingUpdates === 0) {
-          updatesFinished()
-        }
-      })
+    // Do nothing if the current browser has not been launched through the Saucelabs
+    // launcher.
+    if (!browserData) {
+      return;
     }
-  }
 
-  // Wait until all updates have been pushed to SauceLabs
-  this.onExit = function (done) {
-    if (pendingUpdates) {
-      updatesFinished = done
-    } else {
-      done()
-    }
+    const {sessionId} = browserData;
+
+    // TODO: This would be nice to have typed. Not a priority right now, though.
+    const apiInstance = new SaucelabsAPI({
+      username: browserData.username,
+      password: browserData.accessKey,
+    });
+    const updateJob = promisify(apiInstance.updateJob.bind(apiInstance));
+    const hasPassed = !(result.failed || result.error || result.disconnected);
+
+    // Update the job by reporting the test results. Also we need to store the promise here
+    // because in case "onExit" is being called, we want to wait for the API calls to finish.
+    pendingUpdates.push(updateJob(sessionId, {passed: hasPassed, 'custom-data': result})
+      .catch(error => log.error('Could not report results to Saucelabs: %s', error)));
+  };
+
+  // Whenever this method is being called, we just need to wait for all API calls to finish,
+  // and then we can notify Karma about proceeding with the exit.
+  this.onExit = async (doneFn: () => void) => {
+    await Promise.all(pendingUpdates);
+    doneFn();
   }
 }
-
-module.exports = SauceReporter

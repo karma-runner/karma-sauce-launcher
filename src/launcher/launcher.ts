@@ -1,249 +1,93 @@
-var wd = require('wd')
+import {Builder, WebDriver} from 'selenium-webdriver';
+import {processConfig} from "../process-config";
+import {BrowserMap} from "../browser-info";
 
-function formatSauceError (err) {
-  return err.message + '\n' + (err.data ? '  ' + err.data : '')
-}
+export function SaucelabsLauncher(args,
+                                  /* config.sauceLabs */ config,
+                                  /* SauceConnect */ sauceConnect,
+                                  browserMap: BrowserMap,
+                                  logger,
+                                  baseLauncherDecorator,
+                                  captureTimeoutLauncherDecorator,
+                                  retryLauncherDecorator) {
 
-function processConfig (helper, config, args) {
-  config = config || {}
-  args = args || {}
+  // Apply base class mixins. This would be nice to have typed, but this is a low-priority now.
+  baseLauncherDecorator(this);
+  captureTimeoutLauncherDecorator(this);
+  retryLauncherDecorator(this);
 
-  var username = args.username || config.username || process.env.SAUCE_USERNAME
-  var accessKey = args.accessKey || config.accessKey || process.env.SAUCE_ACCESS_KEY
-  var proxy = args.proxy || config.proxy
-  var startConnect = config.startConnect !== false
-  var tunnelIdentifier = args.tunnelIdentifier || config.tunnelIdentifier
+  const log = logger.create('SaucelabsLauncher');
+  const {
+    startConnect,
+    sauceConnectOptions,
+    sauceApiProxy,
+    seleniumHostUrl,
+    seleniumCapabilities,
+    browserName,
+    username,
+    accessKey
+  } = processConfig(config, args);
 
-  if (startConnect && !tunnelIdentifier) {
-    tunnelIdentifier = 'karma' + Math.round(new Date().getTime() / 1000)
-  }
+  // Array of connected drivers. This is useful for quitting all connected drivers on kill.
+  let connectedDrivers: WebDriver[] = [];
 
-  var browserName = args.browserName +
-        (args.version ? ' ' + args.version : '') +
-        (args.platform ? ' (' + args.platform + ')' : '')
+  // Setup Browser name that will be printed out by Karma.
+  this.name = browserName + ' on SauceLabs';
 
-  var connectOptions = helper.merge(config.connectOptions, {
-    username: username,
-    accessKey: accessKey,
-    tunnelIdentifier: tunnelIdentifier
-  })
-
-  var seleniumHostLocation = config.connectLocationForSERelay || 'ondemand.saucelabs.com'
-  var seleniumHostPort = config.connectPortForSERelay || connectOptions.port || 80
-
-  var build = process.env.BUILD_NUMBER ||
-        process.env.BUILD_TAG ||
-        process.env.CI_BUILD_NUMBER ||
-        process.env.CI_BUILD_TAG ||
-        process.env.TRAVIS_BUILD_NUMBER ||
-        process.env.CIRCLE_BUILD_NUM ||
-        process.env.DRONE_BUILD_NUMBER
-
-  var defaults = {
-    version: '',
-    platform: 'ANY',
-    tags: [],
-    name: 'Karma Test',
-    'tunnel-identifier': tunnelIdentifier,
-    'record-video': false,
-    'record-screenshots': false,
-    'device-orientation': null,
-    'disable-popup-handler': true,
-    build: build || null,
-    public: null,
-    commandTimeout: 300,
-    idleTimeout: 90,
-    maxDuration: 1800,
-    customData: {}
-  }
-
-  var options = helper.merge(
-    // Legacy
-    config.options,
-    defaults, {
-      // Pull out all the properties from the config that
-      // we are interested in
-      name: config.testName,
-      build: config.build,
-      'record-video': config.recordVideo,
-      'record-screenshots': config.recordScreenshots,
-      public: config.public,
-      parentTunnel: config.parentTunnel,
-      commandTimeout: config.commandTimeout,
-      idleTimeout: config.idleTimeout,
-      maxDuration: config.maxDuration,
-      customData: config.customData
-    }, {
-      // Need to rename some properties from args
-      name: args.testName,
-      'record-video': args.recordVideo,
-      'record-screenshots': args.recordScreenshots
-    }, args
-  )
-
-  return {
-    options: options,
-    connectOptions: connectOptions,
-    browserName: browserName,
-    username: username,
-    accessKey: accessKey,
-    startConnect: startConnect,
-    seleniumHost: seleniumHostLocation,
-    seleniumPort: seleniumHostPort,
-    proxy: proxy
-  }
-}
-
-var SauceLauncher = function (
-  args, sauceConnect,
-  /* config.sauceLabs */ config,
-  logger, helper,
-  baseLauncherDecorator, captureTimeoutLauncherDecorator, retryLauncherDecorator,
-  /* sauce:jobMapping */ jobMapping
-) {
-  var self = this
-
-  baseLauncherDecorator(self)
-  captureTimeoutLauncherDecorator(self)
-  retryLauncherDecorator(self)
-
-  var pConfig = processConfig(helper, config, args)
-  var options = pConfig.options
-  var connectOptions = pConfig.connectOptions
-  var browserName = pConfig.browserName
-  var username = pConfig.username
-  var accessKey = pConfig.accessKey
-  var proxy = pConfig.proxy
-  var startConnect = pConfig.startConnect
-  var seleniumHost = pConfig.seleniumHost
-  var seleniumPort = pConfig.seleniumPort
-
-  var pendingCancellations = 0
-  var sessionIsReady = false
-
-  self.name = browserName + ' on SauceLabs'
-
-  var pendingHeartBeat
-
-  var log = logger.create('launcher.sauce')
-  var driverLog = logger.create('wd')
-
-  var driver = wd.promiseChainRemote(seleniumHost, seleniumPort, username, accessKey)
-
-  driver.on('status', function (info) {
-    driverLog.debug(info.cyan)
-  })
-
-  driver.on('command', function (eventType, command, response) {
-    driverLog.debug(' > ' + eventType.cyan, command, (response || '').grey)
-  })
-
-  driver.on('http', function (meth, path, data) {
-    driverLog.debug(' > ' + meth.magenta, path, (data || '').grey)
-  })
-
-  var heartbeat = function () {
-    pendingHeartBeat = setTimeout(function () {
-      log.debug('Heartbeat to Sauce Labs (%s) - fetching title', browserName)
-
-      driver.title()
-        .then(null, function (err) {
-          log.error('Heartbeat to %s failed\n  %s', browserName, formatSauceError(err))
-
-          clearTimeout(pendingHeartBeat)
-          return self._done('failure')
-        })
-
-      heartbeat()
-    }, 60000)
-  }
-
-  var start = function (url) {
-    driver
-      .init(options)
-      .then(function () {
-        if (pendingCancellations > 0) {
-          pendingCancellations--
-          return
-        }
-        // Record the job details, so we can access it later with the reporter
-        jobMapping[self.id] = {
-          jobId: driver.sessionID,
-          credentials: {
-            username: username,
-            password: accessKey
-          },
-          proxy: proxy
-        }
-
-        sessionIsReady = true
-
-        log.info('%s session at https://saucelabs.com/tests/%s', browserName, driver.sessionID)
-        log.debug('WebDriver channel for %s instantiated, opening %s', browserName, url)
-
-        return driver.get(url)
-          .then(heartbeat, function (err) {
-            log.error('Can not start %s\n  %s', browserName, formatSauceError(err))
-            return self._done('failure')
-          })
-      }, function (err) {
-        if (pendingCancellations > 0) {
-          pendingCancellations--
-          return
-        }
-
-        log.error('Can not start %s\n  %s', browserName, formatSauceError(err))
-        return self._done('failure')
-      })
-      .done()
-  }
-
-  self.on('start', function (url) {
-    if (pendingCancellations > 0) {
-      pendingCancellations--
-      return
-    }
-
+  // Listen for the start event from Karma. I know, the API is a bit different to how you
+  // would expect, but we need to follow this approach unless we want to spend more work
+  // improving type safety.
+  this.on('start', async (pageUrl: string) => {
     if (startConnect) {
-      sauceConnect.start(connectOptions)
-        .then(function () {
-          if (pendingCancellations > 0) {
-            pendingCancellations--
-            return
-          }
+      try {
+        // In case the "startConnect" option has been enabled, establish a tunnel and wait
+        // for it being ready. In case a tunnel is already active, this will just continue
+        // without establishing a new one.
+        await sauceConnect.establishTunnel(sauceConnectOptions);
+      } catch (error) {
+        log.error(error);
 
-          start(url)
-        }, function (err) {
-          pendingCancellations--
-          log.error('Can not start %s\n  Failed to start Sauce Connect:\n  %s', browserName, err.message)
-
-          self._retryLimit = -1 // don't retry
-          self._done('failure')
-        })
-    } else {
-      start(url)
-    }
-  })
-
-  self.on('kill', function (done) {
-    var allDone = function () {
-      self._done()
-      done()
-    }
-
-    if (sessionIsReady) {
-      if (pendingHeartBeat) {
-        clearTimeout(pendingHeartBeat)
+        this._done('failure');
+        return;
       }
-
-      log.debug('Shutting down the %s driver', browserName)
-      driver.quit().nodeify(allDone)
-      sessionIsReady = false
-    } else {
-      pendingCancellations++
-      process.nextTick(allDone)
     }
+
+    try {
+      // See the following link for public API of the selenium server.
+      // https://wiki.saucelabs.com/display/DOCS/Instant+Selenium+Node.js+Tests
+      const driver = await new Builder()
+        .withCapabilities(seleniumCapabilities)
+        .usingServer(`http://${username}:${accessKey}@${seleniumHostUrl}`)
+        .build();
+
+      // Keep track of all connected drivers because it's possible that there are multiple
+      // driver instances (e.g. when running with concurrency)
+      connectedDrivers.push(driver);
+
+      const sessionId = (await driver.getSession()).getId();
+
+      log.info('%s session at https://saucelabs.com/tests/%s', browserName, sessionId);
+      log.debug('Opening "%s" on the selenium client', pageUrl);
+
+      // Store the information about the current session in the browserMap. This is necessary
+      // because otherwise the Saucelabs reporter is not able to report results.
+      browserMap.set(this.id, {sessionId, username, accessKey, proxy: sauceApiProxy});
+
+      await driver.get(pageUrl);
+    } catch (e) {
+      log.error(e);
+
+      // Notify karma about the failure.
+      this._done('failure');
+    }
+  });
+
+  this.on('kill', async (doneFn: () => void) => {
+    await Promise.all(connectedDrivers.map(driver => driver.quit()));
+
+    // Reset connected drivers in case the launcher will be reused.
+    connectedDrivers = [];
+
+    doneFn();
   })
 }
-
-module.exports = SauceLauncher

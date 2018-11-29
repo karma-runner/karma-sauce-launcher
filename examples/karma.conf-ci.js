@@ -6,7 +6,7 @@ module.exports = function (config) {
 
   // Browsers to run on Sauce Labs
   // Check out https://saucelabs.com/platforms for all browser/OS combos
-  var customLaunchers = {
+  const customLaunchers = {
     sl_chrome: {
       base: 'SauceLabs',
       browserName: 'chrome',
@@ -24,7 +24,7 @@ module.exports = function (config) {
       platform: 'Windows 8.1',
       version: '11'
     }
-  }
+  };
 
   config.set({
     basePath: '',
@@ -51,4 +51,4 @@ module.exports = function (config) {
     browsers: Object.keys(customLaunchers),
     singleRun: true
   })
-}
+};

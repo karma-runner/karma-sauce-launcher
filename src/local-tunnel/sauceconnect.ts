@@ -1,42 +1,46 @@
-var q = require('q')
-var launchSauceConnect = require('sauce-connect-launcher')
+import {promisify} from 'util';
 
-var SauceConnect = function (emitter, logger) {
-  var log = logger.create('launcher.sauce')
-  var alreadyRunningDefered
-  var alreadyRunningProces
+// This import lacks type definitions.
+const launchSauceConnect = promisify(require('sauce-connect-launcher'));
 
-  this.start = function (connectOptions, done) {
-    connectOptions.logger = log.debug.bind(log)
+/**
+ * Service that can be used to create a SauceConnect tunnel automatically. This can be used
+ * in case developers don't set up the tunnel using the plain SauceConnect binaries.
+ */
+export function SauceConnect(emitter, logger) {
+  const log = logger.create('launcher.SauceConnect');
 
-    // TODO(vojta): if different username/accessKey, start a new process
-    if (alreadyRunningDefered) {
-      log.debug('Sauce Connect is already running or starting')
-      return alreadyRunningDefered.promise
+  // Currently active tunnel instance. See: https://github.com/bermi/sauce-connect-launcher
+  // for public API.
+  let activeInstancePromise: Promise<any> = null;
+
+  this.establishTunnel = async (connectOptions: any) => {
+    // Redirect all logging output to Karma's logger.
+    connectOptions.logger = log.debug.bind(log);
+
+    // In case there is already a promise for a SauceConnect tunnel, we still need to return the
+    // promise because we want to make sure that the launcher can wait in case the tunnel is
+    // still starting.
+    if (activeInstancePromise) {
+      return activeInstancePromise;
     }
 
-    alreadyRunningDefered = q.defer()
-    launchSauceConnect(connectOptions, function (err, p) {
-      if (err) {
-        return alreadyRunningDefered.reject(err)
-      }
+    // Open a new SauceConnect tunnel.
+    return activeInstancePromise = launchSauceConnect(connectOptions);
+  };
 
-      alreadyRunningProces = p
-      alreadyRunningDefered.resolve()
-    })
+  // Close the tunnel whenever Karma emits the "exit" event. In that case, we don't need to
+  // reset the state because Karma will exit completely.
+  emitter.on('exit', (doneFn: () => void) => {
+    if (activeInstancePromise) {
+      log.debug('Shutting down Sauce Connect');
 
-    return alreadyRunningDefered.promise
-  }
-
-  emitter.on('exit', function (done) {
-    if (alreadyRunningProces) {
-      log.info('Shutting down Sauce Connect')
-      alreadyRunningProces.close(done)
-      alreadyRunningProces = null
+      // Close the tunnel and notify Karma once the tunnel has been exited.
+      activeInstancePromise
+        .then(instance => instance.close(doneFn()))
+        .catch(() => doneFn())
     } else {
-      done()
+      doneFn();
     }
   })
 }
-
-module.exports = SauceConnect
