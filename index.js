@@ -1,6 +1,6 @@
-var SauceConnect = require('./lib/sauce_connect')
-var SauceLauncher = require('./lib/sauce_launcher')
-var SauceReporter = require('./lib/sauce_reporter')
+var SauceConnect = require('./src/sauce_connect')
+var SauceLauncher = require('./src/sauce_launcher')
+var SauceReporter = require('./src/sauce_reporter')
 
 // PUBLISH DI MODULE
 module.exports = {
