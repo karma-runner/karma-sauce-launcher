@@ -41,6 +41,7 @@ export function SaucelabsReporter(logger, browserMap: BrowserMap) {
     const apiInstance = new SaucelabsAPI({
       username: browserData.username,
       password: browserData.accessKey,
+      proxy: browserData.proxy,
     });
     const updateJob = promisify(apiInstance.updateJob.bind(apiInstance));
     const hasPassed = !(result.failed || result.error || result.disconnected);
