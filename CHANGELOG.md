@@ -1,3 +1,11 @@
+<a name="2.0.0"></a>
+# [2.0.0](https://github.com/karma-runner/karma-sauce-launcher/compare/v1.2.0...v2.0.0) (2017-08-22)
+
+### Features
+
+* **BREAKING** Switch launcher to selenium-webdriver ([6525ddd4](https://github.com/karma-runner/karma-sauce-launcher/commit/6525ddd4))
+
+
 <a name="1.2.0"></a>
 # [1.2.0](https://github.com/karma-runner/karma-sauce-launcher/compare/v1.1.0...v1.2.0) (2017-08-22)
 
