@@ -1,24 +1,23 @@
 sudo: false
+
 language: node_js
+
 node_js:
-  - "6"
-  - "8"
+  - "8.9.0"
   - stable
 
-before_install:
-  - npm i -g npm
-  - npm config set loglevel warn
-
-before_script:
-  - npm install -g grunt-cli
-  - rm -rf node_modules/karma-sauce-launcher
-  - cd node_modules && ln -nsf ../ karma-sauce-launcher && cd ../
-
 script:
-  - grunt
+  - yarn
+  - yarn build
+  - mv dist/ node_modules/karma-sauce-launcher
+  - yarn karma start examples/karma.conf-ci.js
+
+cache:
+  yarn: true
 
 notifications:
   email: false
+
 env:
   global:
   - secure: TFSCNKxxG4gWmLwX7Wlz61sdev46If0tmg9y3GZZXI/WSvcbSsVOj1k5nAhvlfOK7MMgTBC+bLCKuHlhhY7H3ZDbxKW/NaSNk4vNfWjrT7k7OQmmMi93PBXSdwLlQOBWPzyd7ZEZmUV8fBI3IWEORaUcDEPjKE5gSPtiaxynPLQ=

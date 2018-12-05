@@ -2,13 +2,16 @@
   "name": "karma-sauce-launcher",
   "version": "1.2.0",
   "description": "A Karma plugin. Launch any browser on SauceLabs!",
-  "main": "index.js",
+  "main": "./index.js",
   "scripts": {
-    "test": "grunt test"
+    "build": "tsc -p src/ && cp package.json dist/"
   },
   "repository": {
     "type": "git",
     "url": "git://github.com/karma-runner/karma-sauce-launcher.git"
+  },
+  "engines": {
+    "node": ">= 8.9.0"
   },
   "keywords": [
     "karma-plugin",
@@ -19,31 +22,18 @@
   ],
   "author": "Vojta Jina <vojta.jina@gmail.com>",
   "dependencies": {
-    "q": "^1.5.0",
-    "sauce-connect-launcher": "^1.2.2",
-    "saucelabs": "^1.4.0",
-    "wd": "^1.4.0"
+    "sauce-connect-launcher": "^1.2.4",
+    "saucelabs": "^1.5.0",
+    "selenium-webdriver": "^4.0.0-alpha.1"
   },
   "license": "MIT",
   "devDependencies": {
-    "eslint-config-standard": "^10.2.1",
-    "eslint-plugin-import": "^2.7.0",
-    "eslint-plugin-node": "^5.1.1",
-    "eslint-plugin-promise": "3.5.0",
-    "eslint-plugin-standard": "^3.0.1",
-    "grunt": "^1.0.1",
-    "grunt-auto-release": "^0.0.7",
-    "grunt-bump": "^0.8.0",
-    "grunt-conventional-changelog": "^6.1.0",
-    "grunt-conventional-github-releaser": "^1.0.0",
-    "grunt-eslint": "^20.0.0",
-    "grunt-karma": "2.x",
-    "grunt-npm": "^0.0.2",
-    "jasmine": "^2.7.0",
-    "karma": "1.x || ^0.13.11",
-    "karma-jasmine": "1.x || ^0.3.6",
-    "karma-sauce-launcher": "1.x || *",
-    "load-grunt-tasks": "^3.5.2"
+    "@types/node": "^10.12.10",
+    "@types/selenium-webdriver": "^3.0.13",
+    "jasmine": "^3.3.0",
+    "karma": "^3.1.1",
+    "karma-jasmine": "^2.0.1",
+    "typescript": "^3.1.6"
   },
   "contributors": [
     "Mark Ethan Trostler <mark@zzo.com>",
@@ -75,6 +65,7 @@
     "OniOni <mathieu.c.sabourin@gmail.com>",
     "Parashuram <code@nparashuram.com>",
     "Parashuram N <code@r.nparashuram.com>",
-    "Peter Johason <peter@peterjohanson.com>"
+    "Peter Johason <peter@peterjohanson.com>",
+    "Paul Gschwendtner <paulgschwendtner@gmail.com>"
   ]
 }
