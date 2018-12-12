@@ -83,18 +83,16 @@ export function SaucelabsLauncher(args,
   });
 
   this.on('kill', async (doneFn: () => void) => {
-    await Promise.all(connectedDrivers.map(driver => {
-      try {
-        return driver.quit();
-      } catch (e) {
-        // We need to ignore the exception here because we want to make sure that Karma is still
-        // able to retry connecting if Saucelabs itself terminated the session (and not Karma)
-        // For example if the "idleTimeout" is exceeded and Saucelabs errored the session. See:
-        // https://wiki.saucelabs.com/display/DOCS/Test+Didn%27t+See+a+New+Command+for+90+Seconds
-        log.error('Could not quit the Saucelabs selenium connection. Failure message:');
-        log.error(e);
-      }
-    }));
+    try {
+      await Promise.all(connectedDrivers.map(driver => driver.quit()));
+    } catch (e) {
+      // We need to ignore the exception here because we want to make sure that Karma is still
+      // able to retry connecting if Saucelabs itself terminated the session (and not Karma)
+      // For example if the "idleTimeout" is exceeded and Saucelabs errored the session. See:
+      // https://wiki.saucelabs.com/display/DOCS/Test+Didn%27t+See+a+New+Command+for+90+Seconds
+      log.error('Could not quit the Saucelabs selenium connection. Failure message:');
+      log.error(e);
+    }
 
     // Reset connected drivers in case the launcher will be reused.
     connectedDrivers = [];
