@@ -1,5 +1,13 @@
+<a name="2.0.1"></a>
+# [2.0.1](https://github.com/karma-runner/karma-sauce-launcher/compare/v2.0.0...v2.0.1) (2018-12-12)
+
+### Bug Fixes
+
+* Allow reconnecting if Saucelabs terminated session ([6a9768da](https://github.com/karma-runner/karma-sauce-launcher/commit/6a9768da))
+
+
 <a name="2.0.0"></a>
-# [2.0.0](https://github.com/karma-runner/karma-sauce-launcher/compare/v1.2.0...v2.0.0) (2017-08-22)
+# [2.0.0](https://github.com/karma-runner/karma-sauce-launcher/compare/v1.2.0...v2.0.0) (2018-12-11)
 
 ### Features
 
