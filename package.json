@@ -4,7 +4,10 @@
   "description": "A Karma plugin. Launch any browser on SauceLabs!",
   "main": "./index.js",
   "scripts": {
-    "build": "tsc -p src/ && cp package.json dist/"
+    "build": "tsc -p src/ && cp package.json dist/",
+    "run-example": "yarn build && yarn copy-dist-to-modules && yarn run-example-karma",
+    "copy-dist-to-modules": "rm -rf node_modules/karma-sauce-launcher && mv dist/ node_modules/karma-sauce-launcher",
+    "run-example-karma": "yarn karma start examples/karma.conf-ci.js"
   },
   "repository": {
     "type": "git",

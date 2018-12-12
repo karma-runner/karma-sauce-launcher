@@ -8,9 +8,7 @@ node_js:
 
 script:
   - yarn
-  - yarn build
-  - mv dist/ node_modules/karma-sauce-launcher
-  - yarn karma start examples/karma.conf-ci.js
+  - yarn run-example
 
 cache:
   yarn: true
