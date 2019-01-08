@@ -97,6 +97,7 @@ export function SaucelabsLauncher(args,
     // Reset connected drivers in case the launcher will be reused.
     connectedDrivers = [];
 
+    this._done();
     doneFn();
   })
 }
