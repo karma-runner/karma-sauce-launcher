@@ -50,6 +50,7 @@ export function processConfig (config: any = {}, args: any = {}) {
     username: username,
     accessKey: accessKey,
     tunnelIdentifier: tunnelIdentifier,
+    tunnelProtocol: config.connectOptions.tunnelProtocol || 'http',
     ...config.connectOptions,
   };
 

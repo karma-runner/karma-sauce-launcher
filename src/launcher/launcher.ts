@@ -57,7 +57,7 @@ export function SaucelabsLauncher(args,
       // https://wiki.saucelabs.com/display/DOCS/Instant+Selenium+Node.js+Tests
       const driver = await new Builder()
         .withCapabilities(seleniumCapabilities)
-        .usingServer(`http://${username}:${accessKey}@${seleniumHostUrl}`)
+        .usingServer(`${sauceConnectOptions.tunnelProtocol}://${username}:${accessKey}@${seleniumHostUrl}`)
         .build();
 
       // Keep track of all connected drivers because it's possible that there are multiple
