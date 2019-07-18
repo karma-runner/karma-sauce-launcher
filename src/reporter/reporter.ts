@@ -1,8 +1,9 @@
 import {promisify} from 'util';
 import {BrowserMap} from "../browser-info";
+import { SSL_OP_ALLOW_UNSAFE_LEGACY_RENEGOTIATION } from 'constants';
 
 // This import lacks type definitions.
-const SaucelabsAPI = require('saucelabs');
+const SauceLabs = require('saucelabs').default;
 
 /**
  * Karma browser reported that updates corresponding Saucelabs jobs whenever a given
@@ -38,19 +39,22 @@ export function SaucelabsReporter(logger, browserMap: BrowserMap) {
     const {sessionId} = browserData;
 
     // TODO: This would be nice to have typed. Not a priority right now, though.
-    const apiInstance = new SaucelabsAPI({
-      username: browserData.username,
-      password: browserData.accessKey,
-      proxy: browserData.proxy,
+    const apiInstance = new SauceLabs({
+      user: browserData.username,
+      key: browserData.accessKey,
+      region: browserData.region,
+      proxy: browserData.proxy
     });
     const updateJob = promisify(apiInstance.updateJob.bind(apiInstance));
     const hasPassed = !(result.failed || result.error || result.disconnected);
-
+  
     // Update the job by reporting the test results. Also we need to store the promise here
     // because in case "onExit" is being called, we want to wait for the API calls to finish.
-    pendingUpdates.push(updateJob(sessionId, {passed: hasPassed, 'custom-data': result})
+    pendingUpdates.push(updateJob(browserData.username, sessionId, {passed: hasPassed, 'custom-data': result})
       .catch(error => log.error('Could not report results to Saucelabs: %s', error)));
-  };
+
+    return
+    };
 
   // Whenever this method is being called, we just need to wait for all API calls to finish,
   // and then we can notify Karma about proceeding with the exit.
