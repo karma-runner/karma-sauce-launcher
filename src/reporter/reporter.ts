@@ -50,16 +50,10 @@ export function SaucelabsReporter(logger, browserMap: BrowserMap) {
   
     // Update the job by reporting the test results. Also we need to store the promise here
     // because in case "onExit" is being called, we want to wait for the API calls to finish.
-    pendingUpdates.push(updateJob(browserData.username, sessionId, {passed: hasPassed, 'custom-data': result})
-      .catch(error => log.error('Could not report results to Saucelabs: %s', error)));
 
-    return
-    };
+      updateJob(browserData.username, sessionId, {passed: hasPassed, 'custom-data': result})
+      .catch(error => log.error('Could not report results to Saucelabs: %s', error));
+  
+  };
 
-  // Whenever this method is being called, we just need to wait for all API calls to finish,
-  // and then we can notify Karma about proceeding with the exit.
-  this.onExit = async (doneFn: () => void) => {
-    await Promise.all(pendingUpdates);
-    doneFn();
-  }
 }
