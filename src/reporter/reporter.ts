@@ -3,7 +3,7 @@ import {BrowserMap} from "../browser-info";
 import { SSL_OP_ALLOW_UNSAFE_LEGACY_RENEGOTIATION } from 'constants';
 
 // This import lacks type definitions.
-const SauceLabs = require('saucelabs').default;
+import SauceLabs from 'saucelabs'
 
 /**
  * Karma browser reported that updates corresponding Saucelabs jobs whenever a given

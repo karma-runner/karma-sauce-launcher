@@ -104,6 +104,13 @@ Default: `process.env.SAUCE_ACCESS_KEY`
 
 Your Sauce Labs access key which you will see on your [account page](https://saucelabs.com/account).
 
+### region
+Type: `String`
+Default: `us`
+
+Your Sauce Labs target region, `eu` or `us`, set through `process.env.SAUCE_REGION`.
+If `eu` is chosen, `process.env.SAUCE_API_HOST should also be set to `eu-central-1.saucelabs.com`
+
 ### proxy
 Type: `String`
 
