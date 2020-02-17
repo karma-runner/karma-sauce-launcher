@@ -13,7 +13,7 @@ export interface SaucelabsBrowser {
   accessKey: string;
 
   /** Saucelabs datacenter region that is targeted for this session. */
-  region: string;
+  region: "us" | "eu" | "us-west-1" | "eu-central-1";
 
   /** Proxy URL that will be used to make an API call to the Saucelabs API. */
   proxy: string;
