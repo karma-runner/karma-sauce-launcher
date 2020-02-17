@@ -10,7 +10,6 @@ module.exports = function (config) {
     sl_chrome: {
       base: 'SauceLabs',
       browserName: 'chrome',
-      platform: 'Windows 7',
       version: '75'
     },
     sl_firefox: {
@@ -21,7 +20,6 @@ module.exports = function (config) {
     sl_ie_11: {
       base: 'SauceLabs',
       browserName: 'internet explorer',
-      platform: 'Windows 8.1',
       version: '11'
     }
   };
