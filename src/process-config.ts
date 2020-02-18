@@ -1,10 +1,11 @@
 export function processConfig (config: any = {}, args: any = {}) {
   const username = config.username || process.env.SAUCE_USERNAME;
   const accessKey = config.accessKey || process.env.SAUCE_ACCESS_KEY;
+  const region = config.region || process.env.SAUCE_REGION;
   const startConnect = config.startConnect !== false;
 
   let tunnelIdentifier = args.tunnelIdentifier || config.tunnelIdentifier;
-  let seleniumHostUrl = 'ondemand.saucelabs.com:80/wd/hub';
+  let seleniumHostUrl = region === 'eu' ? 'ondemand.eu-central-1.saucelabs.com:80/wd/hub' : 'ondemand.saucelabs.com:80/wd/hub';
 
   // TODO: This option is very ambiguous because it technically only affects the reporter. Consider
   // renaming in the future.
@@ -68,5 +69,6 @@ export function processConfig (config: any = {}, args: any = {}) {
     browserName,
     username,
     accessKey,
+    region
   }
 }

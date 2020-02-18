@@ -25,38 +25,15 @@ export function SaucelabsLauncher(args,
     seleniumCapabilities,
     browserName,
     username,
-    accessKey
+    accessKey,
+    region
   } = processConfig(config, args);
 
   // Array of connected drivers. This is useful for quitting all connected drivers on kill.
   let connectedDrivers: WebDriver[] = [];
 
-  // number of pending cancellations for heartbeat functionality
-  let pendingCancellations = 0;
-
   // Setup Browser name that will be printed out by Karma.
   this.name = browserName + ' on SauceLabs';
-
-  let pendingHeartBeat; 
-  const formatSauceError = (err) => {
-    return err.message + '\n' + (err.data ? '  ' + err.data : '')
-  }
-  // Heartbeat function to keep alive sessions on Sauce Labs via webdriver JSON wire calls
-  const heartbeat = () => {
-    pendingHeartBeat = setTimeout( (driver) => {
-      log.debug('Heartbeat to Sauce Labs (%s) - fetching title', browserName)
-
-      driver.title()
-        .then(null, (err) => {
-          log.error('Heartbeat to %s failed\n  %s', browserName, formatSauceError(err))
-
-          clearTimeout(pendingHeartBeat)
-          return this._done('failure')
-      });
-
-      heartbeat()
-      }, 60000);
-}
 
   // Listen for the start event from Karma. I know, the API is a bit different to how you
   // would expect, but we need to follow this approach unless we want to spend more work
@@ -95,16 +72,10 @@ export function SaucelabsLauncher(args,
 
       // Store the information about the current session in the browserMap. This is necessary
       // because otherwise the Saucelabs reporter is not able to report results.
-      browserMap.set(this.id, {sessionId, username, accessKey, proxy: sauceApiProxy});
+      browserMap.set(this.id, {sessionId, username, accessKey, region, proxy: sauceApiProxy});
 
       await driver.get(pageUrl);
-      heartbeat();
     } catch (e) {
-      // determine if there are still pending cancellations based on the heartbeat
-      if (pendingCancellations > 0) {
-        pendingCancellations--;
-        return;
-      }
       log.error(e);
 
       // Notify karma about the failure.
@@ -113,11 +84,6 @@ export function SaucelabsLauncher(args,
   });
 
   this.on('kill', async (doneFn: () => void) => {
-    // If there is still pending heartbeats, clear the timeout
-    if (pendingHeartBeat) {
-      clearTimeout(pendingHeartBeat);
-    }
-
     try {
       await Promise.all(connectedDrivers.map(driver => driver.quit()));
     } catch (e) {
