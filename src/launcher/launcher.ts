@@ -25,7 +25,8 @@ export function SaucelabsLauncher(args,
     seleniumCapabilities,
     browserName,
     username,
-    accessKey
+    accessKey,
+    region
   } = processConfig(config, args);
 
   // Array of connected drivers. This is useful for quitting all connected drivers on kill.
@@ -71,7 +72,7 @@ export function SaucelabsLauncher(args,
 
       // Store the information about the current session in the browserMap. This is necessary
       // because otherwise the Saucelabs reporter is not able to report results.
-      browserMap.set(this.id, {sessionId, username, accessKey, proxy: sauceApiProxy});
+      browserMap.set(this.id, {sessionId, username, accessKey, region, proxy: sauceApiProxy});
 
       await driver.get(pageUrl);
     } catch (e) {
