@@ -238,4 +238,4 @@ Set this string if your unit tests need to run on a particular mobile device ori
 
 ## Behind the scenes
 
-This launcher uses Sauce Connect in the background. If you are interested in security or want to see the system requirements, head over to the [documentation](https://wiki.saucelabs.com/display/DOCS/Setting+Up+Sauce+Connect#app-switcher).
+This launcher uses Sauce Connect in the background. If you are interested in security or want to see the system requirements, head over to the [documentation](https://wiki.saucelabs.com/display/DOCS/Getting+Started+with+Sauce+Connect+Proxy).
