@@ -5,7 +5,7 @@ export function processConfig (config: any = {}, args: any = {}) {
   const startConnect = config.startConnect !== false;
 
   let tunnelIdentifier = args.tunnelIdentifier || config.tunnelIdentifier;
-  let seleniumHostUrl = region === 'eu' ? 'ondemand.eu-central-1.saucelabs.com:80/wd/hub' : 'ondemand.saucelabs.com:80/wd/hub';
+  let seleniumHostUrl = `ondemand.${region === 'eu' ? 'eu-central-1' : ''}.saucelabs.com:80/wd/hub';
 
   // TODO: This option is very ambiguous because it technically only affects the reporter. Consider
   // renaming in the future.
