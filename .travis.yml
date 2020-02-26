@@ -7,7 +7,7 @@ node_js:
   - stable
 
 script:
-  - yarn
+  - yarn --ignore-engines
   - yarn run-example
 
 cache:
