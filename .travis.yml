@@ -6,9 +6,7 @@ node_js:
   - "8.9.0"
   - stable
 
-before_script:
-  - yarn config set ignore-engines true
-  - yarn config set ignore-engines true
+install: yarn --ignore-engines --frozen-lockfile
 
 script:
   - yarn
