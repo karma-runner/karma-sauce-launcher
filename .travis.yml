@@ -8,7 +8,7 @@ node_js:
 
 script:
   - yarn --ignore-engines
-  - yarn run-example
+  - yarn run-example --ignore-engines
 
 cache:
   yarn: true
