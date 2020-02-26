@@ -7,10 +7,7 @@ node_js:
   - stable
 
 install: yarn --ignore-engines --frozen-lockfile
-
-script:
-  - yarn
-  - yarn run-example
+script: yarn run-example
 
 cache:
   yarn: true
