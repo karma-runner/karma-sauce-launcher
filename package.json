@@ -26,9 +26,8 @@
   "author": "Vojta Jina <vojta.jina@gmail.com>",
   "dependencies": {
     "sauce-connect-launcher": "^1.2.4",
-    "saucelabs": "^2.3.0",
-    "selenium-webdriver": "^4.0.0-alpha.1",
-    "yarn": "^1.22.0"
+    "saucelabs": "^3.0.1",
+    "selenium-webdriver": "^4.0.0-alpha.1"
   },
   "license": "MIT",
   "devDependencies": {
