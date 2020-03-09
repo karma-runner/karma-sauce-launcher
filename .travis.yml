@@ -6,6 +6,8 @@ node_js:
   - "8.9.0"
   - stable
 
+install: yarn --ignore-engines --frozen-lockfile
+
 script:
   - yarn
   - yarn run-example
