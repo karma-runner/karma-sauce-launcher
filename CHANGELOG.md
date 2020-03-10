@@ -1,3 +1,15 @@
+# [2.0.0](https://github.com/karma-runner/karma-sauce-launcher/compare/v1.2.0...v2.0.0) (2020-03-10)
+
+
+### chore
+
+* **deps:** Support node 6,8,10  ([2ef4585](https://github.com/karma-runner/karma-sauce-launcher/commit/2ef45850f59e98ff60921351983df7a8a2e93e08))
+
+
+### BREAKING CHANGES
+
+* **deps:**   Drop support for node < 6
+
 <a name="2.0.2"></a>
 # [2.0.2](https://github.com/karma-runner/karma-sauce-launcher/compare/v2.0.1...v2.0.2) (2018-12-12)
 
