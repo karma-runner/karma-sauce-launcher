@@ -13,10 +13,6 @@
     "type": "git",
     "url": "git://github.com/karma-runner/karma-sauce-launcher.git"
   },
-  "publishConfig": {
-    "registry": "https://registry.npmjs.org/",
-    "tag": "latest"
-  },
   "engines": {
     "node": ">= 8.9.0"
   },
