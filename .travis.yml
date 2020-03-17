@@ -1,29 +1,21 @@
 sudo: false
-
 language: node_js
-
 node_js:
-  - "8.9.0"
+  - "10.19.0"
   - stable
-
-install: yarn --ignore-engines --frozen-lockfile
-
-script:
-  - yarn
-  - yarn run-example
-
-after_success:
-  # run automated release process with semantic-release
-  - if [[ "$TRAVIS_BRANCH" == "master" && "$TRAVIS_EVENT_TYPE" == "push" && "$TRAVIS_NODE_VERSION" == "stable" ]]; then
-      npm i --no-save semantic-release@15 @semantic-release/changelog@3 @semantic-release/git@7;
-      semantic-release;
-    fi;
 
 cache:
   yarn: true
-
 notifications:
   email: false
+
+script: yarn run-example
+after_success:
+  # run automated release process with semantic-release
+  - if [[ "$TRAVIS_BRANCH" == "master" && "$TRAVIS_EVENT_TYPE" == "push" && "$TRAVIS_NODE_VERSION" == "stable"]]; then
+      npm i --no-save semantic-release@15 @semantic-release/changelog@3 @semantic-release/git@7;
+      semantic-release;
+    fi;
 
 env:
   global:
