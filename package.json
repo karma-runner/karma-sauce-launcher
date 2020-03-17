@@ -13,6 +13,10 @@
     "type": "git",
     "url": "git://github.com/karma-runner/karma-sauce-launcher.git"
   },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/",
+    "tag": "latest"
+  },
   "engines": {
     "node": ">= 10.0.0"
   },
@@ -38,12 +42,16 @@
   "devDependencies": {
     "@commitlint/cli": "8.3.5",
     "@commitlint/config-conventional": "8.3.4",
+    "@semantic-release/changelog": "5.0.0",
+    "@semantic-release/git": "9.0.0",
+    "@semantic-release/npm": "7.0.4",
     "@types/node": "^10.12.10",
     "@types/selenium-webdriver": "^3.0.13",
     "husky": "4.2.3",
     "jasmine": "^3.3.0",
     "karma": "^3.1.1",
     "karma-jasmine": "^2.0.1",
+    "semantic-release": "17.0.4",
     "typescript": "^3.1.6"
   },
   "contributors": [
