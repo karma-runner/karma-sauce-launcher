@@ -1,3 +1,15 @@
+# [4.0.0](https://github.com/karma-runner/karma-sauce-launcher/compare/v3.0.0...v4.0.0) (2020-03-17)
+
+
+### chore
+
+* **release:** force-trigger a semantic release ([#189](https://github.com/karma-runner/karma-sauce-launcher/issues/189)) ([64217e4](https://github.com/karma-runner/karma-sauce-launcher/commit/64217e4e5989dd8d241e5cfdcd5c9e02300315fe))
+
+
+### BREAKING CHANGES
+
+* **release:**   Drop support for Node <10.
+
 # [2.0.0](https://github.com/karma-runner/karma-sauce-launcher/compare/v1.2.0...v2.0.0) (2020-03-10)
 
 
