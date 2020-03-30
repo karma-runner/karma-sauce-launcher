@@ -13,7 +13,7 @@ script: yarn run-example
 after_success:
   # run automated release process with semantic-release
   - if [[ "$TRAVIS_BRANCH" == "master" && "$TRAVIS_EVENT_TYPE" == "push" && "$TRAVIS_NODE_VERSION" == "stable" ]]; then
-      npm run build;
+      npm run build-ls;
       semantic-release;
     fi;
 
