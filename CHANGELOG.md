@@ -1,3 +1,10 @@
+# [4.1.0](https://github.com/karma-runner/karma-sauce-launcher/compare/v4.0.0...v4.1.0) (2020-03-30)
+
+
+### Features
+
+* **release:** add build step to semantic-release in Travis ([#192](https://github.com/karma-runner/karma-sauce-launcher/issues/192)) ([d4f7649](https://github.com/karma-runner/karma-sauce-launcher/commit/d4f7649b2ca418c00ab867e0173e9289a7245c35))
+
 # [4.0.0](https://github.com/karma-runner/karma-sauce-launcher/compare/v3.0.0...v4.0.0) (2020-03-17)
 
 
