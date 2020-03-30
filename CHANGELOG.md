@@ -1,3 +1,10 @@
+## [4.1.2](https://github.com/karma-runner/karma-sauce-launcher/compare/v4.1.1...v4.1.2) (2020-03-30)
+
+
+### Bug Fixes
+
+* no need to copy package.json to dist ([#196](https://github.com/karma-runner/karma-sauce-launcher/issues/196)) ([65210f2](https://github.com/karma-runner/karma-sauce-launcher/commit/65210f29e6dfa103b4c008b0146f3ec525e68958))
+
 ## [4.1.1](https://github.com/karma-runner/karma-sauce-launcher/compare/v4.1.0...v4.1.1) (2020-03-30)
 
 
