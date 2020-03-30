@@ -1,3 +1,10 @@
+## [4.1.1](https://github.com/karma-runner/karma-sauce-launcher/compare/v4.1.0...v4.1.1) (2020-03-30)
+
+
+### Bug Fixes
+
+* add files field to package.json ([#194](https://github.com/karma-runner/karma-sauce-launcher/issues/194)) ([f99a0e1](https://github.com/karma-runner/karma-sauce-launcher/commit/f99a0e15a1ce3b0a12258e0ff5e981b8f81928a0))
+
 # [4.1.0](https://github.com/karma-runner/karma-sauce-launcher/compare/v4.0.0...v4.1.0) (2020-03-30)
 
 
