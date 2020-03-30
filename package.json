@@ -9,6 +9,9 @@
     "copy-dist-to-modules": "rm -rf node_modules/karma-sauce-launcher && mv dist/ node_modules/karma-sauce-launcher",
     "run-example-karma": "yarn karma start examples/karma.conf-ci.js"
   },
+  "files": [
+    "dist"
+  ],
   "repository": {
     "type": "git",
     "url": "git://github.com/karma-runner/karma-sauce-launcher.git"
