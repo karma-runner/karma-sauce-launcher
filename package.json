@@ -2,7 +2,7 @@
   "name": "karma-sauce-launcher",
   "version": "3.0.1",
   "description": "A Karma plugin. Launch any browser on SauceLabs!",
-  "main": "./index.js",
+  "main": "./dist/index.js",
   "scripts": {
     "build": "tsc -p src/ && cp package.json dist/",
     "run-example": "yarn build && yarn copy-dist-to-modules && yarn run-example-karma",
