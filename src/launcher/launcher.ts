@@ -47,7 +47,7 @@ export function SaucelabsLauncher(args,
       log.debug('Heartbeat to Sauce Labs (%s) - fetching title', browserName)
 
       if (driver === undefined){
-        log.error('Heartbeat to %s failed: driver is null\n  %s', browserName, formatSauceError(err))
+        log.error('Heartbeat to %s failed: driver is null\n  %s', browserName)
 
           clearTimeout(pendingHeartBeat)
           return this._done('failure')
