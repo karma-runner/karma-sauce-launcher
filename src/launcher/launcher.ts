@@ -53,7 +53,7 @@ export function SaucelabsLauncher(args,
           return this._done('failure')
       }
 
-      driver.title()
+      driver.getTitle()
         .then(null, (err) => {
           log.error('Heartbeat to %s failed\n  %s', browserName, formatSauceError(err))
 
