@@ -1,3 +1,10 @@
+## [4.1.3](https://github.com/karma-runner/karma-sauce-launcher/compare/v4.1.2...v4.1.3) (2020-04-13)
+
+
+### Bug Fixes
+
+* **release:** Replace calls to renamed `.title()` with `.getTitle()` ([b1c589b](https://github.com/karma-runner/karma-sauce-launcher/commit/b1c589ba3640e0f9d8a23a2f2eba0e56271e7826))
+
 ## [4.1.2](https://github.com/karma-runner/karma-sauce-launcher/compare/v4.1.1...v4.1.2) (2020-03-30)
 
 
