@@ -31,9 +31,6 @@ export function SaucelabsLauncher(args,
   // Array of connected drivers. This is useful for quitting all connected drivers on kill.
   let connectedDrivers: WebDriver[] = [];
 
-  // number of pending cancellations for heartbeat functionality
-  let pendingCancellations = 0;
-
   // Setup Browser name that will be printed out by Karma.
   this.name = browserName + ' on SauceLabs';
 
@@ -105,13 +102,7 @@ export function SaucelabsLauncher(args,
       browserMap.set(this.id, {sessionId, username, accessKey, proxy: sauceApiProxy});
 
       await driver.get(pageUrl);
-      heartbeat();
     } catch (e) {
-      // determine if there are still pending cancellations based on the heartbeat
-      if (pendingCancellations > 0) {
-        pendingCancellations--;
-        return;
-      }
       log.error(e);
 
       // Notify karma about the failure.
@@ -120,11 +111,6 @@ export function SaucelabsLauncher(args,
   });
 
   this.on('kill', async (doneFn: () => void) => {
-    // If there is still pending heartbeats, clear the timeout
-    if (pendingHeartBeat) {
-      clearTimeout(pendingHeartBeat);
-    }
-
     try {
       await Promise.all(connectedDrivers.map(driver => driver.quit()));
     } catch (e) {
