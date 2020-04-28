@@ -34,33 +34,9 @@ export function SaucelabsLauncher(args,
   // Setup Browser name that will be printed out by Karma.
   this.name = browserName + ' on SauceLabs';
 
-  let pendingHeartBeat; 
   const formatSauceError = (err) => {
     return err.message + '\n' + (err.data ? '  ' + err.data : '')
   }
-  // Heartbeat function to keep alive sessions on Sauce Labs via webdriver JSON wire calls
-  const heartbeat = () => {
-    pendingHeartBeat = setTimeout( (driver) => {
-      log.debug('Heartbeat to Sauce Labs (%s) - fetching title', browserName)
-
-      if (driver === undefined){
-        log.error('Heartbeat to %s failed: driver is null\n  %s', browserName)
-
-          clearTimeout(pendingHeartBeat)
-          return this._done('failure')
-      }
-
-      driver.getTitle()
-        .then(null, (err) => {
-          log.error('Heartbeat to %s failed\n  %s', browserName, formatSauceError(err))
-
-          clearTimeout(pendingHeartBeat)
-          return this._done('failure')
-      });
-
-      heartbeat()
-      }, 60000);
-}
 
   // Listen for the start event from Karma. I know, the API is a bit different to how you
   // would expect, but we need to follow this approach unless we want to spend more work
