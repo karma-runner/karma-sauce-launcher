@@ -1,3 +1,10 @@
+## [4.1.4](https://github.com/karma-runner/karma-sauce-launcher/compare/v4.1.3...v4.1.4) (2020-04-28)
+
+
+### Bug Fixes
+
+* remove heartbeat function ([#205](https://github.com/karma-runner/karma-sauce-launcher/issues/205)) ([10e93cc](https://github.com/karma-runner/karma-sauce-launcher/commit/10e93cc5f9787c275db8c72f159dea65690b77f1))
+
 ## [4.1.3](https://github.com/karma-runner/karma-sauce-launcher/compare/v4.1.2...v4.1.3) (2020-04-13)
 
 
