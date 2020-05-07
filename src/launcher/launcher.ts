@@ -1,4 +1,4 @@
-import {Builder, WebDriver} from 'selenium-webdriver';
+import {remote, BrowserObject} from 'webdriverio';
 import {processConfig} from "../process-config";
 import {BrowserMap} from "../browser-info";
 
@@ -20,23 +20,15 @@ export function SaucelabsLauncher(args,
   const {
     startConnect,
     sauceConnectOptions,
-    sauceApiProxy,
-    seleniumHostUrl,
     seleniumCapabilities,
-    browserName,
-    username,
-    accessKey
+    browserName
   } = processConfig(config, args);
 
   // Array of connected drivers. This is useful for quitting all connected drivers on kill.
-  let connectedDrivers: WebDriver[] = [];
+  let connectedDrivers: BrowserObject[] = [];
 
   // Setup Browser name that will be printed out by Karma.
   this.name = browserName + ' on SauceLabs';
-
-  const formatSauceError = (err) => {
-    return err.message + '\n' + (err.data ? '  ' + err.data : '')
-  }
 
   // Listen for the start event from Karma. I know, the API is a bit different to how you
   // would expect, but we need to follow this approach unless we want to spend more work
@@ -59,25 +51,28 @@ export function SaucelabsLauncher(args,
     try {
       // See the following link for public API of the selenium server.
       // https://wiki.saucelabs.com/display/DOCS/Instant+Selenium+Node.js+Tests
-      const driver = await new Builder()
-        .withCapabilities(seleniumCapabilities)
-        .usingServer(`http://${username}:${accessKey}@${seleniumHostUrl}`)
-        .build();
+      const driver = await remote(seleniumCapabilities);
 
       // Keep track of all connected drivers because it's possible that there are multiple
       // driver instances (e.g. when running with concurrency)
       connectedDrivers.push(driver);
 
-      const sessionId = (await driver.getSession()).getId();
+      const sessionId = driver.sessionId
 
       log.info('%s session at https://saucelabs.com/tests/%s', browserName, sessionId);
       log.debug('Opening "%s" on the selenium client', pageUrl);
 
       // Store the information about the current session in the browserMap. This is necessary
       // because otherwise the Saucelabs reporter is not able to report results.
-      browserMap.set(this.id, {sessionId, username, accessKey, proxy: sauceApiProxy});
+      browserMap.set(this.id, {
+        sessionId,
+        username: seleniumCapabilities.user,
+        accessKey: seleniumCapabilities.key,
+        region: seleniumCapabilities.region,
+        headless: seleniumCapabilities.headless
+      });
 
-      await driver.get(pageUrl);
+      await driver.url(pageUrl);
     } catch (e) {
       log.error(e);
 
@@ -88,7 +83,7 @@ export function SaucelabsLauncher(args,
 
   this.on('kill', async (doneFn: () => void) => {
     try {
-      await Promise.all(connectedDrivers.map(driver => driver.quit()));
+      await Promise.all(connectedDrivers.map(driver => driver.deleteSession()));
     } catch (e) {
       // We need to ignore the exception here because we want to make sure that Karma is still
       // able to retry connecting if Saucelabs itself terminated the session (and not Karma)
