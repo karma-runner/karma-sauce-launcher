@@ -1,7 +1,7 @@
 import {promisify} from 'util';
 
 // This import lacks type definitions.
-const launchSauceConnect = promisify(require('sauce-connect-launcher'));
+const launchSauceConnect = promisify(require('sauce-connect-launcher-update'));
 
 /**
  * Service that can be used to create a SauceConnect tunnel automatically. This can be used
@@ -37,7 +37,7 @@ export function SauceConnect(emitter, logger) {
 
       // Close the tunnel and notify Karma once the tunnel has been exited.
       activeInstancePromise
-        .then(instance => instance.close(doneFn()))
+        .then(instance => instance.close(doneFn))
         .catch(() => doneFn())
     } else {
       doneFn();

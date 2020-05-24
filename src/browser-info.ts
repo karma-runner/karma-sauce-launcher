@@ -1,8 +1,12 @@
+import {SauceLabsOptions} from 'saucelabs'
+
+type SauceBaseOption = Pick<SauceLabsOptions, 'headless' | 'region'>
+
 /**
  * This interface describes a browser that has been launched with Saucelabs. This is helpful
  * when reporting the results to the Saucelabs web API.
  */
-export interface SaucelabsBrowser {
+export interface SaucelabsBrowser extends SauceBaseOption {
   /** Saucelabs session id of this browser. */
   sessionId: string;
 
@@ -11,9 +15,6 @@ export interface SaucelabsBrowser {
 
   /** Saucelabs access key that has been used to launch this browser. */
   accessKey: string;
-
-  /** Proxy URL that will be used to make an API call to the Saucelabs API. */
-  proxy: string;
 }
 
 /** Type that describes the BrowserMap injection token. */
