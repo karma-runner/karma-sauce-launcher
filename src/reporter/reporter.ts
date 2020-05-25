@@ -1,4 +1,3 @@
-import {promisify} from 'util';
 import {BrowserMap} from "../browser-info";
 import SaucelabsAPI, {Job} from 'saucelabs';
 
@@ -33,28 +32,30 @@ export function SaucelabsReporter(logger, browserMap: BrowserMap) {
     }
 
     const {sessionId} = browserData;
-    const apiInstance = new SaucelabsAPI({
+    const api = new SaucelabsAPI({
       user: browserData.username,
       key: browserData.accessKey,
       region: browserData.region,
       headless: browserData.headless
     });
-    const updateJob = promisify(apiInstance.updateJob.bind(apiInstance));
-    const hasPassed = !(result.failed || result.error || result.disconnected);
+    const hasPassed = !result.failed && !result.error && !result.disconnected;
 
     // Update the job by reporting the test results. Also we need to store the promise here
     // because in case "onExit" is being called, we want to wait for the API calls to finish.
-    pendingUpdates.push(updateJob(browserData.username, sessionId, {
+    pendingUpdates.push(api.updateJob(browserData.username, sessionId, {
       id: sessionId,
       passed: hasPassed,
       'custom-data': result
-    }).catch(error => log.error('Could not report results to Saucelabs: %s', error)));
+    }));
   };
 
   // Whenever this method is being called, we just need to wait for all API calls to finish,
   // and then we can notify Karma about proceeding with the exit.
-  this.onExit = async (doneFn: () => void) => {
-    await Promise.all(pendingUpdates);
-    doneFn();
-  }
+  this.onExit = (doneFn: () => void) => Promise.all(pendingUpdates).then(
+    doneFn,
+    (error) => {
+      log.error('Could not report results to Saucelabs: %s', error)
+      doneFn()
+    }
+  );
 }

@@ -48,10 +48,6 @@ export function processConfig (config: any = {}, args: any = {}) {
   };
 
   const sauceConnectOptions = {
-    // By default, we just pass in the general Saucelabs credentials for establishing the
-    // SauceConnect tunnel. This makes it possible to use "startConnect" with no additional setup.
-    username: username,
-    accessKey: accessKey,
     tunnelIdentifier: tunnelIdentifier,
     ...config.connectOptions,
   };
@@ -68,6 +64,7 @@ export function processConfig (config: any = {}, args: any = {}) {
     key: accessKey,
     region: config.region,
     headless: config.headless,
+    logLevel: 'error',
     capabilities: {
       'sauce:options': capabilitiesFromConfig,
       ...args

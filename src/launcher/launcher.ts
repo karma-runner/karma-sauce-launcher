@@ -2,6 +2,9 @@ import {remote, BrowserObject} from 'webdriverio';
 import {processConfig} from "../process-config";
 import {BrowserMap} from "../browser-info";
 
+// Array of connected drivers. This is useful for quitting all connected drivers on kill.
+let connectedDrivers: Map<string, BrowserObject> = new Map();
+
 export function SaucelabsLauncher(args,
                                   /* config.sauceLabs */ config,
                                   /* SauceConnect */ sauceConnect,
@@ -16,6 +19,9 @@ export function SaucelabsLauncher(args,
   captureTimeoutLauncherDecorator(this);
   retryLauncherDecorator(this);
 
+  // initiate driver with null to not close the tunnel too early
+  connectedDrivers.set(this.id, null)
+
   const log = logger.create('SaucelabsLauncher');
   const {
     startConnect,
@@ -23,9 +29,6 @@ export function SaucelabsLauncher(args,
     seleniumCapabilities,
     browserName
   } = processConfig(config, args);
-
-  // Array of connected drivers. This is useful for quitting all connected drivers on kill.
-  let connectedDrivers: BrowserObject[] = [];
 
   // Setup Browser name that will be printed out by Karma.
   this.name = browserName + ' on SauceLabs';
@@ -39,7 +42,7 @@ export function SaucelabsLauncher(args,
         // In case the "startConnect" option has been enabled, establish a tunnel and wait
         // for it being ready. In case a tunnel is already active, this will just continue
         // without establishing a new one.
-        await sauceConnect.establishTunnel(sauceConnectOptions);
+        await sauceConnect.establishTunnel(seleniumCapabilities, sauceConnectOptions);
       } catch (error) {
         log.error(error);
 
@@ -55,7 +58,7 @@ export function SaucelabsLauncher(args,
 
       // Keep track of all connected drivers because it's possible that there are multiple
       // driver instances (e.g. when running with concurrency)
-      connectedDrivers.push(driver);
+      connectedDrivers.set(this.id, driver);
 
       const sessionId = driver.sessionId
 
@@ -81,9 +84,10 @@ export function SaucelabsLauncher(args,
     }
   });
 
-  this.on('kill', async (doneFn: () => void) => {
+  this.on('kill', async (done: () => void) => {
     try {
-      await Promise.all(connectedDrivers.map(driver => driver.deleteSession()));
+      const driver = connectedDrivers.get(this.id);
+      await driver.deleteSession();
     } catch (e) {
       // We need to ignore the exception here because we want to make sure that Karma is still
       // able to retry connecting if Saucelabs itself terminated the session (and not Karma)
@@ -93,9 +97,7 @@ export function SaucelabsLauncher(args,
       log.error(e);
     }
 
-    // Reset connected drivers in case the launcher will be reused.
-    connectedDrivers = [];
-
-    doneFn();
+    connectedDrivers.delete(this.id)
+    return process.nextTick(done);
   })
 }
