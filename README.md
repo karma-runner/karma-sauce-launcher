@@ -105,6 +105,16 @@ Default: `process.env.SAUCE_ACCESS_KEY`
 
 Your Sauce Labs access key which you will see on your [account page](https://saucelabs.com/account).
 
+### region
+Type: `String`
+
+Detect datacenter to run tests in. Can be either `eu` or `us`.
+
+### headless
+Type: `Boolean`
+
+If set to `true` tests are being run on Sauce Labs headless platform on `us-east-1`. This option will be ignored if `region` is set.
+
 ### proxy
 Type: `String`
 
@@ -128,19 +138,6 @@ Default:
 ```
 
 Options to send to Sauce Connect. Check [here](https://github.com/bermi/sauce-connect-launcher#advanced-usage) for all available options.
-
-### connectLocationForSERelay
-Type: `String`
-default: `ondemand.saucelabs.com`
-
-If set, will attempt to connect to the specified host as a Selenium relay.  This is intended to send Selenium commands through a Sauce Connect tunnel.
-
-### connectPortForSERelay
-Type: `Integer`
-Default: 80
-
-If set, will change the host used to connect to the Selenium server. This is intended to send Selenium commands through a Sauce Connect tunnel.
-
 
 ### build
 Type: `String`
@@ -217,25 +214,21 @@ Required: `true`
 
 Name of the browser.
 
-### version
+### browserVersion
 Type: `String`
-Default: Latest browser version for all browsers except Chrome which defaults to `'27'`
+Default: Latest browser version for all browsers except Chrome
 
 Version of the browser to use.
 
-### platform
+### platformName
 Type: `String`
 Default: `'Linux'` for Firefox/Chrome, `'Windows 7'` for IE/Safari
 
 Name of platform to run browser on.
 
-### deviceOrientation
-Type: `String`
-Default: `'portrait'`
+### `sauce:options`
 
-Accepted values: `'portrait' || 'landscape'`
-
-Set this string if your unit tests need to run on a particular mobile device orientation for Android Browser or iOS Safari.
+Specific Sauce Labs capability [options](https://wiki.saucelabs.com/display/DOCS/Test+Configuration+Options).
 
 ## Behind the scenes
 

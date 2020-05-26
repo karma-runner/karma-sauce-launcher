@@ -38,7 +38,6 @@ module.exports = function (config) {
       testName: 'Karma and Sauce Labs demo',
       recordScreenshots: false,
       connectOptions: {
-        port: 5757,
         logfile: 'sauce_connect.log'
       },
       public: 'public'

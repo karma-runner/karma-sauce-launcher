@@ -1,14 +1,23 @@
+import {bootstrap} from 'global-agent'
+
 export function processConfig (config: any = {}, args: any = {}) {
   const username = config.username || process.env.SAUCE_USERNAME;
   const accessKey = config.accessKey || process.env.SAUCE_ACCESS_KEY;
   const startConnect = config.startConnect !== false;
 
   let tunnelIdentifier = args.tunnelIdentifier || config.tunnelIdentifier;
-  let seleniumHostUrl = 'ondemand.saucelabs.com:80/wd/hub';
 
-  // TODO: This option is very ambiguous because it technically only affects the reporter. Consider
+  // TODO: This option is very ambiguous because it technically only affects the reporter. Consider	
   // renaming in the future.
   const sauceApiProxy = args.proxy || config.proxy;
+  if (sauceApiProxy) {
+    const envVar = sauceApiProxy.startsWith('https') ? 'KARMA_HTTPS_PROXY' : 'KARMA_HTTP_PROXY'
+    process.env[envVar] = sauceApiProxy
+    bootstrap({
+      environmentVariableNamespace: 'KARMA_',
+      forceGlobalAgent: false
+    })
+  }
 
   // Browser name that will be printed out by Karma.
   const browserName = args.browserName +
@@ -20,12 +29,6 @@ export function processConfig (config: any = {}, args: any = {}) {
   // zero setup.
   if (!tunnelIdentifier && startConnect) {
     tunnelIdentifier = 'karma-sauce-' + Math.round(new Date().getTime() / 1000);
-  }
-
-  // Support passing a custom selenium location.
-  // TODO: This should be just an URL that can be passed. Holding off to avoid breaking changes.
-  if (config.connectLocationForSERelay) {
-    seleniumHostUrl = `${config.connectLocationForSERelay}:${config.connectPortForSERelay || 80}`;
   }
 
   const capabilitiesFromConfig = {
@@ -45,28 +48,34 @@ export function processConfig (config: any = {}, args: any = {}) {
   };
 
   const sauceConnectOptions = {
-    // By default, we just pass in the general Saucelabs credentials for establishing the
-    // SauceConnect tunnel. This makes it possible to use "startConnect" with no additional setup.
-    username: username,
-    accessKey: accessKey,
     tunnelIdentifier: tunnelIdentifier,
     ...config.connectOptions,
   };
 
+  // transform JWP capabilities into W3C capabilities for backward compatibility
+  args.browserVersion = args.browserVersion || args.version || 'latest'
+  args.platformName = args.platformName || args.platform || 'Windows 10'
+  // delete JWP capabilities
+  delete args.base
+  delete args.version
+  delete args.platform
   const seleniumCapabilities = {
-    ...capabilitiesFromConfig,
-    ...config.options,
-    ...args,
+    user: username,
+    key: accessKey,
+    region: config.region,
+    headless: config.headless,
+    logLevel: 'error',
+    capabilities: {
+      'sauce:options': capabilitiesFromConfig,
+      ...args
+    },
+    ...config.options
   };
 
   return {
     startConnect,
     sauceConnectOptions,
-    sauceApiProxy,
-    seleniumHostUrl,
     seleniumCapabilities,
-    browserName,
-    username,
-    accessKey,
+    browserName
   }
 }
