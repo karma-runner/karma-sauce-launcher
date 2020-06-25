@@ -124,7 +124,8 @@ Proxy for connecting to Sauce REST API, which is used to communicate job updates
 Type: `Boolean`
 Default: `true`
 
-If `true`, Sauce Connect will be started automatically. Set this to `false` if you are launching tests locally and want to start Sauce Connect via [a binary](https://saucelabs.com/docs/connect) or the [Mac](https://saucelabs.com/mac) app in the background to improve test speed.
+If `true`, Sauce Connect will be started automatically.  
+Set this to `false` if you are launching tests locally but want to start Sauce Connect via [a binary](https://wiki.saucelabs.com/display/DOCS/Downloading+Sauce+Connect+Proxy) manually in the background to improve test speed.
 
 ### connectOptions
 Type: `Object`
