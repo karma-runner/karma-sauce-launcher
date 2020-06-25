@@ -137,7 +137,10 @@ Default:
 }
 ```
 
-Options to send to Sauce Connect. Check [here](https://github.com/bermi/sauce-connect-launcher#advanced-usage) for all available options.
+Options to send to Sauce Connect. 
+
+Check [here](https://wiki.saucelabs.com/display/DOCS/Sauce+Connect+Proxy+Command-Line+Quick+Reference+Guide) for all available options.  
+All parameters have to be applied camel cased instead of with hyphens.
 
 ### build
 Type: `String`
