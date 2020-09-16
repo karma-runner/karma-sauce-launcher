@@ -8,6 +8,7 @@ import SaucelabsAPI, {Job} from 'saucelabs';
 export function SaucelabsReporter(logger, browserMap: BrowserMap) {
   const log = logger.create('reporter.sauce');
   let pendingUpdates: Promise<Job>[] = [];
+  this.adapters = [];
 
   // This fires whenever any browser completes. This is when we want to report results
   // to the Saucelabs API, so that people can create coverage banners for their project.
