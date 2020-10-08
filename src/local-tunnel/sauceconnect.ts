@@ -34,7 +34,17 @@ export function SauceConnect(emitter, logger) {
       /**
        * fail starting Sauce Connect eventually
        */
-      if (scStartTrials >= MAX_SC_START_TRIALS) {
+      if (
+        /**
+         * only fail for ENOENT errors due to racing condition
+         * see: https://github.com/saucelabs/node-saucelabs/issues/86
+         */
+        !err.message.includes('ENOENT') ||
+        /**
+         * or if we reached the maximum rety count
+         */
+        scStartTrials >= MAX_SC_START_TRIALS
+      ) {
         throw err
       }
 
