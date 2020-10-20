@@ -3,7 +3,8 @@
 
 ### Bug Fixes
 
-* trigger build ([ca113e7](https://github.com/karma-runner/karma-sauce-launcher/commit/ca113e76ccd421b9dc6e8da9908dbead6300502d))
+* Retry start Sauce Connect ([219](https://github.com/karma-runner/karma-sauce-launcher/pull/219)) ([5ff8838](https://github.com/karma-runner/karma-sauce-launcher/commit/5ff8838c0b614ee1612b0d7f7292838c821d38ea)) by [
+Christian Bromann](https://github.com/christian-bromann)
 
 ## [4.1.5](https://github.com/karma-runner/karma-sauce-launcher/compare/v4.1.4...v4.1.5) (2020-05-26)
 
