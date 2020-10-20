@@ -1,3 +1,10 @@
+## [4.1.6](https://github.com/karma-runner/karma-sauce-launcher/compare/v4.1.5...v4.1.6) (2020-10-20)
+
+
+### Bug Fixes
+
+* trigger build ([ca113e7](https://github.com/karma-runner/karma-sauce-launcher/commit/ca113e76ccd421b9dc6e8da9908dbead6300502d))
+
 ## [4.1.5](https://github.com/karma-runner/karma-sauce-launcher/compare/v4.1.4...v4.1.5) (2020-05-26)
 
 
