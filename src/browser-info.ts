@@ -1,4 +1,5 @@
 import {SauceLabsOptions} from 'saucelabs'
+import {BrowserObject} from "webdriverio";
 
 type SauceBaseOption = Pick<SauceLabsOptions, 'headless' | 'region'>
 
@@ -15,6 +16,9 @@ export interface SaucelabsBrowser extends SauceBaseOption {
 
   /** Saucelabs access key that has been used to launch this browser. */
   accessKey: string;
+
+  /** Saucelabs driver instance to communicate with this browser. */
+  driver: BrowserObject
 }
 
 /** Type that describes the BrowserMap injection token. */

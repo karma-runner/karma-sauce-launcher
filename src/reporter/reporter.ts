@@ -9,6 +9,19 @@ export function SaucelabsReporter(logger, browserMap: BrowserMap) {
   const log = logger.create('reporter.sauce');
   let pendingUpdates: Promise<Job>[] = [];
 
+  // This fires when a single test is executed and will update the run in sauce labs with an annotation
+  // of the test including the status of the test
+  this.onSpecComplete = function(browser, result) {
+    const driver = browserMap.get(browser.id).driver
+    const status = result.success ? '✅' : '❌'
+
+    pendingUpdates.push(driver.execute(`sauce:context=${status}: ${result.fullName}`))
+
+    if(!result.success && result.log.length > 0){
+      pendingUpdates.push(driver.execute(`sauce:context=${result.log[0]}`))
+    }
+  }
+
   // This fires whenever any browser completes. This is when we want to report results
   // to the Saucelabs API, so that people can create coverage banners for their project.
   this.onBrowserComplete = function (browser) {
