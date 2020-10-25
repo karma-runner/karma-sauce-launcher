@@ -1,6 +1,21 @@
 import {BrowserMap} from "../browser-info";
 import SaucelabsAPI, {Job} from 'saucelabs';
 
+const REGION_MAPPING = {
+  'us': '', // default endpoint
+  'eu': 'eu-central-1.',
+};
+
+/**
+ * Get the Sauce Labs endpoint
+ * @param region
+ */
+function getSauceEndpoint (region) {
+  const shortRegion = REGION_MAPPING[region] ? region : 'us'
+
+  return `https://app.${REGION_MAPPING[shortRegion]}saucelabs.com/tests/`
+}
+
 /**
  * Karma browser reported that updates corresponding Saucelabs jobs whenever a given
  * browser finishes.
@@ -60,6 +75,8 @@ export function SaucelabsReporter(logger, browserMap: BrowserMap) {
       passed: hasPassed,
       'custom-data': result
     }));
+
+    log.info(`Check out job at ${getSauceEndpoint(browserData.region)}${sessionId}`)
   };
 
   // Whenever this method is being called, we just need to wait for all API calls to finish,
