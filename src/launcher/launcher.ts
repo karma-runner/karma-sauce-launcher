@@ -39,7 +39,9 @@ export function SaucelabsLauncher(args,
     const driver = connectedDrivers.get(this.id);
 
     pendingHeartBeat = setTimeout( async () => {
-      if(driver) {
+      if (!driver) {
+        return
+      }
         try {
           await driver.getTitle();
           log.debug('Heartbeat to Sauce Labs (%s) - fetching title', browserName)
