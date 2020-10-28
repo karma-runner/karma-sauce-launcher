@@ -33,6 +33,26 @@ export function SaucelabsLauncher(args,
   // Setup Browser name that will be printed out by Karma.
   this.name = browserName + ' on SauceLabs';
 
+  let pendingHeartBeat;
+  // Heartbeat function to keep alive sessions on Sauce Labs via WebDriver calls
+  const heartbeat = ()=> {
+    const driver = connectedDrivers.get(this.id);
+
+    pendingHeartBeat = setTimeout( async () => {
+      if(driver) {
+        try {
+          await driver.getTitle();
+          log.debug('Heartbeat to Sauce Labs (%s) - fetching title', browserName)
+          heartbeat();
+        } catch (ign) {
+          // Do nothing, just clear the timeout
+          clearTimeout(pendingHeartBeat)
+        }
+      }
+      return;
+    }, 60000);
+  }
+
   // Listen for the start event from Karma. I know, the API is a bit different to how you
   // would expect, but we need to follow this approach unless we want to spend more work
   // improving type safety.
@@ -76,6 +96,7 @@ export function SaucelabsLauncher(args,
       });
 
       await driver.url(pageUrl);
+      heartbeat();
     } catch (e) {
       log.error(e);
 
@@ -85,6 +106,11 @@ export function SaucelabsLauncher(args,
   });
 
   this.on('kill', async (done: () => void) => {
+    // If there is still pending heartbeats, clear the timeout
+    if (pendingHeartBeat) {
+      clearTimeout(pendingHeartBeat);
+    }
+
     try {
       const driver = connectedDrivers.get(this.id);
       await driver.deleteSession();
