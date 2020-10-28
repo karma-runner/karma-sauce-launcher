@@ -1,7 +1,7 @@
 import {SauceLabsOptions} from 'saucelabs'
-import {BrowserObject} from "webdriverio";
 
 type SauceBaseOption = Pick<SauceLabsOptions, 'headless' | 'region'>
+
 interface Results {
   status: string;
   message: string;

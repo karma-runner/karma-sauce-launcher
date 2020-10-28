@@ -10,7 +10,7 @@ const REGION_MAPPING = {
  * Get the Sauce Labs endpoint
  * @param region
  */
-function getSauceEndpoint (region) {
+function getSauceEndpoint(region) {
   const shortRegion = REGION_MAPPING[region] ? region : 'us'
 
   return `https://app.${REGION_MAPPING[shortRegion]}saucelabs.com/tests/`
@@ -26,7 +26,7 @@ export function SaucelabsReporter(logger, browserMap: BrowserMap) {
 
   // This fires when a single test is executed and will update the run in sauce labs with an annotation
   // of the test including the status of the test
-  this.onSpecComplete = function(browser, result) {
+  this.onSpecComplete = function (browser, result) {
     const status = result.success ? '✅' : '❌'
 
     browserMap.get(browser.id).results.push({
@@ -35,7 +35,7 @@ export function SaucelabsReporter(logger, browserMap: BrowserMap) {
       screenshot: null
     })
 
-    if(!result.success && result.log.length > 0){
+    if (!result.success && result.log.length > 0) {
       browserMap.get(browser.id).results.push({
         status: 'info',
         message: `${result.log[0]}`,
