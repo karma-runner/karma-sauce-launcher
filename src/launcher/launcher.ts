@@ -35,7 +35,7 @@ export function SaucelabsLauncher(args,
 
   let pendingHeartBeat;
   // Heartbeat function to keep alive sessions on Sauce Labs via WebDriver calls
-  const heartbeat = ()=> {
+  const heartbeat = () => {
     const driver = connectedDrivers.get(this.id);
 
     pendingHeartBeat = setTimeout( async () => {
