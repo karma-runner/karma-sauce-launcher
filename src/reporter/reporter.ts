@@ -27,13 +27,20 @@ export function SaucelabsReporter(logger, browserMap: BrowserMap) {
   // This fires when a single test is executed and will update the run in sauce labs with an annotation
   // of the test including the status of the test
   this.onSpecComplete = function(browser, result) {
-    const driver = browserMap.get(browser.id).driver
     const status = result.success ? '✅' : '❌'
 
-    pendingUpdates.push(driver.execute(`sauce:context=${status}: ${result.fullName}`))
+    browserMap.get(browser.id).results.push({
+      status: 'info',
+      message: `${status} ${result.fullName}`,
+      screenshot: null
+    })
 
     if(!result.success && result.log.length > 0){
-      pendingUpdates.push(driver.execute(`sauce:context=${result.log[0]}`))
+      browserMap.get(browser.id).results.push({
+        status: 'info',
+        message: `${result.log[0]}`,
+        screenshot: null
+      })
     }
   }
 

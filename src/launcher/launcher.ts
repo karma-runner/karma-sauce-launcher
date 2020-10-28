@@ -1,4 +1,6 @@
 import {remote, BrowserObject} from 'webdriverio';
+import SauceLabs from 'saucelabs';
+import {mkdirSync, removeSync, writeFileSync} from 'fs-extra';
 import {processConfig} from "../process-config";
 import {BrowserMap} from "../browser-info";
 
@@ -73,7 +75,7 @@ export function SaucelabsLauncher(args,
                 accessKey: seleniumCapabilities.key,
                 region: seleniumCapabilities.region,
                 headless: seleniumCapabilities.headless,
-                driver,
+                results:[],
             });
 
             await driver.url(pageUrl);
@@ -88,7 +90,30 @@ export function SaucelabsLauncher(args,
     this.on('kill', async (done: () => void) => {
         try {
             const driver = connectedDrivers.get(this.id);
+            const {sessionId} = driver;
             await driver.deleteSession();
+
+            const browserData = browserMap.get(this.id);
+            const api = new SauceLabs({
+                user: browserData.username,
+                key: browserData.accessKey,
+                region: browserData.region,
+            });
+
+            // Wait until the vm is destroyed and the assets are stored
+            await new Promise(resolve => setTimeout(() => resolve(), 5000));
+            // Create a tmp dir
+            mkdirSync(sessionId);
+            writeFileSync(`${sessionId}/log.json`, JSON.stringify(browserData.results, null, 2));
+            // Update the log assets
+            // @ts-ignore
+            await api.uploadJobAssets(
+                sessionId,
+                { files: [`${sessionId}/log.json`] },
+            );
+            // remove the temporary folder
+            removeSync(sessionId);
+
         } catch (e) {
             // We need to ignore the exception here because we want to make sure that Karma is still
             // able to retry connecting if Saucelabs itself terminated the session (and not Karma)

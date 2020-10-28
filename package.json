@@ -37,8 +37,9 @@
   ],
   "author": "Vojta Jina <vojta.jina@gmail.com>",
   "dependencies": {
+    "fs-extra": "^9.0.1",
     "global-agent": "^2.1.8",
-    "saucelabs": "^4.3.0",
+    "saucelabs": "^4.5.1",
     "webdriverio": "^6.1.9"
   },
   "license": "MIT",
