@@ -38,10 +38,10 @@ export function SaucelabsLauncher(args,
   const heartbeat = () => {
     const driver = connectedDrivers.get(this.id);
 
-    pendingHeartBeat = setTimeout( async () => {
-      if (!driver) {
-        return
-      }
+    pendingHeartBeat = setTimeout(async () => {
+        if (!driver) {
+          return
+        }
         try {
           await driver.getTitle();
           log.debug('Heartbeat to Sauce Labs (%s) - fetching title', browserName)
@@ -50,9 +50,10 @@ export function SaucelabsLauncher(args,
           // Do nothing, just clear the timeout
           clearTimeout(pendingHeartBeat)
         }
-      }
-      return;
-    }, 60000);
+        return;
+      },
+      60000,
+    );
   }
 
   // Listen for the start event from Karma. I know, the API is a bit different to how you
