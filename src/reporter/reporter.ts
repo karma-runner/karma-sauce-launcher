@@ -29,8 +29,6 @@ export function SaucelabsReporter(logger, browserMap: BrowserMap) {
   this.onSpecComplete = function (browser, result) {
     const status = result.success ? '✅' : '❌'
 
-    console.log('onSpecComplete result = ', result)
-
     browserMap.get(browser.id).results.push({
       status: 'info',
       message: `${status} ${result.fullName}`,
