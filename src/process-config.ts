@@ -1,13 +1,14 @@
 import {bootstrap} from 'global-agent'
+import {isW3C} from "./utils";
 
-export function processConfig (config: any = {}, args: any = {}) {
+export function processConfig(config: any = {}, args: any = {}) {
   const username = config.username || process.env.SAUCE_USERNAME;
   const accessKey = config.accessKey || process.env.SAUCE_ACCESS_KEY;
   const startConnect = config.startConnect !== false;
 
   let tunnelIdentifier = args.tunnelIdentifier || config.tunnelIdentifier;
 
-  // TODO: This option is very ambiguous because it technically only affects the reporter. Consider	
+  // TODO: This option is very ambiguous because it technically only affects the reporter. Consider
   // renaming in the future.
   const sauceApiProxy = args.proxy || config.proxy;
   if (sauceApiProxy) {
@@ -20,9 +21,7 @@ export function processConfig (config: any = {}, args: any = {}) {
   }
 
   // Browser name that will be printed out by Karma.
-  const browserName = args.browserName +
-    (args.version ? ' ' + args.version : '') +
-    (args.platform ? ' (' + args.platform + ')' : '');
+  const browserName = `${args.browserName} ${args.browserVersion || args.version || ''} ${args.platformName || args.platform || ''}`;
 
   // In case "startConnect" is enabled, and no tunnel identifier has been specified, we just
   // generate one randomly. This makes it possible for developers to use "startConnect" with
@@ -53,12 +52,20 @@ export function processConfig (config: any = {}, args: any = {}) {
   };
 
   // transform JWP capabilities into W3C capabilities for backward compatibility
-  args.browserVersion = args.browserVersion || args.version || 'latest'
-  args.platformName = args.platformName || args.platform || 'Windows 10'
-  // delete JWP capabilities
+  if (isW3C(args)) {
+    args.browserVersion = args.browserVersion || args.version || 'latest'
+    args.platformName = args.platformName || args.platform || 'Windows 10'
+    args['sauce:options'] = args['sauce:options'] ? {...args['sauce:options'], ...capabilitiesFromConfig} : capabilitiesFromConfig
+
+    // delete JWP capabilities
+    delete args.version
+    delete args.platform
+  } else {
+    args = {...args, ...capabilitiesFromConfig}
+  }
+  // Not needed
   delete args.base
-  delete args.version
-  delete args.platform
+
   const seleniumCapabilities = {
     user: username,
     key: accessKey,
@@ -66,7 +73,6 @@ export function processConfig (config: any = {}, args: any = {}) {
     headless: config.headless,
     logLevel: 'error',
     capabilities: {
-      'sauce:options': capabilitiesFromConfig,
       ...args
     },
     ...config.options
