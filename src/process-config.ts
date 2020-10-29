@@ -55,7 +55,7 @@ export function processConfig(config: any = {}, args: any = {}) {
   if (isW3C(args)) {
     args.browserVersion = args.browserVersion || args.version || 'latest'
     args.platformName = args.platformName || args.platform || 'Windows 10'
-    args['sauce:options'] = args['sauce:options'] ? {...args['sauce:options'], ...capabilitiesFromConfig} : capabilitiesFromConfig
+    args['sauce:options'] = { ...(args['sauce:options'] || {}), ...capabilitiesFromConfig }
 
     // delete JWP capabilities
     delete args.version
