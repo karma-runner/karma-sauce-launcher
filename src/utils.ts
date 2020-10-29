@@ -11,3 +11,8 @@ export async function waitUntil({condition, retries = 0, maxRetries = 50, interv
 
   return waitUntil({condition, retries: retries++, maxRetries, interval})
 }
+
+export function isW3C(capabilities){
+  // Only browserVersion is mandatory, platformName is optional
+  return Boolean(capabilities.browserVersion)
+}

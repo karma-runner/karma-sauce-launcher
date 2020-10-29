@@ -37,6 +37,7 @@ module.exports = function(config) {
   // Example set of browsers to run on Sauce Labs
   // Check out https://saucelabs.com/platforms for all browser/platform combos
   var customLaunchers = {
+    // Old JSONWP way of setting the capabilities
     sl_chrome: {
       base: 'SauceLabs',
       browserName: 'chrome',
@@ -67,7 +68,18 @@ module.exports = function(config) {
       version: '4.4',
       deviceName: 'Samsung Galaxy S3 Emulator',
       deviceOrientation: 'portrait'
-    }
+    },
+    // For W3C way of setting the capabilies check
+    // https://wiki.saucelabs.com/display/DOCS/Platform+Configurator#/
+    // And select WebDriver (W3C) Selenium 3/4, Webdriver.io
+    sl_chromeW3C: {
+      base: 'SauceLabs',
+      browserName: 'chrome',
+      browserVersion: 'latest',
+      'sauce:options':{
+        tags: ['w3c-chrome']
+      }
+    },
   }
 
   config.set({

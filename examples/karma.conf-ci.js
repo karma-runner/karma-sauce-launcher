@@ -10,17 +10,28 @@ module.exports = function (config) {
     sl_chrome: {
       base: 'SauceLabs',
       browserName: 'chrome',
-      version: 'latest'
+      version: 'latest',
+      tags: ['jsonwp-chrome']
+    },
+    sl_chromeW3C: {
+      base: 'SauceLabs',
+      browserName: 'chrome',
+      browserVersion: 'latest',
+      'sauce:options':{
+        tags: ['w3c-chrome']
+      }
     },
     sl_firefox: {
       base: 'SauceLabs',
       browserName: 'firefox',
-      version: 'latest'
+      version: 'latest',
+      tags: ['jsonwp-firefox']
     },
     sl_ie_11: {
       base: 'SauceLabs',
       browserName: 'internet explorer',
-      version: 'latest'
+      version: 'latest',
+      tags: ['jsonwp-ie11']
     }
   };
 
