@@ -70,9 +70,9 @@ export function SaucelabsLauncher(args,
     try {
       // Wait until the vm is destroyed and the assets are stored
       await waitUntil({
-        condition: async () => {
+        condition: () => {
           log.info(`Check if 'log.json' for browser '${browserName}' has already been stored.`);
-          await api.downloadJobAsset(sessionId, 'log.json');
+          return api.downloadJobAsset(sessionId, 'log.json');
         },
         maxRetries: 25,
       });
