@@ -1,3 +1,19 @@
+# [4.3.0](https://github.com/karma-runner/karma-sauce-launcher/compare/v4.2.0...v4.3.0) (2020-10-29)
+
+
+### Bug Fixes
+
+* fix indentation ([83cb4ef](https://github.com/karma-runner/karma-sauce-launcher/commit/83cb4ef56ab8f13be47526bc63e73cca2d04ee31))
+* fix yarn lock ([e3ba5a5](https://github.com/karma-runner/karma-sauce-launcher/commit/e3ba5a5c054d68b031f25f7ed5c58a6a4411c9cb))
+
+
+### Features
+
+* add execution url ([eb8dc10](https://github.com/karma-runner/karma-sauce-launcher/commit/eb8dc10112bc2dc6fafe4be878901971e3e51959))
+* add test annotation ([517b60a](https://github.com/karma-runner/karma-sauce-launcher/commit/517b60a7dd5a96a40e8523ac5d7b1390bc48fdf1))
+* implement uploading new logs to Sauce with all test statuses ([fa3d0b5](https://github.com/karma-runner/karma-sauce-launcher/commit/fa3d0b591df3dc221e84a50baa833fa11ac8959b))
+* new release ([70c0f3a](https://github.com/karma-runner/karma-sauce-launcher/commit/70c0f3ae1c7fc947a804af14639ad4d11e4dea2b))
+
 # [4.2.0](https://github.com/karma-runner/karma-sauce-launcher/compare/v4.1.6...v4.2.0) (2020-10-29)
 
 
