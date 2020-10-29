@@ -23,6 +23,7 @@ function getSauceEndpoint(region) {
 export function SaucelabsReporter(logger, browserMap: BrowserMap) {
   const log = logger.create('reporter.sauce');
   let pendingUpdates: Promise<Job>[] = [];
+  this.adapters = [];
 
   // This fires when a single test is executed and will update the run in sauce labs with an annotation
   // of the test including the status of the test
