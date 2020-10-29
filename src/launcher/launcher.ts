@@ -1,5 +1,5 @@
 import {remote, BrowserObject} from 'webdriverio';
-import SauceLabs from 'saucelabs';
+import SauceLabsAPI from 'saucelabs';
 import {mkdirSync, removeSync, writeFileSync} from 'fs-extra';
 import {processConfig} from "../process-config";
 import {BrowserMap} from "../browser-info";
@@ -56,7 +56,46 @@ export function SaucelabsLauncher(args,
       },
       60000,
     );
-  }
+  };
+  // Upload the new job results to Sauce Labs
+  const uploadJobResult = async (browserData, browserName) => {
+    const {sessionId, username, accessKey, region, results} = browserData;
+    const api = new SauceLabsAPI({
+      user: username,
+      key: accessKey,
+      region: region,
+    });
+    try {
+      // Wait until the vm is destroyed and the assets are stored
+      const maxRetries = 25;
+      for (let i = 0; i < maxRetries; i++) {
+        try {
+          log.info(`Check if 'log.json' for browser '${browserName}' has already been stored.`);
+          await api.downloadJobAsset(sessionId, 'log.json');
+          break;
+        } catch (e) {
+          if (i === maxRetries) {
+            throw e;
+          }
+        }
+      }
+
+      // Create a tmp dir
+      mkdirSync(sessionId);
+      writeFileSync(`${sessionId}/log.json`, JSON.stringify(results, null, 2));
+      // Update the log assets
+      // @ts-ignore
+      await api.uploadJobAssets(
+        sessionId,
+        {files: [`${sessionId}/log.json`]},
+      );
+      // remove the temporary folder
+      removeSync(sessionId);
+      log.info(`Assets successfully uploaded for browser '${browserName}' and temporary assets are deleted.`);
+    } catch (e) {
+      log.error(`There was an error uploading the data to SauceLabs: ${e.message}`);
+    }
+  };
 
   // Listen for the start event from Karma. I know, the API is a bit different to how you
   // would expect, but we need to follow this approach unless we want to spend more work
@@ -118,31 +157,11 @@ export function SaucelabsLauncher(args,
     }
 
     try {
-      const driver = connectedDrivers.get(this.id);
-      const {sessionId} = driver;
-      await driver.deleteSession();
-
       const browserData = browserMap.get(this.id);
-      const api = new SauceLabs({
-        user: browserData.username,
-        key: browserData.accessKey,
-        region: browserData.region,
-      });
+      const driver = connectedDrivers.get(this.id);
 
-      // Wait until the vm is destroyed and the assets are stored
-      await new Promise(resolve => setTimeout(() => resolve(), 5000));
-      // Create a tmp dir
-      mkdirSync(sessionId);
-      writeFileSync(`${sessionId}/log.json`, JSON.stringify(browserData.results, null, 2));
-      // Update the log assets
-      // @ts-ignore
-      await api.uploadJobAssets(
-        sessionId,
-        {files: [`${sessionId}/log.json`]},
-      );
-      // remove the temporary folder
-      removeSync(sessionId);
-
+      await driver.deleteSession();
+      await uploadJobResult(browserData, browserName);
     } catch (e) {
       // We need to ignore the exception here because we want to make sure that Karma is still
       // able to retry connecting if Saucelabs itself terminated the session (and not Karma)

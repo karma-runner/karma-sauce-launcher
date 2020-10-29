@@ -1,5 +1,5 @@
 import {BrowserMap} from "../browser-info";
-import SaucelabsAPI, {Job} from 'saucelabs';
+import SauceLabsAPI, {Job} from 'saucelabs';
 
 const REGION_MAPPING = {
   'us': '', // default endpoint
@@ -28,6 +28,8 @@ export function SaucelabsReporter(logger, browserMap: BrowserMap) {
   // of the test including the status of the test
   this.onSpecComplete = function (browser, result) {
     const status = result.success ? '✅' : '❌'
+
+    console.log('onSpecComplete result = ', result)
 
     browserMap.get(browser.id).results.push({
       status: 'info',
@@ -67,7 +69,7 @@ export function SaucelabsReporter(logger, browserMap: BrowserMap) {
     }
 
     const {sessionId} = browserData;
-    const api = new SaucelabsAPI({
+    const api = new SauceLabsAPI({
       user: browserData.username,
       key: browserData.accessKey,
       region: browserData.region,
