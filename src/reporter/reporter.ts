@@ -1,5 +1,20 @@
 import {BrowserMap} from "../browser-info";
-import SaucelabsAPI, {Job} from 'saucelabs';
+import SauceLabsAPI, {Job} from 'saucelabs';
+
+const REGION_MAPPING = {
+  'us': '', // default endpoint
+  'eu': 'eu-central-1.',
+};
+
+/**
+ * Get the Sauce Labs endpoint
+ * @param region
+ */
+function getSauceEndpoint(region) {
+  const shortRegion = REGION_MAPPING[region] ? region : 'us'
+
+  return `https://app.${REGION_MAPPING[shortRegion]}saucelabs.com/tests/`
+}
 
 /**
  * Karma browser reported that updates corresponding Saucelabs jobs whenever a given
@@ -8,6 +23,26 @@ import SaucelabsAPI, {Job} from 'saucelabs';
 export function SaucelabsReporter(logger, browserMap: BrowserMap) {
   const log = logger.create('reporter.sauce');
   let pendingUpdates: Promise<Job>[] = [];
+
+  // This fires when a single test is executed and will update the run in sauce labs with an annotation
+  // of the test including the status of the test
+  this.onSpecComplete = function (browser, result) {
+    const status = result.success ? '✅' : '❌'
+
+    browserMap.get(browser.id).results.push({
+      status: 'info',
+      message: `${status} ${result.fullName}`,
+      screenshot: null
+    })
+
+    if (!result.success && result.log.length > 0) {
+      browserMap.get(browser.id).results.push({
+        status: 'info',
+        message: `${result.log[0]}`,
+        screenshot: null
+      })
+    }
+  }
 
   // This fires whenever any browser completes. This is when we want to report results
   // to the Saucelabs API, so that people can create coverage banners for their project.
@@ -32,7 +67,7 @@ export function SaucelabsReporter(logger, browserMap: BrowserMap) {
     }
 
     const {sessionId} = browserData;
-    const api = new SaucelabsAPI({
+    const api = new SauceLabsAPI({
       user: browserData.username,
       key: browserData.accessKey,
       region: browserData.region,
@@ -47,6 +82,8 @@ export function SaucelabsReporter(logger, browserMap: BrowserMap) {
       passed: hasPassed,
       'custom-data': result
     }));
+
+    log.info(`Check out job at ${getSauceEndpoint(browserData.region)}${sessionId}`)
   };
 
   // Whenever this method is being called, we just need to wait for all API calls to finish,

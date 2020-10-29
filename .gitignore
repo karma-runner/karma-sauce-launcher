@@ -2,3 +2,5 @@ node_modules
 sauce_connect.log
 npm-debug.log
 dist/
+
+.idea/
