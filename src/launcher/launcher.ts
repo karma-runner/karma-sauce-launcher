@@ -3,6 +3,7 @@ import SauceLabsAPI from 'saucelabs';
 import {mkdirSync, removeSync, writeFileSync} from 'fs-extra';
 import {processConfig} from "../process-config";
 import {BrowserMap} from "../browser-info";
+import {waitUntil} from "../utils";
 
 // Array of connected drivers. This is useful for quitting all connected drivers on kill.
 let connectedDrivers: Map<string, BrowserObject> = new Map();
@@ -65,31 +66,28 @@ export function SaucelabsLauncher(args,
       key: accessKey,
       region: region,
     });
+
     try {
       // Wait until the vm is destroyed and the assets are stored
-      const maxRetries = 25;
-      for (let i = 0; i < maxRetries; i++) {
-        try {
+      await waitUntil({
+        condition: async () => {
           log.info(`Check if 'log.json' for browser '${browserName}' has already been stored.`);
           await api.downloadJobAsset(sessionId, 'log.json');
-          break;
-        } catch (e) {
-          if (i === maxRetries) {
-            throw e;
-          }
-        }
-      }
+        },
+        maxRetries: 25,
+      });
 
-      // Create a tmp dir
+      // Now push the new job assets to Sauce Labs in 3 steps
+      // 1. Create a tmp dir
       mkdirSync(sessionId);
       writeFileSync(`${sessionId}/log.json`, JSON.stringify(results, null, 2));
-      // Update the log assets
+      // 2. Update the log assets
       // @ts-ignore
       await api.uploadJobAssets(
         sessionId,
         {files: [`${sessionId}/log.json`]},
       );
-      // remove the temporary folder
+      // 3. remove the temporary folder
       removeSync(sessionId);
       log.info(`Assets successfully uploaded for browser '${browserName}' and temporary assets are deleted.`);
     } catch (e) {
