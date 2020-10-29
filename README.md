@@ -24,7 +24,7 @@ npm install karma-sauce-launcher --save-dev
 
 This launcher is typically used in CI to run your unit tests across many browsers and platforms on Sauce Labs. However, you can also use it locally to debug tests in browsers not available on your machine. It is expected that you are already familiar with Karma when configuring this launcher, so if you are new to Karma, head over to the [Karma website](http://karma-runner.github.io/).
 
-The [Sauce Labs platform configurator](https://wiki.saucelabs.com/display/DOCS/Platform+Configurator/#/) can help to find the correct configuration for your desired test platform. 
+The [Sauce Labs platform configurator](https://wiki.saucelabs.com/display/DOCS/Platform+Configurator/#/) can help to find the correct configuration for your desired test platform.
 
 ### Adding karma-sauce-launcher to an existing Karma config
 
@@ -91,6 +91,23 @@ module.exports = function(config) {
 
 For example configs using this launcher (using Travis CI), check out this repo's [karma file](https://github.com/karma-runner/karma-sauce-launcher/tree/master/examples/karma.conf-ci.js), the [karma-sauce-example repo](https://github.com/saucelabs/karma-sauce-example) (which demonstrates how to use Sauce locally), or [AngularJS' Karma config](https://github.com/angular/angular.js/blob/master/karma-shared.conf.js).
 
+### Example results in Sauce Labs
+Version `4.2.0` and lower of this module will give you the following result in Sauce Labs, no matter how many tests you execute.
+
+![Sauce Logs](/images/saucelabs-old.png)
+
+As of version [4.3.0](https://github.com/karma-runner/karma-sauce-launcher/releases/tag/v4.3.0) the logs are replaced with the
+test names and results of the individual tests that have been executed on Sauce Labs, including the execution url in the logs.
+
+**Successful run**
+![Sauce Successful Logs](/images/new-sauce-logs-success.png)
+
+**Unsuccessful run**
+![Sauce Successful Logs](/images/new-sauce-logs-failure.png)
+
+**Execution url**
+![Sauce Successful Logs](/images/sauce-execution-url.png)
+
 ## `sauceLabs` config properties shared across all browsers
 
 ### username
@@ -124,7 +141,7 @@ Proxy for connecting to Sauce REST API, which is used to communicate job updates
 Type: `Boolean`
 Default: `true`
 
-If `true`, Sauce Connect will be started automatically.  
+If `true`, Sauce Connect will be started automatically.
 Set this to `false` if you are launching tests locally but want to start Sauce Connect via [a binary](https://wiki.saucelabs.com/display/DOCS/Downloading+Sauce+Connect+Proxy) manually in the background to improve test speed.
 
 ### connectOptions
@@ -138,9 +155,9 @@ Default:
 }
 ```
 
-Options to send to Sauce Connect. 
+Options to send to Sauce Connect.
 
-Check [here](https://wiki.saucelabs.com/display/DOCS/Sauce+Connect+Proxy+Command-Line+Quick+Reference+Guide) for all available options.  
+Check [here](https://wiki.saucelabs.com/display/DOCS/Sauce+Connect+Proxy+Command-Line+Quick+Reference+Guide) for all available options.
 All parameters have to be applied camel cased instead of with hyphens.
 
 ### build
