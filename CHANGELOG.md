@@ -1,3 +1,10 @@
+## [4.3.1](https://github.com/karma-runner/karma-sauce-launcher/compare/v4.3.0...v4.3.1) (2020-10-29)
+
+
+### Bug Fixes
+
+* fixes issues with older browsers / caps ([97315f3](https://github.com/karma-runner/karma-sauce-launcher/commit/97315f30859482aa0d434f6ba258330f7171ecda))
+
 # [4.3.0](https://github.com/karma-runner/karma-sauce-launcher/compare/v4.2.0...v4.3.0) (2020-10-29)
 
 
