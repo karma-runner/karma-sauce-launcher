@@ -170,6 +170,8 @@ export function SaucelabsLauncher(args,
     }
 
     connectedDrivers.delete(this.id)
+
+    this._done();
     return process.nextTick(done);
   })
 }
