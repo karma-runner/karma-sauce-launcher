@@ -1,3 +1,10 @@
+## [4.3.2](https://github.com/karma-runner/karma-sauce-launcher/compare/v4.3.1...v4.3.2) (2020-10-30)
+
+
+### Bug Fixes
+
+* Call launcher done callback ([6050150](https://github.com/karma-runner/karma-sauce-launcher/commit/60501501dacaaf9f743294da340ffdc6d057c10f))
+
 ## [4.3.1](https://github.com/karma-runner/karma-sauce-launcher/compare/v4.3.0...v4.3.1) (2020-10-29)
 
 
