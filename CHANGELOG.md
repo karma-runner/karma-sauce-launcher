@@ -1,3 +1,11 @@
+## [4.3.3](https://github.com/karma-runner/karma-sauce-launcher/compare/v4.3.2...v4.3.3) (2020-10-30)
+
+
+### Bug Fixes
+
+* update (dev)dependencies ([c86ffe7](https://github.com/karma-runner/karma-sauce-launcher/commit/c86ffe7a1b7d04c0bcdea5e67b52fa81087b084d))
+* update sending custom information to Sauce Labs ([6090ea8](https://github.com/karma-runner/karma-sauce-launcher/commit/6090ea872f3b0f3fcfdb585d8be46835c0ba6fb5))
+
 ## [4.3.2](https://github.com/karma-runner/karma-sauce-launcher/compare/v4.3.1...v4.3.2) (2020-10-30)
 
 
