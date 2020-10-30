@@ -41,35 +41,47 @@ module.exports = function(config) {
     sl_chrome: {
       base: 'SauceLabs',
       browserName: 'chrome',
-      platform: 'Windows 7',
-      version: '35'
+      platform: 'Windows 10',
     },
     sl_firefox: {
       base: 'SauceLabs',
       browserName: 'firefox',
-      version: '30'
-    },
-    sl_ios_safari: {
-      base: 'SauceLabs',
-      browserName: 'iphone',
-      platform: 'OS X 10.9',
-      version: '7.1'
+      version: 'latest'
     },
     sl_ie_11: {
       base: 'SauceLabs',
       browserName: 'internet explorer',
       platform: 'Windows 8.1',
-      version: '11'
     },
-    sl_android: {
+    // Mobile settings
+    // 1. Go to https://wiki.saucelabs.com/display/DOCS/Platform+Configurator#/
+    // 2. Select Appium iOS,Android
+    // 3. Configure your device
+    //    Don't forget to provide the `appiumVersion`
+    sl_ios_safari: {
       base: 'SauceLabs',
-      browserName: 'Browser',
-      platform: 'Android',
-      version: '4.4',
-      deviceName: 'Samsung Galaxy S3 Emulator',
+      deviceName: 'iPhone 11 Simulator',
+      platformVersion: '13.4',
+      platformName: 'iOS',
+      browserName: 'Safari',
+      appiumVersion: '1.17.1',
       deviceOrientation: 'portrait'
     },
-    // For W3C way of setting the capabilies check
+    // !!!!IMPORTANT!!!!
+    // If you want to use an Android emulator then you can't use localhost.
+    // Because an Android emulator is a VM it will go to it's own localhost
+    // and the test will fail. Make change the `hostname` to your
+    // local ip
+    sl_android: {
+      base: 'SauceLabs',
+      deviceName: 'Android GoogleAPI Emulator',
+      platform: 'Android',
+      version: '11.0',
+      browserName: 'chrome',
+      appiumVersion: '1.18.1',
+      deviceOrientation: 'portrait'
+    },
+    // For W3C way of setting the capabilities check
     // https://wiki.saucelabs.com/display/DOCS/Platform+Configurator#/
     // And select WebDriver (W3C) Selenium 3/4, Webdriver.io
     sl_chromeW3C: {
@@ -101,7 +113,7 @@ module.exports = function(config) {
 
 ### Example karma-sauce-launcher configs
 
-For example configs using this launcher (using Travis CI), check out this repo's [karma file](https://github.com/karma-runner/karma-sauce-launcher/tree/master/examples/karma.conf-ci.js), the [karma-sauce-example repo](https://github.com/saucelabs/karma-sauce-example) (which demonstrates how to use Sauce locally), or [AngularJS' Karma config](https://github.com/angular/angular.js/blob/master/karma-shared.conf.js).
+For example configs using this launcher (using Travis CI), check out this repo's [karma file](https://github.com/karma-runner/karma-sauce-launcher/tree/master/examples/karma.conf-ci.js), or [AngularJS' Karma config](https://github.com/angular/angular.js/blob/master/karma-shared.conf.js).
 
 ### Example results in Sauce Labs
 Version `4.2.0` and lower of this module will give you the following result in Sauce Labs, no matter how many tests you execute.
