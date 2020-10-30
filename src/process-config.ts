@@ -31,19 +31,24 @@ export function processConfig(config: any = {}, args: any = {}) {
   }
 
   const capabilitiesFromConfig = {
-    build: config.build,
-    commandTimeout: config.commandTimeout || 300,
-    customData: config.customData || {},
-    idleTimeout: config.idleTimeout || 90,
+    // Test annotation
+    build: config.build || args.build,
+    name: config.testName || args.testName || 'Saucelabs Launcher Tests',
+    tags: config.tags || args.tags || [],
+    'custom-data': config.customData || args.customData,
+    customData: config.customData || args.customData || {},
+    // Timeouts
     maxDuration: config.maxDuration || 1800,
-    name: config.testName || 'Saucelabs Launcher Tests',
+    commandTimeout: config.commandTimeout || 300,
+    idleTimeout: config.idleTimeout || 90,
+    // Custom Testing Options
     parentTunnel: config.parentTunnel,
-    public: config.public || 'public',
-    recordScreenshots: config.recordScreenshots,
-    recordVideo: config.recordVideo,
-    tags: config.tags || [],
     tunnelIdentifier: tunnelIdentifier,
-    'custom-data': config.customData,
+    timeZone: config.timeZone || args.timeZone,
+    public: config.public || 'public',
+    // Optional Testing Features
+    recordScreenshots: config.recordScreenshots || args.recordScreenshots,
+    recordVideo: config.recordVideo || config.recordVideo,
   };
 
   const sauceConnectOptions = {
@@ -55,7 +60,7 @@ export function processConfig(config: any = {}, args: any = {}) {
   if (isW3C(args)) {
     args.browserVersion = args.browserVersion || args.version || 'latest'
     args.platformName = args.platformName || args.platform || 'Windows 10'
-    args['sauce:options'] = { ...(args['sauce:options'] || {}), ...capabilitiesFromConfig }
+    args['sauce:options'] = {...capabilitiesFromConfig, ...(args['sauce:options'] || {})}
 
     // delete JWP capabilities
     delete args.version
