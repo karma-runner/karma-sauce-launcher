@@ -28,16 +28,25 @@ export function SaucelabsReporter(logger, browserMap: BrowserMap) {
   // This fires when a single test is executed and will update the run in sauce labs with an annotation
   // of the test including the status of the test
   this.onSpecComplete = function (browser, result) {
+    const browserId = browser.id;
+    const browserData = browserMap.get(browserId);
+
+    // Do nothing if the current browser has not been launched through the Saucelabs
+    // launcher.
+    if (!browserData) {
+      return;
+    }
+
     const status = result.success ? '✅' : '❌'
 
-    browserMap.get(browser.id).results.push({
+    browserData.results.push({
       status: 'info',
       message: `${status} ${result.fullName}`,
       screenshot: null
     })
 
     if (!result.success && result.log.length > 0) {
-      browserMap.get(browser.id).results.push({
+      browserData.results.push({
         status: 'info',
         message: `${result.log[0]}`,
         screenshot: null
