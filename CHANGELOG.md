@@ -1,3 +1,10 @@
+## [4.3.4](https://github.com/karma-runner/karma-sauce-launcher/compare/v4.3.3...v4.3.4) (2020-11-30)
+
+
+### Bug Fixes
+
+* fix reporter with browsers not launched through launcher ([39943d7](https://github.com/karma-runner/karma-sauce-launcher/commit/39943d752ea600469de1c5d388834cb4cb386d2f)), closes [#232](https://github.com/karma-runner/karma-sauce-launcher/issues/232)
+
 ## [4.3.3](https://github.com/karma-runner/karma-sauce-launcher/compare/v4.3.2...v4.3.3) (2020-10-30)
 
 
