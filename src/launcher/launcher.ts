@@ -1,6 +1,5 @@
 import {remote, BrowserObject} from 'webdriverio';
 import SauceLabsAPI from 'saucelabs';
-import {mkdirSync, removeSync, writeFileSync} from 'fs-extra';
 import {processConfig} from "../process-config";
 import {BrowserMap} from "../browser-info";
 import {waitUntil} from "../utils";
@@ -68,28 +67,40 @@ export function SaucelabsLauncher(args,
     });
 
     try {
+      let oldLogs;
       // Wait until the vm is destroyed and the assets are stored
       await waitUntil({
-        condition: () => {
+        condition: async () => {
           log.info(`Check if 'log.json' for browser '${browserName}' has already been stored.`);
-          return api.downloadJobAsset(sessionId, 'log.json');
+          oldLogs = await api.downloadJobAsset(sessionId, 'log.json');
+
+          return oldLogs;
         },
         maxRetries: 25,
       });
 
-      // Now push the new job assets to Sauce Labs in 3 steps
-      // 1. Create a tmp dir
-      mkdirSync(sessionId);
-      writeFileSync(`${sessionId}/log.json`, JSON.stringify(results, null, 2));
-      // 2. Update the log assets
-      // @ts-ignore
-      await api.uploadJobAssets(
-        sessionId,
-        {files: [`${sessionId}/log.json`]},
-      );
-      // 3. remove the temporary folder
-      removeSync(sessionId);
-      log.info(`Assets successfully uploaded for browser '${browserName}' and temporary assets are deleted.`);
+      // Only update the new logs if we received the old logs, else do nothing and keep the old logs
+      if (oldLogs) {
+        // Now push the new and old job assets to Sauce Labs
+        // @ts-ignore
+        await api.uploadJobAssets(
+          sessionId,
+          {
+            files: [
+              {
+                filename: 'log.json',
+                data: results,
+              },
+              {
+                filename: 'old-log.json',
+                data: {
+                  someLog: oldLogs
+                }
+              },
+            ],
+          },
+        );
+      }
     } catch (e) {
       log.error(`There was an error uploading the data to SauceLabs: ${e.message}`);
     }

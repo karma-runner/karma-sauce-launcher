@@ -37,9 +37,8 @@
   ],
   "author": "Vojta Jina <vojta.jina@gmail.com>",
   "dependencies": {
-    "fs-extra": "^9.0.1",
     "global-agent": "^2.1.12",
-    "saucelabs": "^4.5.1",
+    "saucelabs": "^4.6.3",
     "webdriverio": "^6.7.0"
   },
   "license": "MIT",
@@ -48,16 +47,16 @@
     "@commitlint/config-conventional": "11.0.0",
     "@semantic-release/changelog": "5.0.1",
     "@semantic-release/git": "9.0.0",
-    "@semantic-release/npm": "7.0.6",
-    "@types/fs-extra": "^9.0.2",
+    "@semantic-release/npm": "7.0.10",
+    "@types/fs-extra": "^9.0.6",
     "@types/global-agent": "^2.1.0",
-    "@types/node": "^14.14.6",
-    "husky": "4.3.0",
-    "jasmine": "^3.6.2",
+    "@types/node": "^14.14.22",
+    "husky": "4.3.8",
+    "jasmine": "^3.6.4",
     "karma": "^5.2.3",
     "karma-jasmine": "^4.0.1",
-    "semantic-release": "17.2.2",
-    "typescript": "^4.0.5"
+    "semantic-release": "17.3.7",
+    "typescript": "^4.1.3"
   },
   "contributors": [
     "Mark Ethan Trostler <mark@zzo.com>",
