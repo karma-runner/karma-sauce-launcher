@@ -1,3 +1,10 @@
+## [4.3.5](https://github.com/karma-runner/karma-sauce-launcher/compare/v4.3.4...v4.3.5) (2021-01-24)
+
+
+### Bug Fixes
+
+* add old logs into Sauce ([9cf957f](https://github.com/karma-runner/karma-sauce-launcher/commit/9cf957f56a9a0b1cf1b55a0f6d0a7e505df8ffee))
+
 ## [4.3.4](https://github.com/karma-runner/karma-sauce-launcher/compare/v4.3.3...v4.3.4) (2020-11-30)
 
 
