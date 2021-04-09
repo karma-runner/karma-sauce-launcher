@@ -37,11 +37,11 @@ export function SaucelabsReporter(logger, browserMap: BrowserMap) {
       return;
     }
 
-    const status = result.success ? '✅' : '❌'
+    const status = result.success ? '✅' : result.skipped ? '➖' : '❌';
 
     browserData.results.push({
       status: 'info',
-      message: `${status} ${result.fullName}`,
+      message: `${status} ${result.fullName || result.description}`,
       screenshot: null
     })
 
