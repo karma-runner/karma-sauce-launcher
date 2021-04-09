@@ -1,3 +1,10 @@
+## [4.3.6](https://github.com/karma-runner/karma-sauce-launcher/compare/v4.3.5...v4.3.6) (2021-04-09)
+
+
+### Bug Fixes
+
+* correctly report test names and status ([1aee063](https://github.com/karma-runner/karma-sauce-launcher/commit/1aee063669f97ce3ce931d0f72e8bbc3d295443f))
+
 ## [4.3.5](https://github.com/karma-runner/karma-sauce-launcher/compare/v4.3.4...v4.3.5) (2021-01-24)
 
 
