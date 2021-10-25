@@ -87,16 +87,8 @@ export function SaucelabsLauncher(args,
           sessionId,
           {
             files: [
-              {
-                filename: 'log.json',
-                data: results,
-              },
-              {
-                filename: 'old-log.json',
-                data: {
-                  someLog: oldLogs
-                }
-              },
+              'log.json',
+              'old-log.json'
             ],
           },
         );
