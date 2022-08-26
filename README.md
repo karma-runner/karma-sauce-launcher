@@ -4,7 +4,7 @@
 [![npm version](https://img.shields.io/npm/v/karma-sauce-launcher.svg?style=flat-square)](https://www.npmjs.com/package/karma-sauce-launcher) [![npm downloads](https://img.shields.io/npm/dm/karma-sauce-launcher.svg?style=flat-square)](https://www.npmjs.com/package/karma-sauce-launcher)
 [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
 
-[![Build Status](https://img.shields.io/travis/karma-runner/karma-sauce-launcher/master.svg?style=flat-square)](https://travis-ci.org/karma-runner/karma-sauce-launcher) [![Dependency Status](https://img.shields.io/david/karma-runner/karma-sauce-launcher.svg?style=flat-square)](https://david-dm.org/karma-runner/karma-sauce-launcher) [![devDependency Status](https://img.shields.io/david/dev/karma-runner/karma-sauce-launcher.svg?style=flat-square)](https://david-dm.org/karma-runner/karma-sauce-launcher#info=devDependencies)
+[![Build Status](https://img.shields.io/travis/karma-runner/karma-sauce-launcher/master.svg?style=flat-square)](https://travis-ci.org/karma-runner/karma-sauce-launcher)
 
 
 ![Karma Plus Sauce](/images/karma-plus-sauce.png)
