@@ -1,39 +1,40 @@
-import {remote, BrowserObject} from 'webdriverio';
-import SauceLabsAPI from 'saucelabs';
-import {processConfig} from "../process-config";
-import {BrowserMap} from "../browser-info";
-import {waitUntil} from "../utils";
+import { remote, BrowserObject } from "webdriverio";
+import SauceLabsAPI from "saucelabs";
+import { processConfig } from "../process-config";
+import { BrowserMap } from "../browser-info";
+import { waitUntil } from "../utils";
 
 // Array of connected drivers. This is useful for quitting all connected drivers on kill.
 let connectedDrivers: Map<string, BrowserObject> = new Map();
 
-export function SaucelabsLauncher(args,
-                                  /* config.sauceLabs */ config,
-                                  /* SauceConnect */ sauceConnect,
-                                  browserMap: BrowserMap,
-                                  logger,
-                                  baseLauncherDecorator,
-                                  captureTimeoutLauncherDecorator,
-                                  retryLauncherDecorator) {
-
+export function SaucelabsLauncher(
+  args,
+  /* config.sauceLabs */ config,
+  /* SauceConnect */ sauceConnect,
+  browserMap: BrowserMap,
+  logger,
+  baseLauncherDecorator,
+  captureTimeoutLauncherDecorator,
+  retryLauncherDecorator
+) {
   // Apply base class mixins. This would be nice to have typed, but this is a low-priority now.
   baseLauncherDecorator(this);
   captureTimeoutLauncherDecorator(this);
   retryLauncherDecorator(this);
 
   // initiate driver with null to not close the tunnel too early
-  connectedDrivers.set(this.id, null)
+  connectedDrivers.set(this.id, null);
 
-  const log = logger.create('SaucelabsLauncher');
+  const log = logger.create("SaucelabsLauncher");
   const {
     startConnect,
     sauceConnectOptions,
     seleniumCapabilities,
-    browserName
+    browserName,
   } = processConfig(config, args);
 
   // Setup Browser name that will be printed out by Karma.
-  this.name = browserName + ' on SauceLabs';
+  this.name = browserName + " on SauceLabs";
 
   let pendingHeartBeat;
   // Heartbeat function to keep alive sessions on Sauce Labs via WebDriver calls
@@ -41,25 +42,26 @@ export function SaucelabsLauncher(args,
     const driver = connectedDrivers.get(this.id);
 
     pendingHeartBeat = setTimeout(async () => {
-        if (!driver) {
-          return
-        }
-        try {
-          await driver.getTitle();
-          log.debug('Heartbeat to Sauce Labs (%s) - fetching title', browserName)
-          heartbeat();
-        } catch (ign) {
-          // Do nothing, just clear the timeout
-          clearTimeout(pendingHeartBeat)
-        }
+      if (!driver) {
         return;
-      },
-      60000,
-    );
+      }
+      try {
+        await driver.getTitle();
+        log.debug("Heartbeat to Sauce Labs (%s) - fetching title", browserName);
+        heartbeat();
+      } catch (ign) {
+        // Do nothing, just clear the timeout
+        clearTimeout(pendingHeartBeat);
+      }
+      return;
+    }, 60000);
   };
+
   // Upload the new job results to Sauce Labs
+  // @TODO: this is not working now, files first need to be created locally, then uploaded
+  // and then deleted to make this work.
   const uploadJobResult = async (browserData, browserName) => {
-    const {sessionId, username, accessKey, region, results} = browserData;
+    const { sessionId, username, accessKey, region, results } = browserData;
     const api = new SauceLabsAPI({
       user: username,
       key: accessKey,
@@ -71,8 +73,10 @@ export function SaucelabsLauncher(args,
       // Wait until the vm is destroyed and the assets are stored
       await waitUntil({
         condition: async () => {
-          log.info(`Check if 'log.json' for browser '${browserName}' has already been stored.`);
-          oldLogs = await api.downloadJobAsset(sessionId, 'log.json');
+          log.info(
+            `Check if 'log.json' for browser '${browserName}' has already been stored.`
+          );
+          oldLogs = await api.downloadJobAsset(sessionId, "log.json");
 
           return oldLogs;
         },
@@ -82,36 +86,34 @@ export function SaucelabsLauncher(args,
       // Only update the new logs if we received the old logs, else do nothing and keep the old logs
       if (oldLogs) {
         // Now push the new and old job assets to Sauce Labs
-        // @ts-ignore
-        await api.uploadJobAssets(
-          sessionId,
-          {
-            files: [
-              'log.json',
-              'old-log.json'
-            ],
-          },
-        );
+        await api.uploadJobAssets(sessionId, {
+          files: ["log.json", "old-log.json"],
+        });
       }
     } catch (e) {
-      log.error(`There was an error uploading the data to SauceLabs: ${e.message}`);
+      log.error(
+        `There was an error uploading the data to SauceLabs: ${e.message}`
+      );
     }
   };
 
   // Listen for the start event from Karma. I know, the API is a bit different to how you
   // would expect, but we need to follow this approach unless we want to spend more work
   // improving type safety.
-  this.on('start', async (pageUrl: string) => {
+  this.on("start", async (pageUrl: string) => {
     if (startConnect) {
       try {
         // In case the "startConnect" option has been enabled, establish a tunnel and wait
         // for it being ready. In case a tunnel is already active, this will just continue
         // without establishing a new one.
-        await sauceConnect.establishTunnel(seleniumCapabilities, sauceConnectOptions);
+        await sauceConnect.establishTunnel(
+          seleniumCapabilities,
+          sauceConnectOptions
+        );
       } catch (error) {
         log.error(error);
 
-        this._done('failure');
+        this._done("failure");
         return;
       }
     }
@@ -125,9 +127,13 @@ export function SaucelabsLauncher(args,
       // driver instances (e.g. when running with concurrency)
       connectedDrivers.set(this.id, driver);
 
-      const sessionId = driver.sessionId
+      const sessionId = driver.sessionId;
 
-      log.info('%s session at https://saucelabs.com/tests/%s', browserName, sessionId);
+      log.info(
+        "%s session at https://saucelabs.com/tests/%s",
+        browserName,
+        sessionId
+      );
       log.debug('Opening "%s" on the selenium client', pageUrl);
 
       // Store the information about the current session in the browserMap. This is necessary
@@ -147,11 +153,11 @@ export function SaucelabsLauncher(args,
       log.error(e);
 
       // Notify karma about the failure.
-      this._done('failure');
+      this._done("failure");
     }
   });
 
-  this.on('kill', async (done: () => void) => {
+  this.on("kill", async (done: () => void) => {
     // If there is still pending heartbeats, clear the timeout
     if (pendingHeartBeat) {
       clearTimeout(pendingHeartBeat);
@@ -162,19 +168,22 @@ export function SaucelabsLauncher(args,
       const driver = connectedDrivers.get(this.id);
 
       await driver.deleteSession();
-      await uploadJobResult(browserData, browserName);
+      // @TODO: temp disabled uploadJobResult because it's failing now
+      // await uploadJobResult(browserData, browserName);
     } catch (e) {
       // We need to ignore the exception here because we want to make sure that Karma is still
       // able to retry connecting if Saucelabs itself terminated the session (and not Karma)
       // For example if the "idleTimeout" is exceeded and Saucelabs errored the session. See:
       // https://wiki.saucelabs.com/display/DOCS/Test+Didn%27t+See+a+New+Command+for+90+Seconds
-      log.error('Could not quit the Saucelabs selenium connection. Failure message:');
+      log.error(
+        "Could not quit the Saucelabs selenium connection. Failure message:"
+      );
       log.error(e);
     }
 
-    connectedDrivers.delete(this.id)
+    connectedDrivers.delete(this.id);
 
     this._done();
     return process.nextTick(done);
-  })
+  });
 }
