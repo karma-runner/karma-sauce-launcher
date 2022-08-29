@@ -1,0 +1,29 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  main:
+    name: Test, Tag Commit and Release to NPM
+    runs-on: ubuntu-latest
+    env:
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      GITHUB_TOKEN: ${{ secrets.KARMARUNNERBOT_GITHUB_TOKEN }}
+      SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
+      SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          token: ${{ env.GITHUB_TOKEN }}
+      - uses: actions/setup-node@v2
+        with:
+          # Need to upgrade this when upgrading node-saucelabs + wdio
+          node-version: "10.x"
+          cache: "yarn"
+      - run: yarn
+      - run: yarn run-example
+      - run: yarn build
+      - run: yarn run release

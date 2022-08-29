@@ -7,7 +7,8 @@
     "build": "tsc -p src",
     "run-example": "yarn build && yarn copy-dist-to-modules && yarn run-example-karma",
     "copy-dist-to-modules": "rm -rf node_modules/karma-sauce-launcher && mv dist/ node_modules/karma-sauce-launcher",
-    "run-example-karma": "yarn karma start examples/karma.conf-ci.js"
+    "run-example-karma": "yarn karma start examples/karma.conf-ci.js",
+    "release": "semantic-release"
   },
   "files": [
     "dist"
