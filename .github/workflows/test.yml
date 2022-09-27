@@ -16,7 +16,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          token: ${{ env.GITHUB_TOKEN }}
+          fetch-depth: 0
       - uses: actions/setup-node@v2
         with:
           # Need to upgrade this when upgrading node-saucelabs + wdio
