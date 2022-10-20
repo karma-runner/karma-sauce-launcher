@@ -20,8 +20,7 @@ jobs:
           token: ${{ env.GITHUB_TOKEN }}
       - uses: actions/setup-node@v2
         with:
-          # Need to upgrade this when upgrading node-saucelabs + wdio
-          node-version: "10.x"
+          node-version: "12.x"
           cache: "yarn"
       - run: yarn
       - run: yarn run-example
