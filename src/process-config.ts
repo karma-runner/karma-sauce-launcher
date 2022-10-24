@@ -57,17 +57,19 @@ export function processConfig(config: any = {}, args: any = {}) {
   };
 
   // transform JWP capabilities into W3C capabilities for backward compatibility
-  if (isW3C(args)) {
+  if (!isW3C(args)) {
     args.browserVersion = args.browserVersion || args.version || 'latest'
     args.platformName = args.platformName || args.platform || 'Windows 10'
-    args['sauce:options'] = {...capabilitiesFromConfig, ...(args['sauce:options'] || {})}
 
     // delete JWP capabilities
     delete args.version
     delete args.platform
-  } else {
-    args = {...args, ...capabilitiesFromConfig}
   }
+
+  // Move capabilities from config into `sauce:options`. This is necessary for W3C.
+  // See: https://docs.saucelabs.com/dev/w3c-webdriver-capabilities/index.html#use-sauceoptions
+  args['sauce:options'] = {...capabilitiesFromConfig, ...(args['sauce:options'] || {})}
+
   // Not needed
   delete args.base
 
