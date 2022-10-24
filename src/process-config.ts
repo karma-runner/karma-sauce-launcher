@@ -21,7 +21,9 @@ export function processConfig(config: any = {}, args: any = {}) {
   }
 
   // Browser name that will be printed out by Karma.
-  const browserName = `${args.browserName} ${args.browserVersion || args.version || ''} ${args.platformName || args.platform || ''}`;
+  const browserName =
+    `${args.browserName} ${args.browserVersion || args.version || ''} ` +
+    `${args.platformName || args.platform || ''} ${args['appium:platformVersion'] || ''}`.trim();
 
   // In case "startConnect" is enabled, and no tunnel identifier has been specified, we just
   // generate one randomly. This makes it possible for developers to use "startConnect" with
