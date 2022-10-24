@@ -57,7 +57,9 @@ export function processConfig(config: any = {}, args: any = {}) {
   };
 
   // transform JWP capabilities into W3C capabilities for backward compatibility
-  if (!isW3C(args)) {
+  // NOTE: IE9 is the only browser/version that supports **only** JWT.
+  const isIE9 = (args.browserName.toLowerCase() === 'internet explorer') && (args.version === '9');
+  if (!isW3C(args) && !isIE9) {
     args.browserVersion = args.browserVersion || args.version || 'latest'
     args.platformName = args.platformName || args.platform || 'Windows 10'
 
@@ -66,9 +68,16 @@ export function processConfig(config: any = {}, args: any = {}) {
     delete args.platform
   }
 
-  // Move capabilities from config into `sauce:options`. This is necessary for W3C.
+  // Move Sauce-specific options to the appropriate place inside capabilities.
   // See: https://docs.saucelabs.com/dev/w3c-webdriver-capabilities/index.html#use-sauceoptions
-  args['sauce:options'] = {...capabilitiesFromConfig, ...(args['sauce:options'] || {})}
+  if (isIE9) {
+    // In JWT format (which IE9 has to use), Sauce-specific options need to be added to the
+    // top-level capabilities.
+    args = {...args, ...capabilitiesFromConfig}
+  } else {
+    // In W3C format, Sauce-specific options need to be put inside `sauce:options`.
+    args['sauce:options'] = {...capabilitiesFromConfig, ...(args['sauce:options'] || {})}
+  }
 
   // Not needed
   delete args.base
