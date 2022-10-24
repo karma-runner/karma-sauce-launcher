@@ -21,7 +21,9 @@ export function processConfig(config: any = {}, args: any = {}) {
   }
 
   // Browser name that will be printed out by Karma.
-  const browserName = `${args.browserName} ${args.browserVersion || args.version || ''} ${args.platformName || args.platform || ''}`;
+  const browserName =
+    `${args.browserName} ${args.browserVersion || args.version || ''} ` +
+    `${args.platformName || args.platform || ''} ${args['appium:platformVersion'] || ''}`.trim();
 
   // In case "startConnect" is enabled, and no tunnel identifier has been specified, we just
   // generate one randomly. This makes it possible for developers to use "startConnect" with
@@ -57,17 +59,28 @@ export function processConfig(config: any = {}, args: any = {}) {
   };
 
   // transform JWP capabilities into W3C capabilities for backward compatibility
-  if (isW3C(args)) {
+  // NOTE: IE9 is the only browser/version that supports **only** JWT.
+  const isIE9 = (args.browserName.toLowerCase() === 'internet explorer') && (args.version === '9');
+  if (!isW3C(args) && !isIE9) {
     args.browserVersion = args.browserVersion || args.version || 'latest'
     args.platformName = args.platformName || args.platform || 'Windows 10'
-    args['sauce:options'] = {...capabilitiesFromConfig, ...(args['sauce:options'] || {})}
 
     // delete JWP capabilities
     delete args.version
     delete args.platform
-  } else {
-    args = {...args, ...capabilitiesFromConfig}
   }
+
+  // Move Sauce-specific options to the appropriate place inside capabilities.
+  // See: https://docs.saucelabs.com/dev/w3c-webdriver-capabilities/index.html#use-sauceoptions
+  if (isIE9) {
+    // In JWT format (which IE9 has to use), Sauce-specific options need to be added to the
+    // top-level capabilities.
+    args = {...args, ...capabilitiesFromConfig}
+  } else {
+    // In W3C format, Sauce-specific options need to be put inside `sauce:options`.
+    args['sauce:options'] = {...capabilitiesFromConfig, ...(args['sauce:options'] || {})}
+  }
+
   // Not needed
   delete args.base
 
