@@ -1,11 +1,11 @@
-import { remote, BrowserObject } from "webdriverio";
+import { remote, Browser } from "webdriverio";
 import SauceLabsAPI from "saucelabs";
 import { processConfig } from "../process-config";
 import { BrowserMap } from "../browser-info";
 import { waitUntil } from "../utils";
 
 // Array of connected drivers. This is useful for quitting all connected drivers on kill.
-let connectedDrivers: Map<string, BrowserObject> = new Map();
+let connectedDrivers: Map<string, Browser<'async'>> = new Map();
 
 export function SaucelabsLauncher(
   args,
