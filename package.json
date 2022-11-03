@@ -39,7 +39,7 @@
   "dependencies": {
     "global-agent": "^2.1.12",
     "saucelabs": "6.2.2",
-    "webdriverio": "^6.7.0"
+    "webdriverio": "7.25.4"
   },
   "license": "MIT",
   "devDependencies": {
