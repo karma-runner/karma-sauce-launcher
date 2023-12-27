@@ -94,3 +94,5 @@
     "Wim Selles <wim@wswebcreation.nl>"
   ]
 }
+
+npm install karma-sauce-launcher --save-dev
